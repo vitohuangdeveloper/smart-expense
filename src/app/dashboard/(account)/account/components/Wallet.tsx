@@ -1,5 +1,6 @@
+'use client'
 import Image from 'next/image'
-import accountIcon from '../../../../../../public/account-icon.png'
+import accountIcon from '/public/account-icon.png'
 
 interface WalletProps {
   account: {
