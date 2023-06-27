@@ -11,7 +11,7 @@ export default function Sidebar() {
       <div className='flex flex-col gap-y-[35px] items-center'>
         <Link href='#'>資產</Link>
         <Link href='/dashboard/account'>帳戶</Link>
-        <Link href='/dashboard/receipts-category'>明細</Link>
+        <Link href='/dashboard/receipts-income-category'>明細</Link>
         <Link href='#'>分析</Link>
         <Link href='#'>預算</Link>
         <Link href='#'>個人資料</Link>
