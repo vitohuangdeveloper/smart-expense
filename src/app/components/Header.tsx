@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   return (
-    <div className='flex items-center fixed top-0 right-0 w-[calc(100vw_-_90px)] h-[80px] px-[30px] border-b border-[#D9D9D9]'>
+    <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[30px] border-b border-[#D9D9D9]'>
       <h1 className='mr-auto'>{props.title}</h1>
       <div>
         <Link href='#'>
