@@ -29,7 +29,7 @@ export default function Buttons() {
         <Image src={searchIcon} alt='search' className='cursor-pointer' />
       </div>
       <div className='absolute right-[30px] bottom-[60px] w-[30px]'>
-        <Link href='/dashboard/receipts-add'>
+        <Link href='/dashboard/receipts-add-expense'>
           <Image src={addIcon} alt='add' className='cursor-pointer' />
         </Link>
       </div>
