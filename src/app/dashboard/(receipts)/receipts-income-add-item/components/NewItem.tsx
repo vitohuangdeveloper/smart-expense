@@ -79,11 +79,12 @@ export default function NewItem() {
         )
       )
       await setDoc(receiptsRef, {
-        category: incomeReceipt.category ?? incomeCategories[0]?.name,
+        category: incomeReceipt.category,
         amounts: Number(incomeReceipt.amounts),
         description: incomeReceipt.description,
         createdTime: incomeReceipt.createdTime,
-        account: incomeReceipt.account ?? accounts[0]?.name,
+        account: incomeReceipt.account,
+        type: '收入',
       })
       console.log('Document written with ID: ', receiptsRef)
     } catch (error) {

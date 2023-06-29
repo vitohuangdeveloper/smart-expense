@@ -2,8 +2,16 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  DocumentData,
+} from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
+import { getReceiptCategoriesSnap } from '@/app/utils/getReceiptCategories'
+import { UID } from '@/app/utils/uid'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
@@ -12,7 +20,6 @@ import calendar from '/public/calendar.png'
 import necessityIcon from '/public/necessity-icon.png'
 import accountsReceivable from 'public/accounts-receivable.png'
 
-const UID = 'pUcfmReSPATGfLoDVt1xqSEVoqB2'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
@@ -26,29 +33,39 @@ interface MyObject {
 }
 
 interface ExpenseReceiptObject {
+  category: string
   amounts: number | string
   description: string
   createdTime: number | string
+  account: string
 }
 
 export default function NewItem() {
   const [accounts, setAccounts] = useState<MyObject[]>([])
   const [expenseReceipt, setExpenseReceipt] = useState<ExpenseReceiptObject>({
+    category: '',
     amounts: '',
     description: '',
     createdTime: '',
+    account: '',
   })
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target
     setExpenseReceipt(prev => ({ ...prev, [name]: value }))
   }
 
   const addNewReceipt = async () => {
     if (
+      !expenseReceipt.category ||
       !expenseReceipt.amounts ||
       !expenseReceipt.description ||
-      !expenseReceipt.createdTime
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
     )
       return
     try {
@@ -63,18 +80,23 @@ export default function NewItem() {
         )
       )
       await setDoc(receiptsRef, {
+        category: expenseReceipt.category,
         amounts: Number(expenseReceipt.amounts),
         description: expenseReceipt.description,
         createdTime: expenseReceipt.createdTime,
+        account: expenseReceipt.account,
+        type: '支出',
       })
       console.log('Document written with ID: ', receiptsRef)
     } catch (error) {
       console.log('Error adding document ', error)
     }
     setExpenseReceipt({
+      category: '',
       amounts: '',
       description: '',
       createdTime: '',
+      account: ',',
     })
   }
 
@@ -91,6 +113,12 @@ export default function NewItem() {
       setAccounts(dataArray)
     }
     getAccountsDocSnap()
+  }, [])
+
+  useEffect(() => {
+    getReceiptCategoriesSnap().then(res => {
+      setExpenseCategories(res.filter(doc => doc.type === '支出'))
+    })
   }, [])
 
   return (
@@ -119,7 +147,19 @@ export default function NewItem() {
               id='category'
               name='category'
               className='outline-0 bg-[transparent]'
-            ></select>
+              value={expenseReceipt.category}
+              onChange={handleChange}
+            >
+              {expenseCategories &&
+                expenseCategories.map(expenseCategory => (
+                  <option
+                    key={expenseCategory.name}
+                    value={expenseCategory.name}
+                  >
+                    {expenseCategory.name}
+                  </option>
+                ))}
+            </select>
           </div>
         </div>
         <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
@@ -194,6 +234,8 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='account'
               name='account'
+              value={expenseReceipt.account}
+              onChange={handleChange}
             >
               <optgroup label={categories.bank}>
                 {accounts &&
@@ -222,7 +264,7 @@ export default function NewItem() {
             </select>
           </div>
         </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
+        {/* <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
           <div>
             <Image
               src={accountsReceivable}
@@ -238,7 +280,7 @@ export default function NewItem() {
               name='accountsReceivable'
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
