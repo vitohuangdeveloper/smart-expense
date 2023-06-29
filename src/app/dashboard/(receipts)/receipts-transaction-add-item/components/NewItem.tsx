@@ -2,17 +2,23 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  DocumentData,
+} from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
+import { getReceiptCategoriesSnap } from '@/app/utils/getReceiptCategories'
+import { UID } from '@/app/utils/uid'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
 import descriptionIcon from '/public/description-icon.png'
 import calendar from '/public/calendar.png'
 import necessityIcon from '/public/necessity-icon.png'
-import accountsReceivable from 'public/accounts-receivable.png'
 
-const UID = 'pUcfmReSPATGfLoDVt1xqSEVoqB2'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
@@ -25,30 +31,43 @@ interface MyObject {
   balance?: number
 }
 
-interface ExpenseReceiptObject {
+interface TransactionReceiptObject {
+  category: string
   amounts: number | string
   description: string
   createdTime: number | string
+  account: string
 }
 
 export default function NewItem() {
   const [accounts, setAccounts] = useState<MyObject[]>([])
-  const [expenseReceipt, setExpenseReceipt] = useState<ExpenseReceiptObject>({
-    amounts: '',
-    description: '',
-    createdTime: '',
-  })
+  const [transactionReceipt, setTransactionReceipt] =
+    useState<TransactionReceiptObject>({
+      category: '',
+      amounts: '',
+      description: '',
+      createdTime: '',
+      account: '',
+    })
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [transactionCategories, setTransactionCategories] = useState<
+    DocumentData[]
+  >([])
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target
-    setExpenseReceipt(prev => ({ ...prev, [name]: value }))
+    setTransactionReceipt(prev => ({ ...prev, [name]: value }))
   }
 
   const addNewReceipt = async () => {
     if (
-      !expenseReceipt.amounts ||
-      !expenseReceipt.description ||
-      !expenseReceipt.createdTime
+      !transactionReceipt.category ||
+      !transactionReceipt.amounts ||
+      !transactionReceipt.description ||
+      !transactionReceipt.createdTime ||
+      !transactionReceipt.account
     )
       return
     try {
@@ -63,18 +82,23 @@ export default function NewItem() {
         )
       )
       await setDoc(receiptsRef, {
-        amounts: Number(expenseReceipt.amounts),
-        description: expenseReceipt.description,
-        createdTime: expenseReceipt.createdTime,
+        category: transactionReceipt.category,
+        amounts: Number(transactionReceipt.amounts),
+        description: transactionReceipt.description,
+        createdTime: transactionReceipt.createdTime,
+        account: transactionReceipt.account,
+        type: '移轉',
       })
       console.log('Document written with ID: ', receiptsRef)
     } catch (error) {
       console.log('Error adding document ', error)
     }
-    setExpenseReceipt({
+    setTransactionReceipt({
+      category: '',
       amounts: '',
       description: '',
       createdTime: '',
+      account: '',
     })
   }
 
@@ -91,6 +115,12 @@ export default function NewItem() {
       setAccounts(dataArray)
     }
     getAccountsDocSnap()
+  }, [])
+
+  useEffect(() => {
+    getReceiptCategoriesSnap().then(res => {
+      setTransactionCategories(res.filter(doc => doc.type === '移轉'))
+    })
   }, [])
 
   return (
@@ -113,13 +143,25 @@ export default function NewItem() {
               className='w-[45px] h-auto'
             />
           </div>
-          <div className='border-b w-full flex flex-col'>
+          <div className='border-b w-full flex flex-col gap-y-[5px]'>
             <label htmlFor='category'>類別</label>
             <select
               id='category'
               name='category'
               className='outline-0 bg-[transparent]'
-            ></select>
+              value={transactionReceipt.category}
+              onChange={handleChange}
+            >
+              {transactionCategories &&
+                transactionCategories.map(transactionCategory => (
+                  <option
+                    key={transactionCategory.name}
+                    value={transactionCategory.name}
+                  >
+                    {transactionCategory.name}
+                  </option>
+                ))}
+            </select>
           </div>
         </div>
         <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
@@ -136,7 +178,7 @@ export default function NewItem() {
               className='outline-0 bg-[transparent]'
               id='amounts'
               name='amounts'
-              value={expenseReceipt.amounts}
+              value={transactionReceipt.amounts}
               onChange={handleChange}
             />
           </div>
@@ -155,7 +197,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='description'
               name='description'
-              value={expenseReceipt.description}
+              value={transactionReceipt.description}
               onChange={handleChange}
             />
           </div>
@@ -175,7 +217,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='createdTime'
               name='createdTime'
-              value={expenseReceipt.createdTime}
+              value={transactionReceipt.createdTime}
               onChange={handleChange}
             />
           </div>
@@ -194,6 +236,8 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='account'
               name='account'
+              value={transactionReceipt.account}
+              onChange={handleChange}
             >
               <optgroup label={categories.bank}>
                 {accounts &&
@@ -220,23 +264,6 @@ export default function NewItem() {
                     ))}
               </optgroup>
             </select>
-          </div>
-        </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={accountsReceivable}
-              alt='account receivable icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='accountsReceivable'>應收帳款</label>
-            <input
-              className='border-b outline-0 bg-[transparent]'
-              id='accountsReceivable'
-              name='accountsReceivable'
-            />
           </div>
         </div>
       </div>
