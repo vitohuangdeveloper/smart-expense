@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Category from './Category'
 import categoryIcon from '/public/category-icon.png'
 import categoryAddIcon from '/public/category-add-icon.png'
-import { getReceiptCategoriesSnap } from '../../utils/getReceiptCategories'
+import { getReceiptCategoriesSnap } from '@/app/utils/getReceiptCategories'
 
 interface ExpenseCategoriesObject {
   name?: string
