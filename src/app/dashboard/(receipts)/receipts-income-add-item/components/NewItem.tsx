@@ -18,7 +18,6 @@ import dollarSign from '/public/dollar-sign.png'
 import descriptionIcon from '/public/description-icon.png'
 import calendar from '/public/calendar.png'
 import necessityIcon from '/public/necessity-icon.png'
-import accountsReceivable from 'public/accounts-receivable.png'
 
 const categories = {
   bank: '銀行',
@@ -32,7 +31,7 @@ interface MyObject {
   balance?: number
 }
 
-interface ExpenseReceiptObject {
+interface IncomeReceiptObject {
   category: string
   amounts: number | string
   description: string
@@ -42,7 +41,7 @@ interface ExpenseReceiptObject {
 
 export default function NewItem() {
   const [accounts, setAccounts] = useState<MyObject[]>([])
-  const [expenseReceipt, setExpenseReceipt] = useState<ExpenseReceiptObject>({
+  const [incomeReceipt, setIncomeReceipt] = useState<IncomeReceiptObject>({
     category: '',
     amounts: '',
     description: '',
@@ -50,22 +49,22 @@ export default function NewItem() {
     account: '',
   })
 
-  const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
+  const [incomeCategories, setIncomeCategories] = useState<DocumentData[]>([])
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target
-    setExpenseReceipt(prev => ({ ...prev, [name]: value }))
+    setIncomeReceipt(prev => ({ ...prev, [name]: value }))
   }
 
   const addNewReceipt = async () => {
     if (
-      !expenseReceipt.category ||
-      !expenseReceipt.amounts ||
-      !expenseReceipt.description ||
-      !expenseReceipt.createdTime ||
-      !expenseReceipt.account
+      !incomeReceipt.category ||
+      !incomeReceipt.amounts ||
+      !incomeReceipt.description ||
+      !incomeReceipt.createdTime ||
+      !incomeReceipt.account
     )
       return
     try {
@@ -80,23 +79,23 @@ export default function NewItem() {
         )
       )
       await setDoc(receiptsRef, {
-        category: expenseReceipt.category,
-        amounts: Number(expenseReceipt.amounts),
-        description: expenseReceipt.description,
-        createdTime: expenseReceipt.createdTime,
-        account: expenseReceipt.account,
-        type: '支出',
+        category: incomeReceipt.category,
+        amounts: Number(incomeReceipt.amounts),
+        description: incomeReceipt.description,
+        createdTime: incomeReceipt.createdTime,
+        account: incomeReceipt.account,
+        type: '收入',
       })
       console.log('Document written with ID: ', receiptsRef)
     } catch (error) {
       console.log('Error adding document ', error)
     }
-    setExpenseReceipt({
+    setIncomeReceipt({
       category: '',
       amounts: '',
       description: '',
       createdTime: '',
-      account: ',',
+      account: '',
     })
   }
 
@@ -117,20 +116,20 @@ export default function NewItem() {
 
   useEffect(() => {
     getReceiptCategoriesSnap().then(res => {
-      setExpenseCategories(res.filter(doc => doc.type === '支出'))
+      setIncomeCategories(res.filter(doc => doc.type === '收入'))
     })
   }, [])
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
       <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-        <Link href='/dashboard/receipts-expense-category'>
+        <Link href='/dashboard/receipts-income-category'>
           <Image src={cancelIcon} alt='cancel' className='object-cover' />
         </Link>
         <button onClick={addNewReceipt}>完成</button>
       </div>
       <div className='self-start pl-[80px] mb-[30px]'>
-        <h1>新增支出</h1>
+        <h1>新增收入</h1>
       </div>
       <div className='w-[500px]'>
         <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
@@ -147,16 +146,13 @@ export default function NewItem() {
               id='category'
               name='category'
               className='outline-0 bg-[transparent]'
-              value={expenseReceipt.category}
+              value={incomeReceipt.category}
               onChange={handleChange}
             >
-              {expenseCategories &&
-                expenseCategories.map(expenseCategory => (
-                  <option
-                    key={expenseCategory.name}
-                    value={expenseCategory.name}
-                  >
-                    {expenseCategory.name}
+              {incomeCategories &&
+                incomeCategories.map(incomeCategory => (
+                  <option key={incomeCategory.name} value={incomeCategory.name}>
+                    {incomeCategory.name}
                   </option>
                 ))}
             </select>
@@ -176,7 +172,7 @@ export default function NewItem() {
               className='outline-0 bg-[transparent]'
               id='amounts'
               name='amounts'
-              value={expenseReceipt.amounts}
+              value={incomeReceipt.amounts}
               onChange={handleChange}
             />
           </div>
@@ -195,7 +191,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='description'
               name='description'
-              value={expenseReceipt.description}
+              value={incomeReceipt.description}
               onChange={handleChange}
             />
           </div>
@@ -215,7 +211,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='createdTime'
               name='createdTime'
-              value={expenseReceipt.createdTime}
+              value={incomeReceipt.createdTime}
               onChange={handleChange}
             />
           </div>
@@ -234,7 +230,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='account'
               name='account'
-              value={expenseReceipt.account}
+              value={incomeReceipt.account}
               onChange={handleChange}
             >
               <optgroup label={categories.bank}>
@@ -264,23 +260,6 @@ export default function NewItem() {
             </select>
           </div>
         </div>
-        {/* <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={accountsReceivable}
-              alt='account receivable icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='accountsReceivable'>應收帳款</label>
-            <input
-              className='border-b outline-0 bg-[transparent]'
-              id='accountsReceivable'
-              name='accountsReceivable'
-            />
-          </div>
-        </div> */}
       </div>
     </div>
   )
