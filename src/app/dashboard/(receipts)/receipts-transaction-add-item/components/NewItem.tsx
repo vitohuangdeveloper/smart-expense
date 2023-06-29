@@ -96,13 +96,13 @@ export default function NewItem() {
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
       <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-        <Link href='/dashboard/receipts-expense-category'>
+        <Link href='/dashboard/receipts-income-category'>
           <Image src={cancelIcon} alt='cancel' className='object-cover' />
         </Link>
         <button onClick={addNewReceipt}>完成</button>
       </div>
       <div className='self-start pl-[80px] mb-[30px]'>
-        <h1>新增支出</h1>
+        <h1>新增移轉</h1>
       </div>
       <div className='w-[500px]'>
         <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
