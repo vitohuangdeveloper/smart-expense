@@ -14,14 +14,14 @@ export default function Buttons() {
   return (
     <div className='pl-[115px] pt-[115px] pr-[30px] mb-[50px] flex items-center'>
       <div className='flex gap-x-[25px] mr-[25px]'>
-        <Link href='/dashboard/receipts-income-details'>
+        <Link href='/dashboard/receipts-income-category'>
           <button className={buttonStyle.unclicked}>收入</button>
         </Link>
-        <Link href='/dashboard/receipts-expense-details'>
-          <button className={buttonStyle.clicked}>支出</button>
+        <Link href='/dashboard/receipts-expense-category'>
+          <button className={buttonStyle.unclicked}>支出</button>
         </Link>
         <Link href='/dashboard/receipts-transaction-category'>
-          <button className={buttonStyle.unclicked}>移轉</button>
+          <button className={buttonStyle.clicked}>移轉</button>
         </Link>
       </div>
       <div className='flex gap-x-[15px] mr-auto'>
@@ -32,7 +32,7 @@ export default function Buttons() {
         <Image src={searchIcon} alt='search' className='cursor-pointer' />
       </div>
       <div className='absolute right-[30px] bottom-[60px] w-[30px]'>
-        <Link href='/dashboard/receipts-expense-add-item'>
+        <Link href='/dashboard/receipts-transaction-add-item'>
           <Image src={addIcon} alt='add' className='cursor-pointer' />
         </Link>
       </div>

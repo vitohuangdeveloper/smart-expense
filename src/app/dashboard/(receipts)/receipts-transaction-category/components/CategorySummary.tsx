@@ -2,7 +2,7 @@ import Image from 'next/image'
 import accountIcon from '/public/account-icon.png'
 
 interface ReceiptSummaryProps {
-  category: string | undefined
+  category: string
 }
 
 export default function ReceiptSummary(props: ReceiptSummaryProps) {

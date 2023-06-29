@@ -2,7 +2,7 @@ import Image, { StaticImageData } from 'next/image'
 
 interface CategoryProps {
   src: StaticImageData
-  categoryName: string
+  categoryName: string | undefined
 }
 
 export default function Category(props: CategoryProps) {
