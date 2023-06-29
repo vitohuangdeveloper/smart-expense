@@ -2,17 +2,23 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  DocumentData,
+} from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
+import { getReceiptCategoriesSnap } from '@/app/utils/getReceiptCategories'
+import { UID } from '@/app/utils/uid'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
 import descriptionIcon from '/public/description-icon.png'
 import calendar from '/public/calendar.png'
 import necessityIcon from '/public/necessity-icon.png'
-import accountsReceivable from 'public/accounts-receivable.png'
 
-const UID = 'pUcfmReSPATGfLoDVt1xqSEVoqB2'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
@@ -25,30 +31,40 @@ interface MyObject {
   balance?: number
 }
 
-interface ExpenseReceiptObject {
+interface IncomeReceiptObject {
+  category: string
   amounts: number | string
   description: string
   createdTime: number | string
+  account: string
 }
 
 export default function NewItem() {
   const [accounts, setAccounts] = useState<MyObject[]>([])
-  const [expenseReceipt, setExpenseReceipt] = useState<ExpenseReceiptObject>({
+  const [incomeReceipt, setIncomeReceipt] = useState<IncomeReceiptObject>({
+    category: '',
     amounts: '',
     description: '',
     createdTime: '',
+    account: '',
   })
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [incomeCategories, setIncomeCategories] = useState<DocumentData[]>([])
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target
-    setExpenseReceipt(prev => ({ ...prev, [name]: value }))
+    setIncomeReceipt(prev => ({ ...prev, [name]: value }))
   }
 
   const addNewReceipt = async () => {
     if (
-      !expenseReceipt.amounts ||
-      !expenseReceipt.description ||
-      !expenseReceipt.createdTime
+      !incomeReceipt.category ||
+      !incomeReceipt.amounts ||
+      !incomeReceipt.description ||
+      !incomeReceipt.createdTime ||
+      !incomeReceipt.account
     )
       return
     try {
@@ -63,18 +79,22 @@ export default function NewItem() {
         )
       )
       await setDoc(receiptsRef, {
-        amounts: Number(expenseReceipt.amounts),
-        description: expenseReceipt.description,
-        createdTime: expenseReceipt.createdTime,
+        category: incomeReceipt.category ?? incomeCategories[0]?.name,
+        amounts: Number(incomeReceipt.amounts),
+        description: incomeReceipt.description,
+        createdTime: incomeReceipt.createdTime,
+        account: incomeReceipt.account ?? accounts[0]?.name,
       })
       console.log('Document written with ID: ', receiptsRef)
     } catch (error) {
       console.log('Error adding document ', error)
     }
-    setExpenseReceipt({
+    setIncomeReceipt({
+      category: '',
       amounts: '',
       description: '',
       createdTime: '',
+      account: '',
     })
   }
 
@@ -91,6 +111,12 @@ export default function NewItem() {
       setAccounts(dataArray)
     }
     getAccountsDocSnap()
+  }, [])
+
+  useEffect(() => {
+    getReceiptCategoriesSnap().then(res => {
+      setIncomeCategories(res.filter(doc => doc.type === '收入'))
+    })
   }, [])
 
   return (
@@ -113,13 +139,22 @@ export default function NewItem() {
               className='w-[45px] h-auto'
             />
           </div>
-          <div className='border-b w-full flex flex-col'>
+          <div className='border-b w-full flex flex-col gap-y-[5px]'>
             <label htmlFor='category'>類別</label>
             <select
               id='category'
               name='category'
               className='outline-0 bg-[transparent]'
-            ></select>
+              value={incomeReceipt.category}
+              onChange={handleChange}
+            >
+              {incomeCategories &&
+                incomeCategories.map(incomeCategory => (
+                  <option key={incomeCategory.name} value={incomeCategory.name}>
+                    {incomeCategory.name}
+                  </option>
+                ))}
+            </select>
           </div>
         </div>
         <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
@@ -136,7 +171,7 @@ export default function NewItem() {
               className='outline-0 bg-[transparent]'
               id='amounts'
               name='amounts'
-              value={expenseReceipt.amounts}
+              value={incomeReceipt.amounts}
               onChange={handleChange}
             />
           </div>
@@ -155,7 +190,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='description'
               name='description'
-              value={expenseReceipt.description}
+              value={incomeReceipt.description}
               onChange={handleChange}
             />
           </div>
@@ -175,7 +210,7 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='createdTime'
               name='createdTime'
-              value={expenseReceipt.createdTime}
+              value={incomeReceipt.createdTime}
               onChange={handleChange}
             />
           </div>
@@ -194,6 +229,8 @@ export default function NewItem() {
               className='border-b outline-0 bg-[transparent]'
               id='account'
               name='account'
+              value={incomeReceipt.account}
+              onChange={handleChange}
             >
               <optgroup label={categories.bank}>
                 {accounts &&
@@ -220,23 +257,6 @@ export default function NewItem() {
                     ))}
               </optgroup>
             </select>
-          </div>
-        </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={accountsReceivable}
-              alt='account receivable icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='accountsReceivable'>應收帳款</label>
-            <input
-              className='border-b outline-0 bg-[transparent]'
-              id='accountsReceivable'
-              name='accountsReceivable'
-            />
           </div>
         </div>
       </div>
