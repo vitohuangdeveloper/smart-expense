@@ -141,7 +141,7 @@ export default function NewItem() {
               className='w-[45px] h-auto'
             />
           </div>
-          <div className='border-b w-full flex flex-col'>
+          <div className='border-b w-full flex flex-col gap-y-[5px]'>
             <label htmlFor='category'>類別</label>
             <select
               id='category'
