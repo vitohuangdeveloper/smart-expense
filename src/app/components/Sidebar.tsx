@@ -9,7 +9,7 @@ export default function Sidebar() {
         <Image src={menu} alt='menu' className='cursor-pointer' />
       </div>
       <div className='flex flex-col gap-y-[35px] items-center'>
-        <Link href='#'>資產</Link>
+        <Link href='/dashboard/property'>資產</Link>
         <Link href='/dashboard/account'>帳戶</Link>
         <Link href='/dashboard/receipts-income-category'>明細</Link>
         <Link href='/dashboard/category-expense'>分類</Link>
