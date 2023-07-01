@@ -81,7 +81,7 @@ export default function NewItem() {
       )
       await setDoc(receiptsRef, {
         category: expenseReceipt.category,
-        amounts: Number(expenseReceipt.amounts),
+        amounts: Number(-expenseReceipt.amounts),
         description: expenseReceipt.description,
         createdTime: expenseReceipt.createdTime,
         account: expenseReceipt.account,
