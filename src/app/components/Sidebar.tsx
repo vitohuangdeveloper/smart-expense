@@ -13,8 +13,8 @@ export default function Sidebar() {
         <Link href='/dashboard/account'>帳戶</Link>
         <Link href='/dashboard/receipts-income-category'>明細</Link>
         <Link href='/dashboard/category-expense'>分類</Link>
+        <Link href='/dashboard/analysis'>分析</Link>
         <Link href='#'>預算</Link>
-        <Link href='#'>分析</Link>
       </div>
     </div>
   )
