@@ -53,7 +53,6 @@ export default function Page() {
       },
       []
     )
-
     const sortedCreatedTimeArray = dedupedCreatedTimeArray.sort(
       (a: string, b: string) => (a > b ? 1 : -1)
     )
