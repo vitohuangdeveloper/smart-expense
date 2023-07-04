@@ -82,7 +82,8 @@ const getIncomeReceipts = (allReceipts: DocumentData[]) => {
 
 const refineAllReceipts = (allReceipts: DocumentData[]) => {
   if (!allReceipts.length) return
-  const sumsByTime = allReceipts.reduce((acc, item) => {
+  const newAllReceipts = allReceipts.filter(item => item.type !== '移轉')
+  const sumsByTime = newAllReceipts.reduce((acc, item) => {
     const { createdTime, amounts } = item
     const newCreatedTime = createdTime.substring(0, 7)
 

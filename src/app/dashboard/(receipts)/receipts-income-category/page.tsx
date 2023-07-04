@@ -1,4 +1,5 @@
 'use client'
+
 import Sidebar from '@/app/components/Sidebar'
 import Header from '@/app/components/Header'
 import Buttons from './components/Buttons'
