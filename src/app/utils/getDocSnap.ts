@@ -7,8 +7,13 @@ export const getReceiptCategoriesSnap = async () => {
     collection(db, 'users', UID, 'receiptCategories')
   )
   const dataArray: DocumentData[] = []
-  querySnapshot.forEach(doc => {
-    dataArray.push(doc.data())
-  })
+  querySnapshot.forEach(doc => dataArray.push(doc.data()))
+  return dataArray
+}
+
+export const getAccountsSnap = async () => {
+  const querySnapshot = await getDocs(collection(db, 'users', UID, 'accounts'))
+  const dataArray: DocumentData[] = []
+  querySnapshot.forEach(doc => dataArray.push(doc.data()))
   return dataArray
 }

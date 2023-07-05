@@ -10,7 +10,7 @@ import {
   DocumentData,
 } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import { getReceiptCategoriesSnap } from '@/app/utils/getReceiptCategories'
+import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
