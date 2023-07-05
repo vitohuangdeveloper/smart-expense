@@ -39,3 +39,6 @@ next-env.d.ts
 *.http
 =======
 >>>>>>> d9331f2 (Revert "style: adjust the modal vertically")
+
+# http
+*.http
