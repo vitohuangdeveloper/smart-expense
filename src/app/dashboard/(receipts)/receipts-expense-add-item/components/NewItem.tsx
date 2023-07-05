@@ -10,7 +10,10 @@ import {
   DocumentData,
 } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
+import {
+  getReceiptCategoriesSnap,
+  getBudgetsSnap,
+} from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
@@ -51,6 +54,7 @@ export default function NewItem() {
   })
 
   const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
+  const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -100,6 +104,18 @@ export default function NewItem() {
     })
   }
 
+  const popUpNotification = () => {
+    if (
+      expenseReceipt.account === budgetDetails[0].account &&
+      expenseReceipt.category === budgetDetails[0].expenseCategory &&
+      expenseReceipt.createdTime > budgetDetails[0].startTime &&
+      expenseReceipt.createdTime < budgetDetails[0].endTime &&
+      Number(expenseReceipt.amounts) / 2 < budgetDetails[0].amounts
+    ) {
+      alert('該筆支出已超過預算的一半')
+    }
+  }
+
   useEffect(() => {
     const getAccountsDocSnap = async () => {
       const querySnapshot = await getDocs(
@@ -121,13 +137,26 @@ export default function NewItem() {
     })
   }, [])
 
+  useEffect(() => {
+    getBudgetsSnap().then(res => setBudgetDetails(res))
+  }, [])
+
+  console.log(budgetDetails)
+
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
       <div className='px-[20px] flex justify-between w-full mb-[30px]'>
         <Link href='/dashboard/receipts-expense-category'>
           <Image src={cancelIcon} alt='cancel' className='object-cover' />
         </Link>
-        <button onClick={addNewReceipt}>完成</button>
+        <button
+          onClick={() => {
+            addNewReceipt()
+            popUpNotification()
+          }}
+        >
+          完成
+        </button>
       </div>
       <div className='self-start pl-[80px] mb-[30px]'>
         <h1>新增支出</h1>
