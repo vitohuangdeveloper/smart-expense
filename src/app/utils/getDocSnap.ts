@@ -17,3 +17,10 @@ export const getAccountsSnap = async () => {
   querySnapshot.forEach(doc => dataArray.push(doc.data()))
   return dataArray
 }
+
+export const getBudgetsSnap = async () => {
+  const querySnapshot = await getDocs(collection(db, 'users', UID, 'budgets'))
+  const dataArray: DocumentData[] = []
+  querySnapshot.forEach(doc => dataArray.push(doc.data()))
+  return dataArray
+}
