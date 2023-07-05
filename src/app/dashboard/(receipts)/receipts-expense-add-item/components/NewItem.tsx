@@ -112,7 +112,7 @@ export default function NewItem() {
       expenseReceipt.createdTime < budgetDetails[0].endTime &&
       Number(expenseReceipt.amounts) / 2 < budgetDetails[0].amounts
     ) {
-      alert('您已超出預算')
+      alert('該筆支出已超過預算的一半')
     }
   }
 
