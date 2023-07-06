@@ -15,6 +15,7 @@ import {
   getBudgetsSnap,
 } from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
+import { useGlobalContext } from '../../context/store'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
@@ -28,12 +29,6 @@ const categories = {
   manual: '手動新增',
 }
 
-interface MyObject {
-  name?: string
-  category?: string
-  balance?: number
-}
-
 interface ExpenseReceiptObject {
   category: string
   amounts: number | string
@@ -43,7 +38,6 @@ interface ExpenseReceiptObject {
 }
 
 export default function NewItem() {
-  const [accounts, setAccounts] = useState<MyObject[]>([])
   const [expenseReceipt, setExpenseReceipt] = useState<ExpenseReceiptObject>({
     category: '',
     amounts: '',
@@ -55,6 +49,18 @@ export default function NewItem() {
   const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
   const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
 
+  const allAccounts: DocumentData[] = useGlobalContext().allAccounts
+
+  const selectedAccount = getAccountData()
+  const accountID = getAccountData()?.id
+
+  function getAccountData() {
+    const selectedAccount = allAccounts.filter(
+      item => item.name === expenseReceipt.account
+    )
+    return selectedAccount[0]
+  }
+
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -62,7 +68,7 @@ export default function NewItem() {
     setExpenseReceipt(prev => ({ ...prev, [name]: value }))
   }
 
-  const addNewReceipt = async () => {
+  const addNewReceipt = async (accountID: string) => {
     if (
       !expenseReceipt.category ||
       !expenseReceipt.amounts ||
@@ -73,21 +79,13 @@ export default function NewItem() {
       return
     try {
       const receiptsRef = doc(
-        collection(
-          db,
-          'users',
-          UID,
-          'accounts',
-          '1PGHC5Omw07rIS5qusUe',
-          'receipts'
-        )
+        collection(db, 'users', UID, 'accounts', accountID, 'receipts')
       )
       await setDoc(receiptsRef, {
         category: expenseReceipt.category,
         amounts: Number(-expenseReceipt.amounts),
         description: expenseReceipt.description,
         createdTime: expenseReceipt.createdTime,
-        account: expenseReceipt.account,
         type: '支出',
       })
       console.log('Document written with ID: ', receiptsRef)
@@ -110,7 +108,8 @@ export default function NewItem() {
         expenseReceipt.category === budgetDetail.expenseCategory &&
         expenseReceipt.createdTime > budgetDetail.startTime &&
         expenseReceipt.createdTime < budgetDetail.endTime &&
-        Number(expenseReceipt.amounts) > budgetDetail.amounts / 2
+        Number(expenseReceipt.amounts) > budgetDetail.amounts / 2 &&
+        Number(expenseReceipt.amounts) < budgetDetail.amounts
       ) {
         alert('該筆支出已超過預算的一半')
       } else if (
@@ -125,20 +124,29 @@ export default function NewItem() {
     })
   }
 
-  useEffect(() => {
-    const getAccountsDocSnap = async () => {
-      const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts')
-      )
+  const updateAccountBalance = async (accountID: string) => {
+    if (
+      !expenseReceipt.category ||
+      !expenseReceipt.amounts ||
+      !expenseReceipt.description ||
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
+    )
+      return
+    try {
+      const accountRef = doc(db, 'users', UID, 'accounts', accountID)
 
-      const dataArray: MyObject[] = []
-      querySnapshot.forEach(doc => {
-        dataArray.push(doc.data())
+      await setDoc(accountRef, {
+        balance: selectedAccount.balance - Number(expenseReceipt.amounts),
+        category: selectedAccount.category,
+        name: selectedAccount.name,
       })
-      setAccounts(dataArray)
+    } catch (error) {
+      console.log('Error setting a document', error)
     }
-    getAccountsDocSnap()
-  }, [])
+  }
+
+  console.log(selectedAccount?.balance, Number(expenseReceipt.amounts))
 
   useEffect(() => {
     getReceiptCategoriesSnap().then(res => {
@@ -160,7 +168,8 @@ export default function NewItem() {
         </Link>
         <button
           onClick={() => {
-            addNewReceipt()
+            addNewReceipt(accountID)
+            updateAccountBalance(accountID)
             popUpNotification()
           }}
         >
@@ -182,12 +191,16 @@ export default function NewItem() {
           <div className='border-b w-full flex flex-col gap-y-[5px]'>
             <label htmlFor='category'>類別</label>
             <select
+              required
               id='category'
               name='category'
-              className='outline-0 bg-[transparent]'
+              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
               value={expenseReceipt.category}
               onChange={handleChange}
             >
+              <option disabled value=''>
+                選擇類別
+              </option>
               {expenseCategories &&
                 expenseCategories.map(expenseCategory => (
                   <option
@@ -266,34 +279,38 @@ export default function NewItem() {
               className='w-[45px] h-auto'
             />
           </div>
-          <div className='flex flex-col w-full gap-y-[5px]'>
+          <div className='flex flex-col w-full gap-y-[5px] border-b '>
             <label htmlFor='account'>帳戶</label>
             <select
-              className='border-b outline-0 bg-[transparent]'
+              required
+              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
               id='account'
               name='account'
               value={expenseReceipt.account}
               onChange={handleChange}
             >
+              <option disabled value=''>
+                選擇帳戶
+              </option>
               <optgroup label={categories.bank}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.bank)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.eTicket}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.eTicket)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.manual}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.manual)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
@@ -302,23 +319,6 @@ export default function NewItem() {
             </select>
           </div>
         </div>
-        {/* <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={accountsReceivable}
-              alt='account receivable icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='accountsReceivable'>應收帳款</label>
-            <input
-              className='border-b outline-0 bg-[transparent]'
-              id='accountsReceivable'
-              name='accountsReceivable'
-            />
-          </div>
-        </div> */}
       </div>
     </div>
   )

@@ -43,7 +43,6 @@ export default function NewItem() {
     account: '',
   })
 
-  console.log(incomeReceipt)
   const [incomeCategories, setIncomeCategories] = useState<DocumentData[]>([])
 
   const allAccounts: DocumentData[] = useGlobalContext().allAccounts
@@ -164,7 +163,7 @@ export default function NewItem() {
               onChange={handleChange}
             >
               <option disabled value=''>
-                選擇分類
+                選擇類別
               </option>
               {incomeCategories &&
                 incomeCategories.map(incomeCategory => (
