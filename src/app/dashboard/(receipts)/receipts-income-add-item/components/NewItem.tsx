@@ -4,14 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   collection,
-  getDocs,
   setDoc,
   doc,
+  getDoc,
   DocumentData,
 } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
+import { useGlobalContext } from '../../context/store'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
@@ -25,12 +26,6 @@ const categories = {
   manual: '手動新增',
 }
 
-interface MyObject {
-  name?: string
-  category?: string
-  balance?: number
-}
-
 interface IncomeReceiptObject {
   category: string
   amounts: number | string
@@ -40,7 +35,6 @@ interface IncomeReceiptObject {
 }
 
 export default function NewItem() {
-  const [accounts, setAccounts] = useState<MyObject[]>([])
   const [incomeReceipt, setIncomeReceipt] = useState<IncomeReceiptObject>({
     category: '',
     amounts: '',
@@ -49,7 +43,20 @@ export default function NewItem() {
     account: '',
   })
 
+  console.log(incomeReceipt)
   const [incomeCategories, setIncomeCategories] = useState<DocumentData[]>([])
+
+  const allAccounts: DocumentData[] = useGlobalContext().allAccounts
+
+  const selectedAccount = getAccountData()
+  const accountID = getAccountData()?.id
+
+  function getAccountData() {
+    const selectedAccount = allAccounts.filter(
+      item => item.name === incomeReceipt.account
+    )
+    return selectedAccount[0]
+  }
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -58,7 +65,7 @@ export default function NewItem() {
     setIncomeReceipt(prev => ({ ...prev, [name]: value }))
   }
 
-  const addNewReceipt = async () => {
+  const addNewReceipt = async (accountID: string) => {
     if (
       !incomeReceipt.category ||
       !incomeReceipt.amounts ||
@@ -69,21 +76,13 @@ export default function NewItem() {
       return
     try {
       const receiptsRef = doc(
-        collection(
-          db,
-          'users',
-          UID,
-          'accounts',
-          '1PGHC5Omw07rIS5qusUe',
-          'receipts'
-        )
+        collection(db, 'users', UID, 'accounts', accountID, 'receipts')
       )
       await setDoc(receiptsRef, {
         category: incomeReceipt.category,
         amounts: Number(incomeReceipt.amounts),
         description: incomeReceipt.description,
         createdTime: incomeReceipt.createdTime,
-        account: incomeReceipt.account,
         type: '收入',
       })
       console.log('Document written with ID: ', receiptsRef)
@@ -99,20 +98,27 @@ export default function NewItem() {
     })
   }
 
-  useEffect(() => {
-    const getAccountsDocSnap = async () => {
-      const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts')
-      )
+  const updateAccountBalance = async (accountID: string) => {
+    if (
+      !incomeReceipt.category ||
+      !incomeReceipt.amounts ||
+      !incomeReceipt.description ||
+      !incomeReceipt.createdTime ||
+      !incomeReceipt.account
+    )
+      return
+    try {
+      const accountRef = doc(db, 'users', UID, 'accounts', accountID)
 
-      const dataArray: MyObject[] = []
-      querySnapshot.forEach(doc => {
-        dataArray.push(doc.data())
+      await setDoc(accountRef, {
+        balance: selectedAccount.balance + Number(incomeReceipt.amounts),
+        category: selectedAccount.category,
+        name: selectedAccount.name,
       })
-      setAccounts(dataArray)
+    } catch (error) {
+      console.log('Error setting a document', error)
     }
-    getAccountsDocSnap()
-  }, [])
+  }
 
   useEffect(() => {
     getReceiptCategoriesSnap().then(res => {
@@ -126,7 +132,14 @@ export default function NewItem() {
         <Link href='/dashboard/receipts-income-category'>
           <Image src={cancelIcon} alt='cancel' className='object-cover' />
         </Link>
-        <button onClick={addNewReceipt}>完成</button>
+        <button
+          onClick={() => {
+            addNewReceipt(accountID)
+            updateAccountBalance(accountID)
+          }}
+        >
+          完成
+        </button>
       </div>
       <div className='self-start pl-[80px] mb-[30px]'>
         <h1>新增收入</h1>
@@ -143,12 +156,16 @@ export default function NewItem() {
           <div className='border-b w-full flex flex-col gap-y-[5px]'>
             <label htmlFor='category'>類別</label>
             <select
+              required
               id='category'
               name='category'
-              className='outline-0 bg-[transparent]'
+              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
               value={incomeReceipt.category}
               onChange={handleChange}
             >
+              <option disabled value=''>
+                選擇分類
+              </option>
               {incomeCategories &&
                 incomeCategories.map(incomeCategory => (
                   <option key={incomeCategory.name} value={incomeCategory.name}>
@@ -224,34 +241,38 @@ export default function NewItem() {
               className='w-[45px] h-auto'
             />
           </div>
-          <div className='flex flex-col w-full gap-y-[5px]'>
+          <div className='flex flex-col w-full gap-y-[5px] border-b'>
             <label htmlFor='account'>帳戶</label>
             <select
-              className='border-b outline-0 bg-[transparent]'
+              required
+              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
               id='account'
               name='account'
               value={incomeReceipt.account}
               onChange={handleChange}
             >
+              <option disabled value=''>
+                選擇帳戶
+              </option>
               <optgroup label={categories.bank}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.bank)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.eTicket}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.eTicket)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.manual}>
-                {accounts &&
-                  accounts
+                {allAccounts &&
+                  allAccounts
                     .filter(account => account.category === categories.manual)
                     .map(account => (
                       <option key={account.name}>{account.name}</option>
