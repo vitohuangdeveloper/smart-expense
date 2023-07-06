@@ -66,7 +66,11 @@ export default function Modal(props: ModalProps) {
   }
 
   return (
+<<<<<<< HEAD
     <form className='absolute top-[calc(50%_+_80px)] left-[calc(50%_+_90px)] translate-x-[-50%] translate-y-[-50%]'>
+=======
+    <form className='absolute top-[calc(50%_-_80px)] left-[calc(50%_+_90px)] translate-x-[-50%] translate-y-[-50%] '>
+>>>>>>> d9331f2 (Revert "style: adjust the modal vertically")
       <div className='border-2 border-gray rounded-[20px] px-[40px] py-[80px] w-[500px] mb-[35px]'>
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
           <label htmlFor='accountName'>帳戶名稱</label>
