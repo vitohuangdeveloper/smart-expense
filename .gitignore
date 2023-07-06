@@ -33,6 +33,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+<<<<<<< HEAD
 
 # rest client
 *.http
+=======
+>>>>>>> d9331f2 (Revert "style: adjust the modal vertically")
