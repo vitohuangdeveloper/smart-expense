@@ -21,7 +21,6 @@ import dollarSign from '/public/dollar-sign.png'
 import descriptionIcon from '/public/description-icon.png'
 import calendar from '/public/calendar.png'
 import necessityIcon from '/public/necessity-icon.png'
-import accountsReceivable from 'public/accounts-receivable.png'
 
 const categories = {
   bank: '銀行',
@@ -105,15 +104,25 @@ export default function NewItem() {
   }
 
   const popUpNotification = () => {
-    if (
-      expenseReceipt.account === budgetDetails[0].account &&
-      expenseReceipt.category === budgetDetails[0].expenseCategory &&
-      expenseReceipt.createdTime > budgetDetails[0].startTime &&
-      expenseReceipt.createdTime < budgetDetails[0].endTime &&
-      Number(expenseReceipt.amounts) / 2 < budgetDetails[0].amounts
-    ) {
-      alert('該筆支出已超過預算的一半')
-    }
+    budgetDetails.forEach(budgetDetail => {
+      if (
+        expenseReceipt.account === budgetDetail.account &&
+        expenseReceipt.category === budgetDetail.expenseCategory &&
+        expenseReceipt.createdTime > budgetDetail.startTime &&
+        expenseReceipt.createdTime < budgetDetail.endTime &&
+        Number(expenseReceipt.amounts) > budgetDetail.amounts / 2
+      ) {
+        alert('該筆支出已超過預算的一半')
+      } else if (
+        expenseReceipt.account === budgetDetail.account &&
+        expenseReceipt.category === budgetDetail.expenseCategory &&
+        expenseReceipt.createdTime > budgetDetail.startTime &&
+        expenseReceipt.createdTime < budgetDetail.endTime &&
+        Number(expenseReceipt.amounts) > budgetDetail.amounts
+      ) {
+        alert('該筆支出已超過預算')
+      }
+    })
   }
 
   useEffect(() => {
