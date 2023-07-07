@@ -82,6 +82,7 @@ export default function NewItem() {
         amounts: Number(incomeReceipt.amounts),
         description: incomeReceipt.description,
         createdTime: incomeReceipt.createdTime,
+        account: incomeReceipt.account,
         type: '收入',
       })
       console.log('Document written with ID: ', receiptsRef)
