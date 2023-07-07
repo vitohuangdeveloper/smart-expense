@@ -12,6 +12,9 @@ const GlobalContext = createContext<DocumentData>([])
 export const GlobalContextProvider = ({ children }: DocumentData) => {
   const [allReceipts, setAllReceipts] = useState<DocumentData[]>([])
   const [allAccounts, setAllAccounts] = useState<DocumentData[]>([])
+  const [allAccountsReceipts, setAllAccountsReceipts] = useState<
+    DocumentData[][]
+  >([])
 
   useEffect(() => {
     const getAllReceipts = async () => {
@@ -57,8 +60,52 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     getAllAccounts()
   }, [])
 
+  useEffect(() => {
+    const getAllAccountsReceipts = async () => {
+      const accountsQuerySnapshot = await getDocs(
+        collection(db, 'users', UID, 'accounts')
+      )
+      const accountsArray: DocumentData[] = []
+      const accountsIDArray: string[] = []
+
+      accountsQuerySnapshot.forEach(doc => {
+        accountsArray.push(doc.data())
+        accountsIDArray.push(doc.id)
+      })
+
+      const newAccountsArray = accountsArray.map((item, index) => {
+        const newItem = { ...item }
+        newItem.id = accountsIDArray[index]
+        return newItem
+      })
+
+      const getReceipts = async (accountID: string) => {
+        const receiptsQuerySnapshot = await getDocs(
+          collection(db, 'users', UID, 'accounts', accountID, 'receipts')
+        )
+        const receiptsArray: DocumentData[] = []
+        receiptsQuerySnapshot.forEach(doc => receiptsArray.push(doc.data()))
+        return receiptsArray
+      }
+
+      let allAccountsReceipts = []
+      for (let i = 0; i < newAccountsArray.length; i++) {
+        const receiptsArrayPromise = getReceipts(newAccountsArray[i].id)
+        let receiptsArray: DocumentData[] = []
+        const response = await receiptsArrayPromise
+        receiptsArray.push(response)
+        allAccountsReceipts.push(receiptsArray)
+      }
+
+      setAllAccountsReceipts(allAccountsReceipts)
+    }
+    getAllAccountsReceipts()
+  }, [])
+
   return (
-    <GlobalContext.Provider value={{ allReceipts, allAccounts }}>
+    <GlobalContext.Provider
+      value={{ allReceipts, allAccounts, allAccountsReceipts }}
+    >
       {children}
     </GlobalContext.Provider>
   )
