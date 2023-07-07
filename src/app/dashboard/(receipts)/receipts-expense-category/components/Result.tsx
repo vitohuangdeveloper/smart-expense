@@ -54,8 +54,9 @@ const getResults = (
 }
 
 export default function Result() {
-  const { allReceipts } = useGlobalContext()
-  const expenseReceipts = getExpenseReceipts(allReceipts)
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
+  const expenseReceipts = getExpenseReceipts(flattenedAllAccountsReceipts)
   const [categoryTotals, categoryCounts] =
     getTotalAmountsForEachCategory(expenseReceipts)
   const results = getResults(categoryTotals, categoryCounts)
