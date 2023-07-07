@@ -10,33 +10,10 @@ import { createContext, useContext, useState } from 'react'
 const GlobalContext = createContext<DocumentData>([])
 
 export const GlobalContextProvider = ({ children }: DocumentData) => {
-  const [allReceipts, setAllReceipts] = useState<DocumentData[]>([])
   const [allAccounts, setAllAccounts] = useState<DocumentData[]>([])
   const [allAccountsReceipts, setAllAccountsReceipts] = useState<
     DocumentData[][]
   >([])
-
-  useEffect(() => {
-    const getAllReceipts = async () => {
-      const querySnapshot = await getDocs(
-        collection(
-          db,
-          'users',
-          UID,
-          'accounts',
-          '1PGHC5Omw07rIS5qusUe',
-          'receipts'
-        )
-      )
-      const receiptsArray: DocumentData[] = []
-
-      querySnapshot.forEach(doc => {
-        receiptsArray.push(doc.data())
-      })
-      setAllReceipts(receiptsArray)
-    }
-    getAllReceipts()
-  }, [])
 
   useEffect(() => {
     const getAllAccounts = async () => {
@@ -103,9 +80,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   }, [])
 
   return (
-    <GlobalContext.Provider
-      value={{ allReceipts, allAccounts, allAccountsReceipts }}
-    >
+    <GlobalContext.Provider value={{ allAccounts, allAccountsReceipts }}>
       {children}
     </GlobalContext.Provider>
   )
