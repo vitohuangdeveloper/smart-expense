@@ -20,8 +20,8 @@ export default function Buttons() {
         <Link href='/dashboard/receipts-expense-category'>
           <button className={buttonStyle.unclicked}>支出</button>
         </Link>
-        <Link href='/dashboard/receipts-transaction-category'>
-          <button className={buttonStyle.unclicked}>移轉</button>
+        <Link href='/dashboard/receipts-transfer-category'>
+          <button className={buttonStyle.unclicked}>轉帳</button>
         </Link>
       </div>
       <div className='flex gap-x-[15px] mr-auto'>

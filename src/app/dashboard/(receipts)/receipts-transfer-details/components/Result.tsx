@@ -17,28 +17,31 @@ const sortTransactionReceipts = (allReceipts: DocumentData[]) => {
 }
 
 export default function Result() {
-  const { allReceipts } = useGlobalContext()
-  const transactionReceipts = getTransactionReceipts(allReceipts)
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
+  const transactionReceipts = getTransactionReceipts(
+    flattenedAllAccountsReceipts
+  )
   const sortedTransactionReceipts = sortTransactionReceipts(transactionReceipts)
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px]'>
       <div className='flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]'>
         <Link
-          href='/dashboard/receipts-transaction-category'
+          href='/dashboard/receipts-transfer-category'
           className='w-full bg-[#F4F4F4] rounded-tl-[20px] py-[5px] text-center'
         >
           <button>分類</button>
         </Link>
         <Link
-          href='/dashboard/receipts-transaction-details'
+          href='/dashboard/receipts-transfer-details'
           className='w-full bg-[#A8A8A8] rounded-l-[20px] rounded-tr-[20px] py-[5px] text-center'
         >
           <button>明細</button>
         </Link>
       </div>
       <div className='self-start pl-[20px] mb-[20px]'>
-        <h2>移轉明細</h2>
+        <h2>轉帳明細</h2>
       </div>
       <div className='w-full max-h-[500px] overflow-auto pb-[30px]'>
         {sortedTransactionReceipts.length &&

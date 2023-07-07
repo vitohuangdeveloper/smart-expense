@@ -20,8 +20,8 @@ export default function Buttons() {
         <Link href='/dashboard/receipts-expense-category'>
           <button className={buttonStyle.unclicked}>支出</button>
         </Link>
-        <Link href='/dashboard/receipts-transaction-category'>
-          <button className={buttonStyle.clicked}>移轉</button>
+        <Link href='/dashboard/receipts-transfer-category'>
+          <button className={buttonStyle.clicked}>轉帳</button>
         </Link>
       </div>
       <div className='flex gap-x-[15px] mr-auto'>
@@ -32,7 +32,7 @@ export default function Buttons() {
         <Image src={searchIcon} alt='search' className='cursor-pointer' />
       </div>
       <div className='absolute right-[30px] bottom-[60px] w-[30px]'>
-        <Link href='/dashboard/receipts-transaction-add-item'>
+        <Link href='/dashboard/receipts-transfer-add-item'>
           <Image src={addIcon} alt='add' className='cursor-pointer' />
         </Link>
       </div>
