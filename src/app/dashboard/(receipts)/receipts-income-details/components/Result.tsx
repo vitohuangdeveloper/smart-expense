@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
 import DetailSummary from './DetailSummary'
-import { useGlobalContext } from '../../context/store'
+import { useGlobalContext } from '@/app/context/store'
 
 const getIncomeReceipts = (allReceipts: DocumentData[]) => {
   const incomeReceipts = allReceipts.filter(item => item.type === '收入')
