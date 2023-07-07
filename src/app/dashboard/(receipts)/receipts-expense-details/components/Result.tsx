@@ -17,8 +17,9 @@ const sortExpenseReceipts = (allReceipts: DocumentData[]) => {
 }
 
 export default function Result() {
-  const { allReceipts } = useGlobalContext()
-  const expenseReceipts = getExpenseReceipts(allReceipts)
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
+  const expenseReceipts = getExpenseReceipts(flattenedAllAccountsReceipts)
   const sortedExpenseReceipts = sortExpenseReceipts(expenseReceipts)
 
   return (
