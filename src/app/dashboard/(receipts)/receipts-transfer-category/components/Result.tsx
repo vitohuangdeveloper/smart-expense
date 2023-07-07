@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
 import CategorySummary from './CategorySummary'
-import { useGlobalContext } from '../../context/store'
+import { useGlobalContext } from '@/app/context/store'
 
 type NumberObject = {
   [key: string]: number
