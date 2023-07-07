@@ -86,6 +86,7 @@ export default function NewItem() {
         amounts: Number(-expenseReceipt.amounts),
         description: expenseReceipt.description,
         createdTime: expenseReceipt.createdTime,
+        account: expenseReceipt.account,
         type: '支出',
       })
       console.log('Document written with ID: ', receiptsRef)
@@ -146,8 +147,6 @@ export default function NewItem() {
     }
   }
 
-  console.log(selectedAccount?.balance, Number(expenseReceipt.amounts))
-
   useEffect(() => {
     getReceiptCategoriesSnap().then(res => {
       setExpenseCategories(res.filter(doc => doc.type === '支出'))
@@ -157,8 +156,6 @@ export default function NewItem() {
   useEffect(() => {
     getBudgetsSnap().then(res => setBudgetDetails(res))
   }, [])
-
-  console.log(budgetDetails)
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>

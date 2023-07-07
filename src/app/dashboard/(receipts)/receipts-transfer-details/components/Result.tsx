@@ -4,7 +4,7 @@ import DetailSummary from './DetailSummary'
 import { useGlobalContext } from '../../context/store'
 
 const getTransactionReceipts = (allReceipts: DocumentData[]) => {
-  const transactionReceipts = allReceipts.filter(item => item.type === '移轉')
+  const transactionReceipts = allReceipts.filter(item => item.type === '轉帳')
   return transactionReceipts
 }
 
