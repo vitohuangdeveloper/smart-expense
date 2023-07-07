@@ -15,7 +15,7 @@ import {
   getBudgetsSnap,
 } from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
-import { useGlobalContext } from '../../context/store'
+import { useGlobalContext } from '@/app/context/store'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
 import dollarSign from '/public/dollar-sign.png'
