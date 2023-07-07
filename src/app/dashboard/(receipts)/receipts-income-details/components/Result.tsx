@@ -17,25 +17,11 @@ const sortIncomeReceipts = (allReceipts: DocumentData[]) => {
 }
 
 export default function Result() {
-  const { allReceipts } = useGlobalContext()
-  const incomeReceipts = getIncomeReceipts(allReceipts)
-  const sortedIncomeReceipts = sortIncomeReceipts(incomeReceipts)
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedArray = allAccountsReceipts.flat(2)
 
-  const buttonStyle = {
-    categoryButtonClicked: {
-      buttonContainer: 'flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]',
-      categoryButton:
-        'w-full bg-[#A8A8A8] rounded-tl-[20px] rounded-r-[20px] py-[5px]',
-      detailButton: 'w-full bg-[#F4F4F4] rounded-tr-[20px] py-[5px]',
-    },
-    detailButtonClicked: {
-      buttonContainer: 'flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]',
-      categoryButton:
-        'w-full bg-[#F4F4F4] rounded-tl-[20px] py-[5px] text-center',
-      detailButton:
-        'w-full bg-[#A8A8A8] rounded-l-[20px] rounded-tr-[20px] py-[5px] text-center',
-    },
-  }
+  const incomeReceipts = getIncomeReceipts(flattenedArray)
+  const sortedIncomeReceipts = sortIncomeReceipts(incomeReceipts)
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] '>
