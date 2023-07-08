@@ -1,15 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { collection, getDocs, DocumentData } from 'firebase/firestore'
-import { db } from '@/app/lib/firebase'
-import { UID } from '@/app/utils/uid'
+import { useState } from 'react'
+import { DocumentData } from 'firebase/firestore'
+import { useGlobalContext } from '@/app/context/store'
 import Header from '@/app/components/Header'
 import Sidebar from '@/app/components/Sidebar'
 import Balance from './components/Balance'
 import Category from './components/Category'
 import Trend from './components/Trend'
-import { lchown, lstat } from 'fs'
 
 const ANALYSIS_TITLE = '分析'
 
@@ -21,14 +19,21 @@ const getCurrentYearMonth = () => {
   return currentYearMonth
 }
 
-const filterData = (allReceipts: DocumentData[]) => {
-  const filteredData = allReceipts.filter(allReceipt => {
-    const { createdTime } = allReceipt
+const filterData = (allAccountsReceipts: DocumentData[]) => {
+  const filteredData = allAccountsReceipts.filter(allAccountsReceipt => {
+    const { createdTime } = allAccountsReceipt
     const newCreatedTime = createdTime.substring(0, 7)
     const currentTime = getCurrentYearMonth()
     return newCreatedTime === currentTime
   })
   return filteredData
+}
+
+const filterTransferData = (allAccountsReceipts: DocumentData[]) => {
+  const filteredTransferData = allAccountsReceipts.filter(
+    allAccountsReceipt => allAccountsReceipt.type !== '轉帳'
+  )
+  return filteredTransferData
 }
 
 const getBalanceData = (data: DocumentData[]) => {
@@ -76,39 +81,20 @@ const getIncomeData = (data: DocumentData[]) => {
 }
 
 export default function Page() {
-  const [allReceipts, setAllReceipts] = useState<DocumentData[]>([])
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedAllAccountsReceipts: DocumentData[] =
+    allAccountsReceipts.flat(2)
+  const allIncomeExpenseReceipts = filterTransferData(
+    flattenedAllAccountsReceipts
+  )
+
   const [isIncome, setIsIncome] = useState<boolean>(true)
   const [isIncomeBar, setIsIncomeBar] = useState<boolean>(true)
   const [isBalanceLine, setIsBalanceLine] = useState<boolean>(false)
-  const filteredData = filterData(allReceipts)
+  const filteredData = filterData(allIncomeExpenseReceipts)
   const balanceData = getBalanceData(filteredData)
   const expenseData = getExpenseData(filteredData)
   const incomeData = getIncomeData(filteredData)
-
-  useEffect(() => {
-    const getAllReceipts = async () => {
-      const querySnapshot = await getDocs(
-        collection(
-          db,
-          'users',
-          UID,
-          'accounts',
-          '1PGHC5Omw07rIS5qusUe',
-          'receipts'
-        )
-      )
-      const receiptsArray: DocumentData[] = []
-
-      querySnapshot.forEach(doc => {
-        const data = doc.data()
-        const amounts = data.amounts
-        const newData = { ...data, amounts }
-        receiptsArray.push(newData)
-      })
-      setAllReceipts(receiptsArray)
-    }
-    getAllReceipts()
-  }, [isIncome, isIncomeBar, isBalanceLine])
 
   return (
     <div>
@@ -123,7 +109,7 @@ export default function Page() {
           setIsIncome={setIsIncome}
         />
         <Trend
-          allReceipts={allReceipts}
+          allIncomeExpenseReceipts={allIncomeExpenseReceipts}
           isIncomeBar={isIncomeBar}
           setIsIncomeBar={setIsIncomeBar}
           isBalanceLine={isBalanceLine}

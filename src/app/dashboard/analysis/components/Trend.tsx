@@ -25,7 +25,7 @@ ChartJS.register(
 )
 
 interface TrendProps {
-  allReceipts: DocumentData[]
+  allIncomeExpenseReceipts: DocumentData[]
   isIncomeBar: boolean
   setIsIncomeBar: Dispatch<SetStateAction<boolean>>
   isBalanceLine: boolean
@@ -60,12 +60,12 @@ const removeDuplicates = (data: string[]) => {
   return dedupedCreatedTimeArray
 }
 
-const getExpenseReceipts = (allReceipts: DocumentData[]) => {
-  const expenseReceiptsArray = allReceipts
-    .filter(allReceipt => allReceipt.type === '支出')
-    .map(allReceipt => {
-      const newAllReceipt = { ...allReceipt }
-      const { amounts } = allReceipt
+const getExpenseReceipts = (allIncomeExpenseReceipts: DocumentData[]) => {
+  const expenseReceiptsArray = allIncomeExpenseReceipts
+    .filter(allIncomeExpenseReceipt => allIncomeExpenseReceipt.type === '支出')
+    .map(allIncomeExpenseReceipt => {
+      const newAllReceipt = { ...allIncomeExpenseReceipt }
+      const { amounts } = allIncomeExpenseReceipt
       const absAmounts = Math.abs(amounts)
       newAllReceipt.amounts = absAmounts
       return newAllReceipt
@@ -73,17 +73,17 @@ const getExpenseReceipts = (allReceipts: DocumentData[]) => {
   return expenseReceiptsArray
 }
 
-const getIncomeReceipts = (allReceipts: DocumentData[]) => {
-  const incomeReceiptsArray = allReceipts.filter(
-    allReceipt => allReceipt.type === '收入'
+const getIncomeReceipts = (allIncomeExpenseReceipts: DocumentData[]) => {
+  const incomeReceiptsArray = allIncomeExpenseReceipts.filter(
+    allIncomeExpenseReceipt => allIncomeExpenseReceipt.type === '收入'
   )
   return incomeReceiptsArray
 }
 
-const refineAllReceipts = (allReceipts: DocumentData[]) => {
-  if (!allReceipts.length) return
-  const newAllReceipts = allReceipts.filter(item => item.type !== '移轉')
-  const sumsByTime = newAllReceipts.reduce((acc, item) => {
+const refineAllReceipts = (allIncomeExpenseReceipts: DocumentData[]) => {
+  if (!allIncomeExpenseReceipts.length) return
+
+  const sumsByTime = allIncomeExpenseReceipts.reduce((acc, item) => {
     const { createdTime, amounts } = item
     const newCreatedTime = createdTime.substring(0, 7)
 
@@ -92,11 +92,10 @@ const refineAllReceipts = (allReceipts: DocumentData[]) => {
       [newCreatedTime]: (acc[newCreatedTime] || 0) + amounts,
     }
   }, {})
-
   const refinedData = Object.entries(sumsByTime).map(
     ([createdTime, amounts]) => ({
-      createdTime: createdTime,
-      amounts: amounts,
+      createdTime,
+      amounts,
     })
   )
 
@@ -108,29 +107,31 @@ const refineAllReceipts = (allReceipts: DocumentData[]) => {
 
 export default function Trend(props: TrendProps) {
   const {
-    allReceipts,
+    allIncomeExpenseReceipts,
     isIncomeBar,
     setIsIncomeBar,
     isBalanceLine,
     setIsBalanceLine,
   } = props
 
-  const refinedAllReceipts = refineAllReceipts(allReceipts)
+  const refinedAllReceipts = refineAllReceipts(allIncomeExpenseReceipts)
 
   const refinedCreatedTimeArray = refinedAllReceipts?.map(
     item => item.createdTime
   )
 
-  const incomeReceiptsArray = refineAllReceipts(getIncomeReceipts(allReceipts))
+  const incomeReceiptsArray = refineAllReceipts(
+    getIncomeReceipts(allIncomeExpenseReceipts)
+  )
 
   const expenseReceiptsArray = refineAllReceipts(
-    getExpenseReceipts(allReceipts)
+    getExpenseReceipts(allIncomeExpenseReceipts)
   )
   const incomeCreatedTimeArray = removeDuplicates(
-    sortMonthArray(getMonthArray(getIncomeReceipts(allReceipts)))
+    sortMonthArray(getMonthArray(getIncomeReceipts(allIncomeExpenseReceipts)))
   )
   const expenseCreatedTimeArray = removeDuplicates(
-    sortMonthArray(getMonthArray(getExpenseReceipts(allReceipts)))
+    sortMonthArray(getMonthArray(getExpenseReceipts(allIncomeExpenseReceipts)))
   )
 
   const titleText = isBalanceLine
