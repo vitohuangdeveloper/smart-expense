@@ -17,8 +17,7 @@ const getTotalAmountsForEachCategory = (data: DocumentData[]) => {
   const categoryCounts: NumberObject = {}
   for (let i = 0; i < data.length; i++) {
     const record = data[i]
-    const category: string = record.category
-    const amounts: number = Math.abs(record.amounts)
+    const { category, amounts } = record
     if (category in categoryTotals) {
       categoryTotals[category] += amounts
       categoryCounts[category] += 1
@@ -46,7 +45,7 @@ const getResults = (
     results.push({
       category,
       percentage,
-      length: count,
+      count,
       amounts,
     })
   }
