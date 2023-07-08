@@ -1,10 +1,10 @@
 'use client'
-import { useState } from 'react'
+
 import Sidebar from '@/app/components/Sidebar'
 import Header from '@/app/components/Header'
 import Result from './components/Result'
 
-const RECEIPTS_TITLE = '明細'
+const RECEIPTS_TITLE = '分類'
 
 export default function Page() {
   return (

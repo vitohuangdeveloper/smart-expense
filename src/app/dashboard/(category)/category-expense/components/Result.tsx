@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { DocumentData } from 'firebase/firestore'
 import Category from './Category'
+import { useGlobalContext } from '@/app/context/store'
 import categoryIcon from '/public/category-icon.png'
 import categoryAddIcon from '/public/category-add-icon.png'
-import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
-
-interface ExpenseCategoriesObject {
-  name?: string
-  type?: string
-}
 
 export default function Result() {
-  const [expenseCategories, setExpenseCategories] = useState<
-    ExpenseCategoriesObject[]
-  >([])
-
-  useEffect(() => {
-    getReceiptCategoriesSnap().then(res =>
-      setExpenseCategories(res.filter(doc => doc.type === '支出'))
-    )
-  }, [])
+  const { receiptCategories } = useGlobalContext()
+  const expenseCategories = receiptCategories.filter(
+    (receiptCategory: DocumentData) => receiptCategory.type === '支出'
+  )
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px]'>
@@ -37,10 +27,10 @@ export default function Result() {
           <button>收入</button>
         </Link>
         <Link
-          href='/dashboard/category-transaction'
+          href='/dashboard/category-transfer'
           className='w-full bg-[#F4F4F4] rounded-tr-[20px] py-[5px] text-center'
         >
-          <button>移轉</button>
+          <button>轉帳</button>
         </Link>
       </div>
       <div className='self-start pl-[20px] mb-[50px]'>
@@ -48,13 +38,15 @@ export default function Result() {
       </div>
       <div className='grid w-full grid-cols-3 gap-y-[90px]'>
         {expenseCategories &&
-          expenseCategories.map((expenseCategory, index) => (
-            <Category
-              key={index}
-              src={categoryIcon}
-              categoryName={expenseCategory.name}
-            />
-          ))}
+          expenseCategories.map(
+            (expenseCategory: DocumentData, index: number) => (
+              <Category
+                key={index}
+                src={categoryIcon}
+                categoryName={expenseCategory.name}
+              />
+            )
+          )}
         {expenseCategories.length !== 0 && (
           <Category src={categoryAddIcon} categoryName='新增' />
         )}
