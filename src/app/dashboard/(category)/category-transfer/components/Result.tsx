@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { DocumentData } from 'firebase/firestore'
 import Category from './Category'
+import { useGlobalContext } from '@/app/context/store'
 import categoryIcon from '/public/category-icon.png'
 import categoryAddIcon from '/public/category-add-icon.png'
-import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
-
-interface TransactionCategoriesObject {
-  name?: string
-  type?: string
-}
 
 export default function Result() {
-  const [transactionCategories, setTransactionCategories] = useState<
-    TransactionCategoriesObject[]
-  >([])
-
-  useEffect(() => {
-    getReceiptCategoriesSnap().then(res =>
-      setTransactionCategories(res.filter(doc => doc.type === '移轉'))
-    )
-  }, [])
+  const { receiptCategories } = useGlobalContext()
+  const transferCategories = receiptCategories.filter(
+    (receiptCategory: DocumentData) => receiptCategory.type === '轉帳'
+  )
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px]'>
@@ -37,25 +27,27 @@ export default function Result() {
           <button>收入</button>
         </Link>
         <Link
-          href='/dashboard/category-transaction'
+          href='/dashboard/category-transfer'
           className='w-full bg-[#A8A8A8] rounded-tr-[20px] rounded-l-[20px] py-[5px] text-center'
         >
-          <button>移轉</button>
+          <button>轉帳</button>
         </Link>
       </div>
       <div className='self-start pl-[20px] mb-[50px]'>
-        <h2>移轉分類</h2>
+        <h2>轉帳分類</h2>
       </div>
       <div className='grid w-full grid-cols-3 gap-y-[90px]'>
-        {transactionCategories &&
-          transactionCategories.map((transactionCategory, index) => (
-            <Category
-              key={index}
-              src={categoryIcon}
-              categoryName={transactionCategory.name}
-            />
-          ))}
-        {transactionCategories.length !== 0 && (
+        {transferCategories &&
+          transferCategories.map(
+            (transferCategory: DocumentData, index: number) => (
+              <Category
+                key={index}
+                src={categoryIcon}
+                categoryName={transferCategory.name}
+              />
+            )
+          )}
+        {transferCategories.length !== 0 && (
           <Category src={categoryAddIcon} categoryName='新增' />
         )}
       </div>
