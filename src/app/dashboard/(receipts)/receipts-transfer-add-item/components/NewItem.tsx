@@ -2,15 +2,8 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  collection,
-  getDocs,
-  setDoc,
-  doc,
-  DocumentData,
-} from 'firebase/firestore'
+import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import { getReceiptCategoriesSnap } from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
 import { useGlobalContext } from '@/app/context/store'
 import cancelIcon from '/public/cancel.png'
@@ -44,19 +37,19 @@ export default function NewItem() {
       account: '',
     }
   )
+  const { allAccounts, setAllAccountsReceipts, receiptCategories } =
+    useGlobalContext()
 
-  const [transferCategories, setTransferCategories] = useState<DocumentData[]>(
-    []
+  const transferCategories = receiptCategories.filter(
+    (receiptCategory: DocumentData) => receiptCategory.type === '轉帳'
   )
-
-  const allAccounts: DocumentData[] = useGlobalContext().allAccounts
 
   const selectedAccount = getAccountData()
   const accountID = getAccountData()?.id
 
   function getAccountData() {
     const selectedAccount = allAccounts.filter(
-      item => item.name === transferReceipt.account
+      (item: DocumentData) => item.name === transferReceipt.account
     )
     return selectedAccount[0]
   }
@@ -124,11 +117,45 @@ export default function NewItem() {
     }
   }
 
-  useEffect(() => {
-    getReceiptCategoriesSnap().then(res => {
-      setTransferCategories(res.filter(doc => doc.type === '轉帳'))
+  const syncTransferReceiptDisplayed = () => {
+    if (
+      !transferReceipt.category ||
+      !transferReceipt.amounts ||
+      !transferReceipt.description ||
+      !transferReceipt.createdTime ||
+      !transferReceipt.account
+    )
+      return
+    setAllAccountsReceipts((prev: DocumentData[]) => [
+      ...prev,
+      {
+        category: transferReceipt.category,
+        amounts: Number(transferReceipt.amounts),
+        description: transferReceipt.description,
+        createdTime: transferReceipt.createdTime,
+        account: transferReceipt.account,
+        type: '轉帳',
+      },
+    ])
+  }
+
+  const resetReceiptField = () => {
+    if (
+      !transferReceipt.category ||
+      !transferReceipt.amounts ||
+      !transferReceipt.description ||
+      !transferReceipt.createdTime ||
+      !transferReceipt.account
+    )
+      return
+    setTransferReceipt({
+      category: '',
+      amounts: '',
+      description: '',
+      createdTime: '',
+      account: '',
     })
-  }, [])
+  }
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
@@ -140,6 +167,8 @@ export default function NewItem() {
           onClick={() => {
             addNewReceipt(accountID)
             updateAccountBalance(accountID)
+            syncTransferReceiptDisplayed()
+            resetReceiptField()
           }}
         >
           完成
@@ -171,7 +200,7 @@ export default function NewItem() {
                 選擇類別
               </option>
               {transferCategories &&
-                transferCategories.map(transferCategory => (
+                transferCategories.map((transferCategory: DocumentData) => (
                   <option
                     key={transferCategory.name}
                     value={transferCategory.name}
@@ -264,24 +293,33 @@ export default function NewItem() {
               <optgroup label={categories.bank}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.bank)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.bank
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.eTicket}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.eTicket)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.eTicket
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.manual}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.manual)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.manual
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>

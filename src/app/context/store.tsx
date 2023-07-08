@@ -15,6 +15,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     DocumentData[][]
   >([])
   const [receiptCategories, setReceiptCategories] = useState<DocumentData[]>([])
+  const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
 
   useEffect(() => {
     const getAllAccounts = async () => {
@@ -92,6 +93,18 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     getReceiptCategoriesSnap()
   }, [])
 
+  useEffect(() => {
+    const getBudgetsSnap = async () => {
+      const querySnapshot = await getDocs(
+        collection(db, 'users', UID, 'budgets')
+      )
+      const dataArray: DocumentData[] = []
+      querySnapshot.forEach(doc => dataArray.push(doc.data()))
+      setBudgetDetails(dataArray)
+    }
+    getBudgetsSnap()
+  }, [])
+
   return (
     <GlobalContext.Provider
       value={{
@@ -99,6 +112,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
         allAccountsReceipts,
         setAllAccountsReceipts,
         receiptCategories,
+        budgetDetails,
       }}
     >
       {children}

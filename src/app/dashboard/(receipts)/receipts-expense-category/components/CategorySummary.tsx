@@ -5,13 +5,13 @@ interface ReceiptSummaryProps {
   result: {
     category: string
     percentage: string
-    length: number
+    count: number
     amounts: number
   }
 }
 
 export default function ReceiptSummary(props: ReceiptSummaryProps) {
-  const { category, percentage, length, amounts } = props.result
+  const { category, percentage, count, amounts } = props.result
   return (
     <div className='px-[20px] w-full mb-[20px] last:mb-0'>
       <div className='bg-[#F4F4F4] flex gap-x-[20px] rounded-[20px] px-[20px] py-[10px]'>
@@ -26,8 +26,8 @@ export default function ReceiptSummary(props: ReceiptSummaryProps) {
         </div>
         <div className='w-full flex flex-col gap-y-[5px]'>
           <div className='flex justify-between'>
-            <p>{length}筆明細</p>
-            <p>${amounts}</p>
+            <p>{count}筆明細</p>
+            <p>$ {amounts}</p>
           </div>
           <div className='bg-gray h-[20px] rounded-[20px]'></div>
         </div>
