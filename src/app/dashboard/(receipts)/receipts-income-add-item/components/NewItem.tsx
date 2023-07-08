@@ -1,5 +1,5 @@
 'use client'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'

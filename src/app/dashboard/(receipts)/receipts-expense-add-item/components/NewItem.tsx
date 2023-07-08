@@ -1,19 +1,9 @@
 'use client'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  collection,
-  getDocs,
-  setDoc,
-  doc,
-  DocumentData,
-} from 'firebase/firestore'
+import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import {
-  getReceiptCategoriesSnap,
-  getBudgetsSnap,
-} from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
 import { useGlobalContext } from '@/app/context/store'
 import cancelIcon from '/public/cancel.png'
@@ -46,17 +36,23 @@ export default function NewItem() {
     account: '',
   })
 
-  const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
-  const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
+  const {
+    allAccounts,
+    setAllAccountsReceipts,
+    receiptCategories,
+    budgetDetails,
+  } = useGlobalContext()
 
-  const allAccounts: DocumentData[] = useGlobalContext().allAccounts
+  const expenseCategories = receiptCategories.filter(
+    (receiptCategory: DocumentData) => receiptCategory.type === '支出'
+  )
 
   const selectedAccount = getAccountData()
   const accountID = getAccountData()?.id
 
   function getAccountData() {
     const selectedAccount = allAccounts.filter(
-      item => item.name === expenseReceipt.account
+      (item: DocumentData) => item.name === expenseReceipt.account
     )
     return selectedAccount[0]
   }
@@ -93,17 +89,10 @@ export default function NewItem() {
     } catch (error) {
       console.log('Error adding document ', error)
     }
-    setExpenseReceipt({
-      category: '',
-      amounts: '',
-      description: '',
-      createdTime: '',
-      account: ',',
-    })
   }
 
-  const popUpNotification = () => {
-    budgetDetails.forEach(budgetDetail => {
+  const popUpNotification = (budgetDetails: DocumentData[]) => {
+    budgetDetails.forEach((budgetDetail: DocumentData) => {
       if (
         expenseReceipt.account === budgetDetail.account &&
         expenseReceipt.category === budgetDetail.expenseCategory &&
@@ -147,15 +136,45 @@ export default function NewItem() {
     }
   }
 
-  useEffect(() => {
-    getReceiptCategoriesSnap().then(res => {
-      setExpenseCategories(res.filter(doc => doc.type === '支出'))
-    })
-  }, [])
+  const syncExpenseReceiptDisplayed = () => {
+    if (
+      !expenseReceipt.category ||
+      !expenseReceipt.amounts ||
+      !expenseReceipt.description ||
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
+    )
+      return
+    setAllAccountsReceipts((prev: DocumentData[]) => [
+      ...prev,
+      {
+        category: expenseReceipt.category,
+        amounts: Number(expenseReceipt.amounts),
+        description: expenseReceipt.description,
+        createdTime: expenseReceipt.createdTime,
+        account: expenseReceipt.account,
+        type: '支出',
+      },
+    ])
+  }
 
-  useEffect(() => {
-    getBudgetsSnap().then(res => setBudgetDetails(res))
-  }, [])
+  const resetReceiptField = () => {
+    if (
+      !expenseReceipt.category ||
+      !expenseReceipt.amounts ||
+      !expenseReceipt.description ||
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
+    )
+      return
+    setExpenseReceipt({
+      category: '',
+      amounts: '',
+      description: '',
+      createdTime: '',
+      account: '',
+    })
+  }
 
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
@@ -167,7 +186,9 @@ export default function NewItem() {
           onClick={() => {
             addNewReceipt(accountID)
             updateAccountBalance(accountID)
-            popUpNotification()
+            popUpNotification(budgetDetails)
+            syncExpenseReceiptDisplayed()
+            resetReceiptField()
           }}
         >
           完成
@@ -199,7 +220,7 @@ export default function NewItem() {
                 選擇類別
               </option>
               {expenseCategories &&
-                expenseCategories.map(expenseCategory => (
+                expenseCategories.map((expenseCategory: DocumentData) => (
                   <option
                     key={expenseCategory.name}
                     value={expenseCategory.name}
@@ -292,24 +313,33 @@ export default function NewItem() {
               <optgroup label={categories.bank}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.bank)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.bank
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.eTicket}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.eTicket)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.eTicket
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.manual}>
                 {allAccounts &&
                   allAccounts
-                    .filter(account => account.category === categories.manual)
-                    .map(account => (
+                    .filter(
+                      (account: DocumentData) =>
+                        account.category === categories.manual
+                    )
+                    .map((account: DocumentData) => (
                       <option key={account.name}>{account.name}</option>
                     ))}
               </optgroup>

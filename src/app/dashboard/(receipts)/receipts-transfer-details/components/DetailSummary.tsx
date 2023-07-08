@@ -10,8 +10,8 @@ export default function ReceiptSummary(props: DetailSummaryProps) {
   const { createdTime, category, amounts, description, account } = props.item
   const splittedCreatedTimeArray = createdTime.split('-')
   const year = splittedCreatedTimeArray[0]
-  const month = splittedCreatedTimeArray[1].substring(1, 2)
-  const date = splittedCreatedTimeArray[2].substring(1, 2)
+  const month = splittedCreatedTimeArray[1]
+  const date = splittedCreatedTimeArray[2]
   return (
     <div className='px-[20px] w-full mb-[20px] last:mb-0'>
       <div className='bg-[#F4F4F4] flex gap-x-[20px] rounded-[20px] px-[20px] py-[10px]'>
@@ -28,11 +28,10 @@ export default function ReceiptSummary(props: DetailSummaryProps) {
         <div className='w-full flex flex-col gap-y-[5px]'>
           <div className='flex justify-between'>
             <p>{category}</p>
-            <p>${Math.abs(amounts)}</p>
+            <p>$ {amounts}</p>
           </div>
           <div>{description}</div>
           <div className='flex gap-x-[15px]'>
-            {/* <p className='bg-gray px-[5px] rounded-[10px]'>手動</p> */}
             <p>{account}</p>
           </div>
         </div>
