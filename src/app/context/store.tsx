@@ -1,11 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { collection, getDocs, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { UID } from '@/app/utils/uid'
-
-import { createContext, useContext, useState } from 'react'
 
 const GlobalContext = createContext<DocumentData>([])
 
@@ -16,6 +14,48 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   >([])
   const [receiptCategories, setReceiptCategories] = useState<DocumentData[]>([])
   const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
+
+  const getAllAccountsReceipts = async () => {
+    const accountsArray: DocumentData[] = []
+    const accountsIDArray: string[] = []
+
+    const accountsQuerySnapshot = await getDocs(
+      collection(db, 'users', UID, 'accounts')
+    )
+
+    accountsQuerySnapshot.forEach(doc => {
+      accountsArray.push(doc.data())
+      accountsIDArray.push(doc.id)
+    })
+
+    const newAccountsArray = accountsArray.map((item, index) => {
+      const newItem = { ...item }
+      newItem.id = accountsIDArray[index]
+      return newItem
+    })
+
+    const getReceipts = async (accountID: string) => {
+      const receiptsArray: DocumentData[] = []
+      const receiptsQuerySnapshot = await getDocs(
+        collection(db, 'users', UID, 'accounts', accountID, 'receipts')
+      )
+      receiptsQuerySnapshot.forEach(doc => receiptsArray.push(doc.data()))
+      return receiptsArray
+    }
+
+    const allAccountsReceiptsArray = await Promise.all(
+      newAccountsArray.map(account => getReceipts(account.id))
+    )
+    return allAccountsReceiptsArray
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allAccountsReceiptsArray = await getAllAccountsReceipts()
+      setAllAccountsReceipts(allAccountsReceiptsArray)
+    }
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const getAllAccounts = async () => {
@@ -37,48 +77,6 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
       setAllAccounts(newAccountsArray)
     }
     getAllAccounts()
-  }, [])
-
-  useEffect(() => {
-    const getAllAccountsReceipts = async () => {
-      const accountsQuerySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts')
-      )
-      const accountsArray: DocumentData[] = []
-      const accountsIDArray: string[] = []
-
-      accountsQuerySnapshot.forEach(doc => {
-        accountsArray.push(doc.data())
-        accountsIDArray.push(doc.id)
-      })
-
-      const newAccountsArray = accountsArray.map((item, index) => {
-        const newItem = { ...item }
-        newItem.id = accountsIDArray[index]
-        return newItem
-      })
-
-      const getReceipts = async (accountID: string) => {
-        const receiptsQuerySnapshot = await getDocs(
-          collection(db, 'users', UID, 'accounts', accountID, 'receipts')
-        )
-        const receiptsArray: DocumentData[] = []
-        receiptsQuerySnapshot.forEach(doc => receiptsArray.push(doc.data()))
-        return receiptsArray
-      }
-
-      let allAccountsReceipts = []
-      for (let i = 0; i < newAccountsArray.length; i++) {
-        const receiptsArrayPromise = getReceipts(newAccountsArray[i].id)
-        let receiptsArray: DocumentData[] = []
-        const response = await receiptsArrayPromise
-        receiptsArray.push(response)
-        allAccountsReceipts.push(receiptsArray)
-      }
-
-      setAllAccountsReceipts(allAccountsReceipts)
-    }
-    getAllAccountsReceipts()
   }, [])
 
   useEffect(() => {

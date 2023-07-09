@@ -1,15 +1,14 @@
+'use client'
+import { useState } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { DocumentData } from 'firebase/firestore'
-import { Dispatch, SetStateAction } from 'react'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 interface CategoryProps {
   incomeData: DocumentData[]
   expenseData: DocumentData[]
-  isIncome: boolean
-  setIsIncome: Dispatch<SetStateAction<boolean>>
 }
 
 const getLabels = (data: DocumentData[]) => {
@@ -40,7 +39,8 @@ const getBorderColorArray = (data: string[]) => {
 }
 
 export default function Category(props: CategoryProps) {
-  const { incomeData, expenseData, isIncome, setIsIncome } = props
+  const [isIncome, setIsIncome] = useState<boolean>(true)
+  const { incomeData, expenseData } = props
   const incomelabels = getLabels(incomeData)
   const incomeAmountsArray = getAmountsArray(incomeData)
   const incomeBackgroundColor = getBackgroundColorArray(incomeData)
