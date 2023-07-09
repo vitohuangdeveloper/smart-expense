@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DocumentData } from 'firebase/firestore'
 import { useGlobalContext } from '@/app/context/store'
 import Header from '@/app/components/Header'
@@ -36,8 +36,8 @@ const filterTransferData = (allAccountsReceipts: DocumentData[]) => {
   return filteredTransferData
 }
 
-const getBalanceData = (data: DocumentData[]) => {
-  const balanceData = data.reduce(
+const getBalanceData = (transactions: DocumentData[]) => {
+  const balanceData = transactions.reduce(
     (acc, item) => {
       if (item.type === '收入') {
         acc.income += item.amounts
@@ -52,31 +52,29 @@ const getBalanceData = (data: DocumentData[]) => {
   return balanceData
 }
 
-const combineData = (data: DocumentData[]) => {
-  const combinedData = data.reduce((acc: [] | DocumentData[], item) => {
-    const existingItem = acc.find((i: DocumentData) => {
-      return i.category === item.category
-    })
-
-    if (existingItem) {
-      existingItem.amounts += item.amounts
-      return acc
+const combineTransactions = (data: DocumentData[]) => {
+  const combinedData = data.reduce((result: DocumentData[], transaction) => {
+    const { category, amounts, type } = transaction
+    const existingTransaction = result.find(
+      (entry: DocumentData) => entry.category === category
+    )
+    if (existingTransaction) {
+      existingTransaction.amounts += amounts
+    } else {
+      result.push({ category, amounts, type })
     }
-
-    return [...acc, item]
+    return result
   }, [])
   return combinedData
 }
 
 const getExpenseData = (data: DocumentData[]) => {
-  const combinedData = combineData(data)
-  const expenseData = combinedData.filter(datum => datum.type === '支出')
+  const expenseData = data.filter(datum => datum.type === '支出')
   return expenseData
 }
 
 const getIncomeData = (data: DocumentData[]) => {
-  const combinedData = combineData(data)
-  const incomeData = combinedData.filter(datum => datum.type === '收入')
+  const incomeData = data.filter(datum => datum.type === '收入')
   return incomeData
 }
 
@@ -88,13 +86,13 @@ export default function Page() {
     flattenedAllAccountsReceipts
   )
 
-  const [isIncome, setIsIncome] = useState<boolean>(true)
-  const [isIncomeBar, setIsIncomeBar] = useState<boolean>(true)
-  const [isBalanceLine, setIsBalanceLine] = useState<boolean>(false)
   const filteredData = filterData(allIncomeExpenseReceipts)
+
   const balanceData = getBalanceData(filteredData)
-  const expenseData = getExpenseData(filteredData)
-  const incomeData = getIncomeData(filteredData)
+
+  const combinedTransactionData = combineTransactions(filteredData)
+  const expenseData = getExpenseData(combinedTransactionData)
+  const incomeData = getIncomeData(combinedTransactionData)
 
   return (
     <div>
@@ -102,19 +100,8 @@ export default function Page() {
       <Sidebar />
       <div className='max-w-[1200px] m-auto mt-[200px] grid grid-cols-3 gap-x-[100px]'>
         <Balance balanceData={balanceData} />
-        <Category
-          incomeData={incomeData}
-          expenseData={expenseData}
-          isIncome={isIncome}
-          setIsIncome={setIsIncome}
-        />
-        <Trend
-          allIncomeExpenseReceipts={allIncomeExpenseReceipts}
-          isIncomeBar={isIncomeBar}
-          setIsIncomeBar={setIsIncomeBar}
-          isBalanceLine={isBalanceLine}
-          setIsBalanceLine={setIsBalanceLine}
-        />
+        <Category incomeData={incomeData} expenseData={expenseData} />
+        <Trend allIncomeExpenseReceipts={allIncomeExpenseReceipts} />
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
+'use client'
+import { useState } from 'react'
 import { DocumentData } from 'firebase/firestore'
-import { Dispatch, SetStateAction } from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,10 +27,6 @@ ChartJS.register(
 
 interface TrendProps {
   allIncomeExpenseReceipts: DocumentData[]
-  isIncomeBar: boolean
-  setIsIncomeBar: Dispatch<SetStateAction<boolean>>
-  isBalanceLine: boolean
-  setIsBalanceLine: Dispatch<SetStateAction<boolean>>
 }
 
 const getMonthArray = (data: DocumentData[]) => {
@@ -106,13 +103,9 @@ const refineAllReceipts = (allIncomeExpenseReceipts: DocumentData[]) => {
 }
 
 export default function Trend(props: TrendProps) {
-  const {
-    allIncomeExpenseReceipts,
-    isIncomeBar,
-    setIsIncomeBar,
-    isBalanceLine,
-    setIsBalanceLine,
-  } = props
+  const [isIncomeBar, setIsIncomeBar] = useState<boolean>(true)
+  const [isBalanceLine, setIsBalanceLine] = useState<boolean>(true)
+  const { allIncomeExpenseReceipts } = props
 
   const refinedAllReceipts = refineAllReceipts(allIncomeExpenseReceipts)
 
