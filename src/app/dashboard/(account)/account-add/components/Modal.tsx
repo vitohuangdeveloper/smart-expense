@@ -1,6 +1,7 @@
 import { ChangeEvent, SyntheticEvent } from 'react'
-import { setDoc, addDoc, collection, doc, getDoc } from 'firebase/firestore'
+import { setDoc, collection, doc } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
+import { useGlobalContext } from '@/app/context/store'
 import Button from './Button'
 
 interface ModalProps {
@@ -19,7 +20,8 @@ interface ModalProps {
 }
 
 export default function Modal(props: ModalProps) {
-  const UID = 'pUcfmReSPATGfLoDVt1xqSEVoqB2'
+  const { uid } = useGlobalContext()
+
   const categories = ['銀行', '電子票證', '手動新增']
 
   const handleChange = (
@@ -48,7 +50,7 @@ export default function Modal(props: ModalProps) {
       return
 
     try {
-      const accountsRef = doc(collection(db, 'users', UID, 'accounts'))
+      const accountsRef = doc(collection(db, 'users', uid, 'accounts'))
       await setDoc(accountsRef, {
         name: props.addAccount.accountName,
         category: props.addAccount.accountCategory,
@@ -82,12 +84,16 @@ export default function Modal(props: ModalProps) {
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
           <label htmlFor='accountCategory'>帳戶種類</label>
           <select
-            className='outline-0 border-b border-gray'
+            required
+            className='outline-0 border-b border-gray invalid:text-gray'
             id='accountCategory'
             name='accountCategory'
             value={props.addAccount.accountCategory}
             onChange={handleChange}
           >
+            <option disabled value=''>
+              選擇帳戶
+            </option>
             {categories.map((category, index) => (
               <option key={index}>{category}</option>
             ))}

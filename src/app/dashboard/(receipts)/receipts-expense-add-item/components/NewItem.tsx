@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import { UID } from '@/app/utils/uid'
 import { useGlobalContext } from '@/app/context/store'
 import cancelIcon from '/public/cancel.png'
 import categoryIcon from '/public/category-icon.png'
@@ -37,6 +36,7 @@ export default function NewItem() {
   })
 
   const {
+    uid,
     allAccounts,
     setAllAccountsReceipts,
     receiptCategories,
@@ -75,7 +75,7 @@ export default function NewItem() {
       return
     try {
       const receiptsRef = doc(
-        collection(db, 'users', UID, 'accounts', accountID, 'receipts')
+        collection(db, 'users', uid, 'accounts', accountID, 'receipts')
       )
       await setDoc(receiptsRef, {
         category: expenseReceipt.category,
@@ -114,6 +114,8 @@ export default function NewItem() {
     })
   }
 
+  console.log(expenseReceipt, budgetDetails)
+
   const updateAccountBalance = async (accountID: string) => {
     if (
       !expenseReceipt.category ||
@@ -124,7 +126,7 @@ export default function NewItem() {
     )
       return
     try {
-      const accountRef = doc(db, 'users', UID, 'accounts', accountID)
+      const accountRef = doc(db, 'users', uid, 'accounts', accountID)
 
       await setDoc(accountRef, {
         balance: selectedAccount.balance - Number(expenseReceipt.amounts),

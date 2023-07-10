@@ -1,10 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { DocumentData } from 'firebase/firestore'
 import { useGlobalContext } from '@/app/context/store'
 import Header from '@/app/components/Header'
-import Sidebar from '@/app/components/Sidebar'
 import Balance from './components/Balance'
 import Category from './components/Category'
 import Trend from './components/Trend'
@@ -97,7 +95,6 @@ export default function Page() {
   return (
     <div>
       <Header title={ANALYSIS_TITLE} />
-      <Sidebar />
       <div className='max-w-[1200px] m-auto mt-[200px] grid grid-cols-3 gap-x-[100px]'>
         <Balance balanceData={balanceData} />
         <Category incomeData={incomeData} expenseData={expenseData} />

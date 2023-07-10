@@ -2,7 +2,6 @@
 import { useState, ChangeEvent, SyntheticEvent } from 'react'
 import { setDoc, doc, collection } from 'firebase/firestore'
 import { DocumentData } from 'firebase/firestore'
-import { UID } from '@/app/utils/uid'
 import { db } from '@/app/lib/firebase'
 import Image from 'next/image'
 import { useGlobalContext } from '@/app/context/store'
@@ -25,7 +24,7 @@ const categories = {
 }
 
 export default function Form() {
-  const { allAccounts, receiptCategories } = useGlobalContext()
+  const { uid, allAccounts, receiptCategories } = useGlobalContext()
   const [isToggled, setIsToggled] = useState<boolean>(false)
   const [budgetDetails, setBudgetDetails] = useState<BudgetDetails>({
     name: '',
@@ -62,7 +61,7 @@ export default function Form() {
     )
       return
     try {
-      const budgetRef = doc(collection(db, 'users', UID, 'budgets'))
+      const budgetRef = doc(collection(db, 'users', uid, 'budgets'))
       await setDoc(budgetRef, {
         name: budgetDetails.name,
         account: budgetDetails.account,
