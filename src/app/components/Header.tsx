@@ -36,7 +36,6 @@ export default function Header(props: HeaderProps) {
     checkAuthentication()
   }, [user])
 
-  console.log(user)
   return (
     <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[30px] border-b border-[#D9D9D9]'>
       <h1 className='mr-auto'>{props.title}</h1>
@@ -53,7 +52,7 @@ export default function Header(props: HeaderProps) {
         </div>
       ) : (
         <div className='flex items-center gap-x-[10px]'>
-          <div className='cursor-pointer' onClick={handleSignIn}>
+          <div className='cursor-pointer'>
             <Image
               className='rounded-full'
               src={user.photoURL}

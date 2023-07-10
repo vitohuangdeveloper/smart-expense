@@ -17,10 +17,11 @@ const GlobalContext = createContext<DocumentData>([])
 
 export const GlobalContextProvider = ({ children }: DocumentData) => {
   const [user, setUser] = useState<User | null>(null)
+  const uid = user && user.uid
 
   const [allAccounts, setAllAccounts] = useState<DocumentData[]>([])
   const [allAccountsReceipts, setAllAccountsReceipts] = useState<
-    DocumentData[][]
+    DocumentData[][] | undefined
   >([])
   const [receiptCategories, setReceiptCategories] = useState<DocumentData[]>([])
   const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
@@ -35,11 +36,12 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   }
 
   const getAllAccountsReceipts = async () => {
+    if (!uid) return
     const accountsArray: DocumentData[] = []
     const accountsIDArray: string[] = []
 
     const accountsQuerySnapshot = await getDocs(
-      collection(db, 'users', UID, 'accounts')
+      collection(db, 'users', uid, 'accounts')
     )
 
     accountsQuerySnapshot.forEach(doc => {
@@ -56,7 +58,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     const getReceipts = async (accountID: string) => {
       const receiptsArray: DocumentData[] = []
       const receiptsQuerySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts', accountID, 'receipts')
+        collection(db, 'users', uid, 'accounts', accountID, 'receipts')
       )
       receiptsQuerySnapshot.forEach(doc => receiptsArray.push(doc.data()))
       return receiptsArray
@@ -69,17 +71,20 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   }
 
   useEffect(() => {
+    if (!uid) return
     const fetchData = async () => {
       const allAccountsReceiptsArray = await getAllAccountsReceipts()
       setAllAccountsReceipts(allAccountsReceiptsArray)
     }
     fetchData()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid])
 
   useEffect(() => {
+    if (!uid) return
     const getAllAccounts = async () => {
       const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts')
+        collection(db, 'users', uid, 'accounts')
       )
       const accountsArray: DocumentData[] = []
       const accountsIDArray: string[] = []
@@ -96,31 +101,33 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
       setAllAccounts(newAccountsArray)
     }
     getAllAccounts()
-  }, [])
+  }, [uid])
 
   useEffect(() => {
+    if (!uid) return
     const getReceiptCategoriesSnap = async () => {
       const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'receiptCategories')
+        collection(db, 'users', uid, 'receiptCategories')
       )
       const dataArray: DocumentData[] = []
       querySnapshot.forEach(doc => dataArray.push(doc.data()))
       setReceiptCategories(dataArray)
     }
     getReceiptCategoriesSnap()
-  }, [])
+  }, [uid])
 
   useEffect(() => {
+    if (!uid) return
     const getBudgetsSnap = async () => {
       const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'budgets')
+        collection(db, 'users', uid, 'budgets')
       )
       const dataArray: DocumentData[] = []
       querySnapshot.forEach(doc => dataArray.push(doc.data()))
       setBudgetDetails(dataArray)
     }
     getBudgetsSnap()
-  }, [])
+  }, [uid])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
@@ -133,6 +140,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     <GlobalContext.Provider
       value={{
         user,
+        uid,
         googleSignIn,
         logOut,
         allAccounts,

@@ -12,7 +12,7 @@ function Page() {
     balance: number | string
   }>({
     accountName: '',
-    accountCategory: '銀行',
+    accountCategory: '',
     balance: '',
   })
   return (

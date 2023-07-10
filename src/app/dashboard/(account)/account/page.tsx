@@ -1,16 +1,14 @@
 'use client'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '@/app/lib/firebase'
+import { DocumentData } from 'firebase/firestore'
 import Header from '@/app/components/Header'
 import Wallet from './components/Wallet'
+import { useGlobalContext } from '@/app/context/store'
 
 import addIcon from '/public/add-icon.png'
 
 const ACCOUNT_TITLE = '帳戶'
-const UID = 'pUcfmReSPATGfLoDVt1xqSEVoqB2'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
@@ -18,51 +16,46 @@ const categories = {
 }
 
 function Page() {
-  interface MyObject {
-    name?: string
-    category?: string
-    balance?: number
-  }
-  const [accounts, setAccounts] = useState<MyObject[]>([])
+  const { allAccounts } = useGlobalContext()
 
-  useEffect(() => {
-    const getDocSnap = async () => {
-      const querySnapshot = await getDocs(
-        collection(db, 'users', UID, 'accounts')
-      )
-
-      const dataArray: MyObject[] = []
-      querySnapshot.forEach(doc => {
-        dataArray.push(doc.data())
-      })
-      setAccounts(dataArray)
-    }
-    getDocSnap()
-  }, [])
   return (
     <div>
       <Header title={ACCOUNT_TITLE} />
       <div className='absolute top-[116px] left-[50%] translate-x-[-50%] flex gap-x-[150px]'>
         <div>
-          {accounts &&
-            accounts
-              .filter(account => account.category === categories.bank)
-              .map(account => <Wallet key={account.name} account={account} />)}
+          {allAccounts &&
+            allAccounts
+              .filter(
+                (account: DocumentData) => account.category === categories.bank
+              )
+              .map((account: DocumentData, index: number) => (
+                <Wallet key={index} account={account} />
+              ))}
         </div>
         <div>
-          {accounts &&
-            accounts
-              .filter(account => account.category === categories.eTicket)
-              .map(account => <Wallet key={account.name} account={account} />)}
+          {allAccounts &&
+            allAccounts
+              .filter(
+                (account: DocumentData) =>
+                  account.category === categories.eTicket
+              )
+              .map((account: DocumentData, index: number) => (
+                <Wallet key={index} account={account} />
+              ))}
         </div>
         <div>
-          {accounts &&
-            accounts
-              .filter(account => account.category === categories.manual)
-              .map(account => <Wallet key={account.name} account={account} />)}
+          {allAccounts &&
+            allAccounts
+              .filter(
+                (account: DocumentData) =>
+                  account.category === categories.manual
+              )
+              .map((account: DocumentData, index: number) => (
+                <Wallet key={index} account={account} />
+              ))}
         </div>
         <div className='w-[30px]'>
-          {accounts.length ? (
+          {allAccounts.length ? (
             <Link href='/dashboard/account-add'>
               <Image
                 src={addIcon}
