@@ -1,3 +1,4 @@
+'use client'
 import menu from '../../../public/menu.png'
 import Link from 'next/link'
 import Image from 'next/image'

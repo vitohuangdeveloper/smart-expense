@@ -2,18 +2,37 @@
 
 import { createContext, useContext, useState, useEffect } from 'react'
 import { collection, getDocs, DocumentData } from 'firebase/firestore'
+import { User } from 'firebase/auth'
 import { db } from '@/app/lib/firebase'
+import { auth } from '@/app/lib/firebase'
 import { UID } from '@/app/utils/uid'
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth'
 
 const GlobalContext = createContext<DocumentData>([])
 
 export const GlobalContextProvider = ({ children }: DocumentData) => {
+  const [user, setUser] = useState<User | null>(null)
+
   const [allAccounts, setAllAccounts] = useState<DocumentData[]>([])
   const [allAccountsReceipts, setAllAccountsReceipts] = useState<
     DocumentData[][]
   >([])
   const [receiptCategories, setReceiptCategories] = useState<DocumentData[]>([])
   const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
+
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider)
+  }
+
+  const logOut = () => {
+    signOut(auth)
+  }
 
   const getAllAccountsReceipts = async () => {
     const accountsArray: DocumentData[] = []
@@ -103,9 +122,19 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     getBudgetsSnap()
   }, [])
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+      setUser(currentUser)
+    })
+    return () => unsubscribe()
+  }, [user])
+
   return (
     <GlobalContext.Provider
       value={{
+        user,
+        googleSignIn,
+        logOut,
         allAccounts,
         allAccountsReceipts,
         setAllAccountsReceipts,

@@ -5,7 +5,6 @@ import { collection, getDocs, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { UID } from '@/app/utils/uid'
 import Header from '@/app/components/Header'
-import Sidebar from '@/app/components/Sidebar'
 
 import {
   Chart as ChartJS,
@@ -159,7 +158,6 @@ export default function Page() {
   return (
     <div>
       <Header title={PROPERTY_TITLE} />
-      <Sidebar />
       <div className='w-[600px] m-[auto] mt-[150px]'>
         <Line options={lineChartOptions} data={data} className='mb-[60px]' />
         <Bar options={barChartOptions} data={data} />

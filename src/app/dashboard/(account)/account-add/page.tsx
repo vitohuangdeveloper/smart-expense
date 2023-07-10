@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import Sidebar from '@/app/components/Sidebar'
 import Header from '@/app/components/Header'
 import Modal from './components/Modal'
 
@@ -18,7 +17,6 @@ function Page() {
   })
   return (
     <div>
-      <Sidebar />
       <Header title={ACCOUNT_ADD_TITLE} />
       <Modal addAccount={addAccount} setAddAccount={setAddAccount} />
     </div>

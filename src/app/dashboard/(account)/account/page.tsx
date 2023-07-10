@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import Header from '@/app/components/Header'
-import Sidebar from '@/app/components/Sidebar'
 import Wallet from './components/Wallet'
 
 import addIcon from '/public/add-icon.png'
@@ -43,7 +42,6 @@ function Page() {
   return (
     <div>
       <Header title={ACCOUNT_TITLE} />
-      <Sidebar />
       <div className='absolute top-[116px] left-[50%] translate-x-[-50%] flex gap-x-[150px]'>
         <div>
           {accounts &&
