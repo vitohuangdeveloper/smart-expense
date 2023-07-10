@@ -48,7 +48,9 @@ export default function Result() {
             )
           )}
         {transferCategories.length !== 0 && (
-          <Category src={categoryAddIcon} categoryName='新增' />
+          <Link href='/dashboard/category-transfer-add-item'>
+            <Category src={categoryAddIcon} categoryName='新增' />
+          </Link>
         )}
       </div>
     </div>

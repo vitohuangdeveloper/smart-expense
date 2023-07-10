@@ -146,6 +146,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
         allAccountsReceipts,
         setAllAccountsReceipts,
         receiptCategories,
+        setReceiptCategories,
         budgetDetails,
       }}
     >

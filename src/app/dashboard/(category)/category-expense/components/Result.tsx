@@ -48,7 +48,9 @@ export default function Result() {
             )
           )}
         {expenseCategories.length !== 0 && (
-          <Category src={categoryAddIcon} categoryName='新增' />
+          <Link href='/dashboard/category-expense-add-item'>
+            <Category src={categoryAddIcon} categoryName='新增' />
+          </Link>
         )}
       </div>
     </div>
