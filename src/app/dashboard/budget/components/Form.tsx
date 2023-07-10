@@ -1,14 +1,11 @@
 'use client'
-import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react'
+import { useState, ChangeEvent, SyntheticEvent } from 'react'
 import { setDoc, doc, collection } from 'firebase/firestore'
 import { DocumentData } from 'firebase/firestore'
-import {
-  getReceiptCategoriesSnap,
-  getAccountsSnap,
-} from '@/app/utils/getDocSnap'
 import { UID } from '@/app/utils/uid'
 import { db } from '@/app/lib/firebase'
 import Image from 'next/image'
+import { useGlobalContext } from '@/app/context/store'
 import toggleOff from '/public/toggle-off.png'
 import toggleOn from '/public/toggle-on.png'
 
@@ -28,6 +25,7 @@ const categories = {
 }
 
 export default function Form() {
+  const { allAccounts, receiptCategories } = useGlobalContext()
   const [isToggled, setIsToggled] = useState<boolean>(false)
   const [budgetDetails, setBudgetDetails] = useState<BudgetDetails>({
     name: '',
@@ -37,19 +35,6 @@ export default function Form() {
     startTime: '',
     endTime: '',
   })
-
-  const [expenseCategories, setExpenseCategories] = useState<DocumentData[]>([])
-  const [accountCategories, setAccountCategories] = useState<DocumentData[]>([])
-
-  useEffect(() => {
-    getReceiptCategoriesSnap().then(res =>
-      setExpenseCategories(res.filter(doc => doc.type === '支出'))
-    )
-  }, [])
-
-  useEffect(() => {
-    getAccountsSnap().then(res => setAccountCategories(res))
-  }, [])
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -142,26 +127,34 @@ export default function Form() {
                 所有帳戶
               </option>
               <optgroup label={categories.bank}>
-                {accountCategories &&
-                  accountCategories
-                    .filter(item => item.category === categories.bank)
-                    .map((item, index) => (
+                {allAccounts &&
+                  allAccounts
+                    .filter(
+                      (item: DocumentData) => item.category === categories.bank
+                    )
+                    .map((item: DocumentData, index: string) => (
                       <option key={index}>{item.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.eTicket}>
-                {accountCategories &&
-                  accountCategories
-                    .filter(item => item.category === categories.eTicket)
-                    .map((item, index) => (
+                {allAccounts &&
+                  allAccounts
+                    .filter(
+                      (item: DocumentData) =>
+                        item.category === categories.eTicket
+                    )
+                    .map((item: DocumentData, index: string) => (
                       <option key={index}>{item.name}</option>
                     ))}
               </optgroup>
               <optgroup label={categories.manual}>
-                {accountCategories &&
-                  accountCategories
-                    .filter(item => item.category === categories.manual)
-                    .map((item, index) => (
+                {allAccounts &&
+                  allAccounts
+                    .filter(
+                      (item: DocumentData) =>
+                        item.category === categories.manual
+                    )
+                    .map((item: DocumentData, index: string) => (
                       <option key={index}>{item.name}</option>
                     ))}
               </optgroup>
@@ -180,10 +173,12 @@ export default function Form() {
               <option disabled value=''>
                 所有分類
               </option>
-              {expenseCategories &&
-                expenseCategories.map((item, index) => (
-                  <option key={index}>{item.name}</option>
-                ))}
+              {receiptCategories &&
+                receiptCategories
+                  .filter((item: DocumentData) => item.type === '支出')
+                  .map((item: DocumentData, index: string) => (
+                    <option key={index}>{item.name}</option>
+                  ))}
             </select>
           </div>
         </div>
