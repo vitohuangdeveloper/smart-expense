@@ -5,7 +5,6 @@ import { collection, getDocs, DocumentData } from 'firebase/firestore'
 import { User } from 'firebase/auth'
 import { db } from '@/app/lib/firebase'
 import { auth } from '@/app/lib/firebase'
-import { UID } from '@/app/utils/uid'
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
