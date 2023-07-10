@@ -1,9 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { collection, getDocs, DocumentData } from 'firebase/firestore'
-import { db } from '@/app/lib/firebase'
-import { UID } from '@/app/utils/uid'
+import { DocumentData } from 'firebase/firestore'
+import { useGlobalContext } from '@/app/context/store'
 import Header from '@/app/components/Header'
 
 import {
@@ -33,12 +31,13 @@ ChartJS.register(
 const PROPERTY_TITLE = '資產'
 
 export default function Page() {
-  const [allReceipts, setAllReceipts] = useState<DocumentData[]>([])
+  const { allAccountsReceipts } = useGlobalContext()
+  const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
 
-  const getNewCreatedTimeArray = (allReceipts: DocumentData[]) => {
-    if (!allReceipts.length) return
-    const createdTimeArray = allReceipts.map(allReceipt => {
-      const { createdTime } = allReceipt
+  const getNewCreatedTimeArray = (allAccountsReceipts: DocumentData[]) => {
+    if (!allAccountsReceipts.length) return
+    const createdTimeArray = allAccountsReceipts.map(allAccountsReceipt => {
+      const { createdTime } = allAccountsReceipt
       const newCreatedTime = createdTime.substring(0, 7)
       return newCreatedTime
     })
@@ -84,8 +83,8 @@ export default function Page() {
     return sortedData
   }
 
-  const refinedAllReceipts = refineAllReceipts(allReceipts)
-  const createdTimeArray = getNewCreatedTimeArray(allReceipts)
+  const refinedAllReceipts = refineAllReceipts(flattenedAllAccountsReceipts)
+  const createdTimeArray = getNewCreatedTimeArray(flattenedAllAccountsReceipts)
 
   const lineChartOptions = {
     responsive: true,
@@ -132,28 +131,6 @@ export default function Page() {
       },
     ],
   }
-
-  useEffect(() => {
-    const getAllReceipts = async () => {
-      const querySnapshot = await getDocs(
-        collection(
-          db,
-          'users',
-          UID,
-          'accounts',
-          '1PGHC5Omw07rIS5qusUe',
-          'receipts'
-        )
-      )
-      const receiptsArray: DocumentData[] = []
-
-      querySnapshot.forEach(doc => {
-        receiptsArray.push(doc.data())
-      })
-      setAllReceipts(receiptsArray)
-    }
-    getAllReceipts()
-  }, [])
 
   return (
     <div>
