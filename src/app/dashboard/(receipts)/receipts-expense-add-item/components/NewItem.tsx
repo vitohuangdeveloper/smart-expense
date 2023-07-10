@@ -114,6 +114,8 @@ export default function NewItem() {
     })
   }
 
+  console.log(expenseReceipt, budgetDetails)
+
   const updateAccountBalance = async (accountID: string) => {
     if (
       !expenseReceipt.category ||
