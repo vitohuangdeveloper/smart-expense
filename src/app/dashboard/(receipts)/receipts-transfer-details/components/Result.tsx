@@ -44,10 +44,11 @@ export default function Result() {
         <h2>轉帳明細</h2>
       </div>
       <div className='w-full max-h-[500px] overflow-auto pb-[30px]'>
-        {sortedTransactionReceipts.length &&
-          sortedTransactionReceipts.map((item, index) => (
-            <DetailSummary key={index} item={item} />
-          ))}
+        {sortedTransactionReceipts.length
+          ? sortedTransactionReceipts.map((item, index) => (
+              <DetailSummary key={index} item={item} />
+            ))
+          : ''}
       </div>
     </div>
   )
