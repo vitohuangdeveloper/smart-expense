@@ -1,27 +1,28 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { redirect } from 'next/navigation'
 import { useGlobalContext } from './context/store'
 import Header from '@/app/components/Header'
+import Sidebar from './components/Sidebar'
 import Spinner from './components/Spinner'
 
 export default function Home() {
   const { user } = useGlobalContext()
-  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (user) {
+      redirect('/dashboard/property')
+    }
+  }, [user])
 
   const HOMEPAGE_TITLE = '首頁'
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      await new Promise(resolve => setTimeout(resolve, 50))
-      setLoading(false)
-    }
-    checkAuthentication()
-  }, [user])
   return (
     <div>
       <Header title={HOMEPAGE_TITLE} />
+      <Sidebar />
       <div className='w-full h-screen flex items-center justify-center'>
-        {loading ? (
+        {/* {loading ? (
           <Spinner />
         ) : user ? (
           <p>
@@ -30,7 +31,7 @@ export default function Home() {
           </p>
         ) : (
           <p>You must be logged in to view this page - protected route</p>
-        )}
+        )} */}
       </div>
     </div>
   )
