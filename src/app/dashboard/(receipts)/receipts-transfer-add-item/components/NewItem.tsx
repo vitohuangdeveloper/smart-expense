@@ -1,5 +1,5 @@
 'use client'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
@@ -36,8 +36,13 @@ export default function NewItem() {
       account: '',
     }
   )
-  const { uid, allAccounts, setAllAccountsReceipts, receiptCategories } =
-    useGlobalContext()
+  const {
+    uid,
+    allAccounts,
+    setAllAccounts,
+    setAllAccountsReceipts,
+    receiptCategories,
+  } = useGlobalContext()
 
   const transferCategories = receiptCategories.filter(
     (receiptCategory: DocumentData) => receiptCategory.type === '轉帳'
@@ -94,7 +99,22 @@ export default function NewItem() {
     })
   }
 
-  const updateAccountBalance = async (accountID: string) => {
+  const updateAccountBalance = (allAccounts: DocumentData[]) => {
+    const updatedAccountBalance = allAccounts.map(
+      (allAccount: DocumentData) => {
+        if (allAccount.name === selectedAccount.name) {
+          const newBalance =
+            allAccount.balance + Number(transferReceipt.amounts)
+          const newAllAccount = { ...allAccount, balance: newBalance }
+          return newAllAccount
+        }
+        return allAccount
+      }
+    )
+    setAllAccounts(updatedAccountBalance)
+  }
+
+  const updateDBAccountBalance = async (accountID: string) => {
     if (
       !transferReceipt.category ||
       !transferReceipt.amounts ||
@@ -165,7 +185,8 @@ export default function NewItem() {
         <button
           onClick={() => {
             addNewReceipt(accountID)
-            updateAccountBalance(accountID)
+            updateAccountBalance(allAccounts)
+            updateDBAccountBalance(accountID)
             syncTransferReceiptDisplayed()
             resetReceiptField()
           }}
