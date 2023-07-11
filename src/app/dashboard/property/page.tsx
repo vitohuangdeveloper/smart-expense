@@ -3,24 +3,23 @@
 import { DocumentData } from 'firebase/firestore'
 import { useGlobalContext } from '@/app/context/store'
 import Header from '@/app/components/Header'
+import Account from './components/Account'
 
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
   PointElement,
   LineElement,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js'
-import { Line, Bar } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
   PointElement,
   LineElement,
   Title,
@@ -100,20 +99,6 @@ export default function Page() {
     maintainAspectRatio: true,
   }
 
-  const barChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: '資產長條圖',
-      },
-    },
-    maintainAspectRatio: true,
-  }
-
   const labels = createdTimeArray
 
   const data = {
@@ -135,9 +120,9 @@ export default function Page() {
   return (
     <div>
       <Header title={PROPERTY_TITLE} />
-      <div className='w-[600px] m-[auto] mt-[150px]'>
+      <div className='max-w-[960px] m-[auto] mt-[150px]'>
         <Line options={lineChartOptions} data={data} className='mb-[60px]' />
-        <Bar options={barChartOptions} data={data} />
+        <Account />
       </div>
     </div>
   )

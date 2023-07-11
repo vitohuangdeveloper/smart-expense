@@ -2,6 +2,7 @@ import { ChangeEvent, SyntheticEvent } from 'react'
 import { setDoc, collection, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
+import Link from 'next/link'
 import Button from './Button'
 
 interface ModalProps {
@@ -29,15 +30,6 @@ export default function Modal(props: ModalProps) {
   ) => {
     const { name, value } = event.target
     props.setAddAccount(prev => ({ ...prev, [name]: value }))
-  }
-
-  const cancelAccount = (event: SyntheticEvent) => {
-    event.preventDefault()
-    props.setAddAccount({
-      accountName: '',
-      accountCategory: '',
-      balance: '',
-    })
   }
 
   const addAccount = async (event: SyntheticEvent) => {
@@ -82,8 +74,8 @@ export default function Modal(props: ModalProps) {
   }
 
   return (
-    <form className='absolute top-[calc(50%_-_80px)] left-[calc(50%_+_90px)] translate-x-[-50%] translate-y-[-50%] '>
-      <div className='border-2 border-gray rounded-[20px] px-[40px] py-[80px] w-[500px] mb-[35px]'>
+    <form className='max-w-[600px] m-auto mt-[250px]'>
+      <div className='border-2 border-gray rounded-[20px] px-[40px] py-[80px] mb-[35px]'>
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
           <label htmlFor='accountName'>帳戶名稱</label>
           <input
@@ -134,7 +126,9 @@ export default function Modal(props: ModalProps) {
             resetAccountField()
           }}
         />
-        <Button name={'取消'} onClick={cancelAccount} />
+        <Link href='/dashboard/property'>
+          <Button name={'取消'} />
+        </Link>
       </div>
     </form>
   )

@@ -2,26 +2,23 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
-import Header from '@/app/components/Header'
-import Wallet from './components/Wallet'
+import Wallet from './Wallet'
 import { useGlobalContext } from '@/app/context/store'
 
 import addIcon from '/public/add-icon.png'
 
-const ACCOUNT_TITLE = '帳戶'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
   manual: '手動新增',
 }
 
-function Page() {
+function Account() {
   const { allAccounts } = useGlobalContext()
 
   return (
     <div>
-      <Header title={ACCOUNT_TITLE} />
-      <div className='absolute top-[116px] left-[50%] translate-x-[-50%] flex gap-x-[150px]'>
+      <div className='flex justify-between'>
         <div>
           {allAccounts &&
             allAccounts
@@ -56,7 +53,7 @@ function Page() {
         </div>
         <div className='w-[30px]'>
           {allAccounts.length ? (
-            <Link href='/dashboard/account-add'>
+            <Link href='/dashboard/property/account-add'>
               <Image
                 src={addIcon}
                 alt='add icon'
@@ -72,4 +69,4 @@ function Page() {
   )
 }
 
-export default Page
+export default Account
