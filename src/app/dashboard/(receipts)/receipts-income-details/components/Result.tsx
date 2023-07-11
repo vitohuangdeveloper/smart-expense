@@ -43,10 +43,11 @@ export default function Result() {
         <h2>收入明細</h2>
       </div>
       <div className='w-full max-h-[500px] overflow-auto pb-[30px]'>
-        {sortedIncomeReceipts.length &&
-          sortedIncomeReceipts.map((item, index) => (
-            <DetailSummary key={index} item={item} />
-          ))}
+        {sortedIncomeReceipts.length
+          ? sortedIncomeReceipts.map((item, index) => (
+              <DetailSummary key={index} item={item} />
+            ))
+          : ''}
       </div>
     </div>
   )

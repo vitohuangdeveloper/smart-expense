@@ -78,10 +78,11 @@ export default function Result() {
       <div className='self-start pl-[20px] mb-[20px]'>
         <h2>支出分類</h2>
       </div>
-      {results.length &&
-        results.map((result, index) => (
-          <CategorySummary key={index} result={result} />
-        ))}
+      {results.length
+        ? results.map((result, index) => (
+            <CategorySummary key={index} result={result} />
+          ))
+        : ''}
     </div>
   )
 }
