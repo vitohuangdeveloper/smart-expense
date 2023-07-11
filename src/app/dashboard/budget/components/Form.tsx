@@ -24,9 +24,10 @@ const categories = {
 }
 
 export default function Form() {
-  const { uid, allAccounts, receiptCategories } = useGlobalContext()
+  const { uid, allAccounts, receiptCategories, setBudgetDetails } =
+    useGlobalContext()
   const [isToggled, setIsToggled] = useState<boolean>(false)
-  const [budgetDetails, setBudgetDetails] = useState<BudgetDetails>({
+  const [budgetDetail, setBudgetDetail] = useState<BudgetDetails>({
     name: '',
     account: '',
     expenseCategory: '',
@@ -39,7 +40,7 @@ export default function Form() {
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target
-    setBudgetDetails(prev => ({
+    setBudgetDetail(prev => ({
       ...prev,
       [name]: value,
     }))
@@ -52,30 +53,48 @@ export default function Form() {
   const addNewBudget = async (event: SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault()
     if (
-      !budgetDetails.name ||
-      !budgetDetails.account ||
-      !budgetDetails.expenseCategory ||
-      !budgetDetails.amounts ||
-      !budgetDetails.startTime ||
-      !budgetDetails.endTime
+      !budgetDetail.name ||
+      !budgetDetail.account ||
+      !budgetDetail.expenseCategory ||
+      !budgetDetail.amounts ||
+      !budgetDetail.startTime ||
+      !budgetDetail.endTime
     )
       return
     try {
       const budgetRef = doc(collection(db, 'users', uid, 'budgets'))
       await setDoc(budgetRef, {
-        name: budgetDetails.name,
-        account: budgetDetails.account,
-        expenseCategory: budgetDetails.expenseCategory,
-        amounts: Number(budgetDetails.amounts),
-        startTime: budgetDetails.startTime,
-        endTime: budgetDetails.endTime,
+        name: budgetDetail.name,
+        account: budgetDetail.account,
+        expenseCategory: budgetDetail.expenseCategory,
+        amounts: Number(budgetDetail.amounts),
+        startTime: budgetDetail.startTime,
+        endTime: budgetDetail.endTime,
         reminder: isToggled,
       })
-      console.log('Document written with ID: ', budgetDetails)
+      console.log('Document written with ID: ', budgetRef)
     } catch (error) {
       console.log('Error adding document ', error)
     }
-    setBudgetDetails({
+  }
+
+  const syncBudgetDetails = () => {
+    setBudgetDetails((prev: DocumentData[]) => [
+      ...prev,
+      {
+        name: budgetDetail.name,
+        account: budgetDetail.account,
+        expenseCategory: budgetDetail.expenseCategory,
+        amounts: Number(budgetDetail.amounts),
+        startTime: budgetDetail.startTime,
+        endTime: budgetDetail.endTime,
+        reminder: isToggled,
+      },
+    ])
+  }
+
+  const resetBudgetDetailField = () => {
+    setBudgetDetail({
       name: '',
       account: '',
       expenseCategory: '',
@@ -87,7 +106,7 @@ export default function Form() {
 
   const cancelBudget = (event: SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    setBudgetDetails({
+    setBudgetDetail({
       name: '',
       account: '',
       expenseCategory: '',
@@ -106,7 +125,7 @@ export default function Form() {
             placeholder='請輸入預算名稱'
             name='name'
             id='name'
-            value={budgetDetails.name}
+            value={budgetDetail.name}
             onChange={handleChange}
           />
         </div>
@@ -119,7 +138,7 @@ export default function Form() {
               className='rounded-[20px] pr-[3px] invalid:text-gray cursor-pointer text-right outline-none'
               name='account'
               id='account'
-              value={budgetDetails.account}
+              value={budgetDetail.account}
               onChange={handleChange}
             >
               <option disabled value=''>
@@ -166,7 +185,7 @@ export default function Form() {
               className='rounded-[20px] pr-[3px] invalid:text-gray cursor-pointer text-right outline-none'
               name='expenseCategory'
               id='expenseCategory'
-              value={budgetDetails.expenseCategory}
+              value={budgetDetail.expenseCategory}
               onChange={handleChange}
             >
               <option disabled value=''>
@@ -190,7 +209,7 @@ export default function Form() {
             placeholder='請輸入預算金額'
             id='amounts'
             name='amounts'
-            value={budgetDetails.amounts}
+            value={budgetDetail.amounts}
             onChange={handleChange}
           />
         </div>
@@ -202,7 +221,7 @@ export default function Form() {
               type='date'
               name='startTime'
               id='startTime'
-              value={budgetDetails.startTime}
+              value={budgetDetail.startTime}
               onChange={handleChange}
             />
           </div>
@@ -212,7 +231,7 @@ export default function Form() {
               type='date'
               name='endTime'
               id='endTime'
-              value={budgetDetails.endTime}
+              value={budgetDetail.endTime}
               onChange={handleChange}
             />
           </div>
@@ -230,7 +249,11 @@ export default function Form() {
       <div className='px-[30px] flex justify-between'>
         <button
           className='bg-gray px-[5px] py-[10px] rounded-[20px] w-[100px]'
-          onClick={addNewBudget}
+          onClick={event => {
+            addNewBudget(event)
+            syncBudgetDetails()
+            resetBudgetDetailField()
+          }}
         >
           新增
         </button>
