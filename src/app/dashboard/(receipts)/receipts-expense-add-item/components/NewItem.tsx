@@ -38,6 +38,7 @@ export default function NewItem() {
   const {
     uid,
     allAccounts,
+    setAllAccounts,
     allAccountsReceipts,
     setAllAccountsReceipts,
     receiptCategories,
@@ -50,10 +51,10 @@ export default function NewItem() {
     (receiptCategory: DocumentData) => receiptCategory.type === '支出'
   )
 
-  const selectedAccount = getAccountData()
-  const accountID = getAccountData()?.id
+  const selectedAccount = getAccountData(allAccounts)
+  const accountID = getAccountData(allAccounts)?.id
 
-  function getAccountData() {
+  function getAccountData(allAccounts: DocumentData[]) {
     const selectedAccount = allAccounts.filter(
       (item: DocumentData) => item.name === expenseReceipt.account
     )
@@ -131,7 +132,7 @@ export default function NewItem() {
         (acc: number, cur: DocumentData) => acc + Math.abs(cur.amounts),
         0
       )
-      console.log(budgetDetails, filteredReceipts, amounts)
+
       if (
         expenseReceipt.account === budgetDetail.account &&
         expenseReceipt.category === budgetDetail.expenseCategory &&
@@ -153,7 +154,21 @@ export default function NewItem() {
     })
   }
 
-  const updateAccountBalance = async (accountID: string) => {
+  const updateAccountBalance = (allAccounts: DocumentData[]) => {
+    const updatedAccountBalance = allAccounts.map(
+      (allAccount: DocumentData) => {
+        if (allAccount.name === selectedAccount.name) {
+          const newBalance = allAccount.balance - Number(expenseReceipt.amounts)
+          const newAllAccount = { ...allAccount, balance: newBalance }
+          return newAllAccount
+        }
+        return allAccount
+      }
+    )
+    setAllAccounts(updatedAccountBalance)
+  }
+
+  const updateDBAccountBalance = async (accountID: string) => {
     if (
       !expenseReceipt.category ||
       !expenseReceipt.amounts ||
@@ -202,7 +217,8 @@ export default function NewItem() {
         <button
           onClick={() => {
             addNewReceipt(accountID)
-            updateAccountBalance(accountID)
+            updateAccountBalance(allAccounts)
+            updateDBAccountBalance(accountID)
             syncExpenseReceiptDisplayed()
             popUpNotification(budgetDetails)
             resetReceiptField()

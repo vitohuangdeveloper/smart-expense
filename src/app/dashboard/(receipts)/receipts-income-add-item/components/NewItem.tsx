@@ -35,8 +35,13 @@ export default function NewItem() {
     account: '',
   })
 
-  const { uid, allAccounts, setAllAccountsReceipts, receiptCategories } =
-    useGlobalContext()
+  const {
+    uid,
+    allAccounts,
+    setAllAccounts,
+    setAllAccountsReceipts,
+    receiptCategories,
+  } = useGlobalContext()
 
   const incomeCategories = receiptCategories.filter(
     (receiptCategory: DocumentData) => receiptCategory.type === '收入'
@@ -86,7 +91,21 @@ export default function NewItem() {
     }
   }
 
-  const updateAccountBalance = async (accountID: string) => {
+  const updateAccountBalance = (allAccounts: DocumentData[]) => {
+    const updatedAccountBalance = allAccounts.map(
+      (allAccount: DocumentData) => {
+        if (allAccount.name === selectedAccount.name) {
+          const newBalance = allAccount.balance + Number(incomeReceipt.amounts)
+          const newAllAccount = { ...allAccount, balance: newBalance }
+          return newAllAccount
+        }
+        return allAccount
+      }
+    )
+    setAllAccounts(updatedAccountBalance)
+  }
+
+  const updateDBAccountBalance = async (accountID: string) => {
     if (
       !incomeReceipt.category ||
       !incomeReceipt.amounts ||
@@ -157,7 +176,8 @@ export default function NewItem() {
         <button
           onClick={() => {
             addNewReceipt(accountID)
-            updateAccountBalance(accountID)
+            updateAccountBalance(allAccounts)
+            updateDBAccountBalance(accountID)
             syncIncomeReceiptDisplayed()
             resetReceiptField()
           }}
