@@ -38,10 +38,13 @@ export default function NewItem() {
   const {
     uid,
     allAccounts,
+    allAccountsReceipts,
     setAllAccountsReceipts,
     receiptCategories,
     budgetDetails,
   } = useGlobalContext()
+
+  const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
 
   const expenseCategories = receiptCategories.filter(
     (receiptCategory: DocumentData) => receiptCategory.type === '支出'
@@ -91,15 +94,51 @@ export default function NewItem() {
     }
   }
 
+  const syncExpenseReceiptDisplayed = () => {
+    if (
+      !expenseReceipt.category ||
+      !expenseReceipt.amounts ||
+      !expenseReceipt.description ||
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
+    )
+      return
+    setAllAccountsReceipts((prev: DocumentData[]) => [
+      ...prev,
+      {
+        category: expenseReceipt.category,
+        amounts: -Number(expenseReceipt.amounts),
+        description: expenseReceipt.description,
+        createdTime: expenseReceipt.createdTime,
+        account: expenseReceipt.account,
+        type: '支出',
+      },
+    ])
+  }
+
   const popUpNotification = (budgetDetails: DocumentData[]) => {
     budgetDetails.forEach((budgetDetail: DocumentData) => {
+      const filteredReceipts = flattenedAllAccountsReceipts.filter(
+        (flattenedAllAccountsReceipt: DocumentData) =>
+          flattenedAllAccountsReceipt.account === budgetDetail.account &&
+          flattenedAllAccountsReceipt.category ===
+            budgetDetail.expenseCategory &&
+          flattenedAllAccountsReceipt.type === '支出' &&
+          flattenedAllAccountsReceipt.createdTime > budgetDetail.startTime &&
+          flattenedAllAccountsReceipt.createdTime < budgetDetail.endTime
+      )
+      const amounts = filteredReceipts.reduce(
+        (acc: number, cur: DocumentData) => acc + Math.abs(cur.amounts),
+        0
+      )
+      console.log(budgetDetails, filteredReceipts, amounts)
       if (
         expenseReceipt.account === budgetDetail.account &&
         expenseReceipt.category === budgetDetail.expenseCategory &&
         expenseReceipt.createdTime > budgetDetail.startTime &&
         expenseReceipt.createdTime < budgetDetail.endTime &&
-        Number(expenseReceipt.amounts) > budgetDetail.amounts / 2 &&
-        Number(expenseReceipt.amounts) < budgetDetail.amounts
+        Number(expenseReceipt.amounts) + amounts > budgetDetail.amounts / 2 &&
+        Number(expenseReceipt.amounts) + amounts < budgetDetail.amounts
       ) {
         alert('該筆支出已超過預算的一半')
       } else if (
@@ -107,7 +146,7 @@ export default function NewItem() {
         expenseReceipt.category === budgetDetail.expenseCategory &&
         expenseReceipt.createdTime > budgetDetail.startTime &&
         expenseReceipt.createdTime < budgetDetail.endTime &&
-        Number(expenseReceipt.amounts) > budgetDetail.amounts
+        Number(expenseReceipt.amounts) + amounts > budgetDetail.amounts
       ) {
         alert('該筆支出已超過預算')
       }
@@ -134,28 +173,6 @@ export default function NewItem() {
     } catch (error) {
       console.log('Error setting a document', error)
     }
-  }
-
-  const syncExpenseReceiptDisplayed = () => {
-    if (
-      !expenseReceipt.category ||
-      !expenseReceipt.amounts ||
-      !expenseReceipt.description ||
-      !expenseReceipt.createdTime ||
-      !expenseReceipt.account
-    )
-      return
-    setAllAccountsReceipts((prev: DocumentData[]) => [
-      ...prev,
-      {
-        category: expenseReceipt.category,
-        amounts: -Number(expenseReceipt.amounts),
-        description: expenseReceipt.description,
-        createdTime: expenseReceipt.createdTime,
-        account: expenseReceipt.account,
-        type: '支出',
-      },
-    ])
   }
 
   const resetReceiptField = () => {
@@ -186,8 +203,8 @@ export default function NewItem() {
           onClick={() => {
             addNewReceipt(accountID)
             updateAccountBalance(accountID)
-            popUpNotification(budgetDetails)
             syncExpenseReceiptDisplayed()
+            popUpNotification(budgetDetails)
             resetReceiptField()
           }}
         >
