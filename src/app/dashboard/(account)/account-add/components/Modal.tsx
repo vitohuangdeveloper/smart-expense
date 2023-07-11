@@ -1,5 +1,5 @@
 import { ChangeEvent, SyntheticEvent } from 'react'
-import { setDoc, collection, doc } from 'firebase/firestore'
+import { setDoc, collection, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
 import Button from './Button'
@@ -20,7 +20,7 @@ interface ModalProps {
 }
 
 export default function Modal(props: ModalProps) {
-  const { uid } = useGlobalContext()
+  const { uid, setAllAccounts } = useGlobalContext()
 
   const categories = ['銀行', '電子票證', '手動新增']
 
@@ -60,6 +60,20 @@ export default function Modal(props: ModalProps) {
     } catch (error) {
       console.error('Error adding document: ', error)
     }
+  }
+
+  const syncAccountsDisplayed = () => {
+    setAllAccounts((prev: DocumentData[]) => [
+      ...prev,
+      {
+        name: props.addAccount.accountName,
+        category: props.addAccount.accountCategory,
+        balance: Number(props.addAccount.balance),
+      },
+    ])
+  }
+
+  const resetAccountField = () => {
     props.setAddAccount({
       accountName: '',
       accountCategory: '',
@@ -112,7 +126,14 @@ export default function Modal(props: ModalProps) {
         </div>
       </div>
       <div className='px-[40px] flex justify-between'>
-        <Button name={'新增'} onClick={addAccount} />
+        <Button
+          name={'新增'}
+          onClick={event => {
+            addAccount(event)
+            syncAccountsDisplayed()
+            resetAccountField()
+          }}
+        />
         <Button name={'取消'} onClick={cancelAccount} />
       </div>
     </form>
