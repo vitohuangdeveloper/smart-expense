@@ -10,13 +10,15 @@ export default function Home() {
 
   const HOMEPAGE_TITLE = '首頁'
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      await new Promise(resolve => setTimeout(resolve, 50))
-      setLoading(false)
-    }
-    checkAuthentication()
-  }, [user])
+  console.log('hi')
+
+  // useEffect(() => {
+  //   const checkAuthentication = async () => {
+  //     await new Promise(resolve => setTimeout(resolve, 50))
+  //     setLoading(false)
+  //   }
+  //   checkAuthentication()
+  // }, [user])
   return (
     <div>
       <Header title={HOMEPAGE_TITLE} />
