@@ -143,6 +143,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
         googleSignIn,
         logOut,
         allAccounts,
+        setAllAccounts,
         allAccountsReceipts,
         setAllAccountsReceipts,
         receiptCategories,
