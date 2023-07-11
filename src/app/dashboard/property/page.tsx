@@ -27,10 +27,15 @@ ChartJS.register(
   Legend
 )
 
+interface RefinedReceiptsType {
+  createdTime: string
+  amounts: number
+}
+
 const PROPERTY_TITLE = '資產'
 
 export default function Page() {
-  const { allAccountsReceipts } = useGlobalContext()
+  const { allAccountsReceipts, allAccounts } = useGlobalContext()
   const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
 
   const getNewCreatedTimeArray = (allAccountsReceipts: DocumentData[]) => {
@@ -57,11 +62,11 @@ export default function Page() {
     return sortedCreatedTimeArray
   }
 
-  const refineAllReceipts = (allReceipts: DocumentData[]) => {
-    if (!allReceipts.length) return
-    const sumsByTime = allReceipts.reduce((acc, item) => {
+  const refineAllReceipts = (allAccountsReceipts: DocumentData[]) => {
+    if (!allAccountsReceipts.length) return
+    const sumsByTime = allAccountsReceipts.reduce((acc, item) => {
       const { createdTime, amounts } = item
-      const newCreatedTime = createdTime.substring(0, 7)
+      const newCreatedTime: string = createdTime.substring(0, 7)
 
       return {
         ...acc,
@@ -69,10 +74,10 @@ export default function Page() {
       }
     }, {})
 
-    const refinedData = Object.entries(sumsByTime).map(
+    const refinedData: RefinedReceiptsType[] = Object.entries(sumsByTime).map(
       ([createdTime, amounts]) => ({
-        createdTime: createdTime,
-        amounts: amounts,
+        createdTime,
+        amounts,
       })
     )
 
@@ -82,8 +87,36 @@ export default function Page() {
     return sortedData
   }
 
+  const updateAmounts = (
+    data: RefinedReceiptsType[],
+    currentProperty: number
+  ) => {
+    if (!allAccountsReceipts.length) return
+    const reversedData = [...data].reverse()
+    const updatedData = reversedData
+      .reduce((acc, cur, index) => {
+        if (index === 0) {
+          acc.push({ ...cur, amounts: currentProperty })
+        } else {
+          const prevAmount = acc[acc.length - 1].amounts
+          const newAmount = prevAmount - cur.amounts
+          acc.push({ ...cur, amounts: newAmount })
+        }
+        return acc
+      }, [] as RefinedReceiptsType[])
+      .reverse()
+
+    return updatedData
+  }
+
   const refinedAllReceipts = refineAllReceipts(flattenedAllAccountsReceipts)
   const createdTimeArray = getNewCreatedTimeArray(flattenedAllAccountsReceipts)
+  const currentProperty = allAccounts.reduce(
+    (acc: number, cur: DocumentData) => acc + cur.balance,
+    0
+  )
+  const updatedAmountsArray =
+    refinedAllReceipts && updateAmounts(refinedAllReceipts, currentProperty)
 
   const lineChartOptions = {
     responsive: true,
@@ -106,11 +139,7 @@ export default function Page() {
     datasets: [
       {
         label: '資產',
-        data: refinedAllReceipts
-          ? refinedAllReceipts.map(
-              refinedAllReceipt => refinedAllReceipt.amounts
-            )
-          : '',
+        data: updatedAmountsArray?.map(item => item.amounts),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
