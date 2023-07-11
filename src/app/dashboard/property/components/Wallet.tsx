@@ -14,9 +14,12 @@ export default function Wallet(props: WalletProps) {
       <div>
         <Image src={accountIcon} alt='account icon' priority />
       </div>
-      <div className='pb-[15px] border-b border-gray w-[160px]'>
-        <p className='text-gray mb-1'>{account.category}</p>
-        <p>{account.name}</p>
+      <div className='pb-[15px] border-b border-gray w-[160px] flex justify-between'>
+        <div>
+          <p className='text-gray mb-1'>{account.category}</p>
+          <p>{account.name}</p>
+        </div>
+        <p>$ {account.balance}</p>
       </div>
     </div>
   )
