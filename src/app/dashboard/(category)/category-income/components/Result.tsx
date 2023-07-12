@@ -46,11 +46,9 @@ export default function Result() {
               />
             )
           )}
-        {incomeCategories.length !== 0 && (
-          <Link href='/dashboard/category-income-add-item'>
-            <Category src={categoryAddIcon} categoryName='新增' />
-          </Link>
-        )}
+        <Link href='/dashboard/category-income-add-item'>
+          <Category src={categoryAddIcon} categoryName='新增' />
+        </Link>
       </div>
     </div>
   )

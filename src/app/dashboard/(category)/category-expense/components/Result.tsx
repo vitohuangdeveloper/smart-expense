@@ -47,11 +47,9 @@ export default function Result() {
               />
             )
           )}
-        {expenseCategories.length !== 0 && (
-          <Link href='/dashboard/category-expense-add-item'>
-            <Category src={categoryAddIcon} categoryName='新增' />
-          </Link>
-        )}
+        <Link href='/dashboard/category-expense-add-item'>
+          <Category src={categoryAddIcon} categoryName='新增' />
+        </Link>
       </div>
     </div>
   )
