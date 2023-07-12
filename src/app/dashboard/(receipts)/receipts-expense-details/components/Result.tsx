@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { DocumentData } from 'firebase/firestore'
 import DetailSummary from './DetailSummary'
 import { useGlobalContext } from '@/app/context/store'
+import addIcon from '/public/add-icon.png'
 
 const getExpenseReceipts = (allReceipts: DocumentData[]) => {
   const expenseReceipts = allReceipts.filter(item => item.type === '支出')
@@ -23,30 +25,38 @@ export default function Result() {
   const sortedExpenseReceipts = sortExpenseReceipts(expenseReceipts)
 
   return (
-    <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px]'>
-      <div className='flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]'>
+    <div className='pl-[150px]'>
+      <div className='flex flex-col items-center w-[900px] min-h-[500px] m-auto bg-white shadow-sm rounded-[20px] pb-[30px] relative'>
         <Link
-          href='/dashboard/receipts-expense-categories'
-          className='w-full bg-[#F4F4F4] rounded-tl-[20px] py-[5px] text-center'
+          href='/dashboard/receipts-expense-add-item'
+          className=' absolute top-[75px] right-[20px] w-[30px] h-[30px]'
         >
-          <button>分類</button>
+          <Image src={addIcon} alt='add' className='cursor-pointer' />
         </Link>
-        <Link
-          href='/dashboard/receipts-expense-details'
-          className='w-full bg-[#A8A8A8] rounded-l-[20px] rounded-tr-[20px] py-[5px] text-center'
-        >
-          <button>明細</button>
-        </Link>
-      </div>
-      <div className='self-start pl-[20px] mb-[20px]'>
-        <h2>支出明細</h2>
-      </div>
-      <div className='w-full max-h-[500px] overflow-auto pb-[30px]'>
-        {sortedExpenseReceipts.length
-          ? sortedExpenseReceipts.map((item, index) => (
-              <DetailSummary key={index} item={item} />
-            ))
-          : ''}
+        <div className='flex bg-secondGray rounded-t-[20px] w-full mb-[25px]'>
+          <Link
+            href='/dashboard/receipts-expense-categories'
+            className='w-full bg-secondGray text-[20px] rounded-tl-[20px] rounded-r-[20px] py-[10px] text-center'
+          >
+            <button>分類</button>
+          </Link>
+          <Link
+            href='/dashboard/receipts-expense-details'
+            className='w-full bg-primary text-white text-[20px] rounded-l-[20px] rounded-tr-[20px] py-[10px] text-center'
+          >
+            <button>明細</button>
+          </Link>
+        </div>
+        <div className='mb-[25px]'>
+          <h2 className='text-[18px] font-medium'>支出明細</h2>
+        </div>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary '>
+          {sortedExpenseReceipts.length
+            ? sortedExpenseReceipts.map((item, index) => (
+                <DetailSummary key={index} item={item} />
+              ))
+            : ''}
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { DocumentData } from 'firebase/firestore'
 import accountIcon from '/public/account-icon.png'
+import { create } from 'domain'
 
 interface DetailSummaryProps {
   item: DocumentData
@@ -8,33 +9,37 @@ interface DetailSummaryProps {
 
 export default function ReceiptSummary(props: DetailSummaryProps) {
   const { createdTime, category, amounts, description, account } = props.item
-  const splittedCreatedTimeArray = createdTime.split('-')
-  const year = splittedCreatedTimeArray[0]
-  const month = splittedCreatedTimeArray[1]
-  const date = splittedCreatedTimeArray[2]
   return (
-    <div className='px-[20px] w-full mb-[20px] last:mb-0'>
-      <div className='bg-[#F4F4F4] flex gap-x-[20px] rounded-[20px] px-[20px] py-[10px]'>
-        <div className='flex items-center gap-x-[10px]'>
+    <div className='px-[20px] w-full'>
+      <div className='bg-secondary flex justify-between rounded-[20px] px-[20px] py-[10px]'>
+        <div className='flex items-center gap-x-[8px]'>
+          <div className='w-[30px] h-[30px] bg-red rounded-full'></div>
           <div>
-            <Image src={accountIcon} alt='account icon' />
-          </div>
-          <div className='flex flex-col items-center'>
-            <p>{year}</p>
-            <p>{month}月</p>
-            <p className='whitespace-nowrap'>{date}日</p>
+            <p className='whitespace-nowrap'>
+              <span className='font-medium text-primary'>明細時間</span>：
+              {createdTime}
+            </p>
           </div>
         </div>
-        <div className='w-full flex flex-col gap-y-[5px]'>
-          <div className='flex justify-between'>
-            <p>{category}</p>
-            <p>$ {amounts}</p>
+        <div className='flex flex-col gap-y-[10px]'>
+          <div>
+            <p>
+              <span className='font-medium text-primary'>類別</span>：{category}
+            </p>
           </div>
-          <div>{description}</div>
+          <div>
+            <span className='font-medium text-primary'>明細描述</span>：
+            {description}
+          </div>
           <div className='flex gap-x-[15px]'>
-            <p>{account}</p>
+            <p>
+              <span className='font-medium text-primary'>帳戶</span>：{account}
+            </p>
           </div>
         </div>
+        <p className='whitespace-nowrap'>
+          <span className='font-medium text-primary'>金額</span>：$ {amounts}
+        </p>
       </div>
     </div>
   )
