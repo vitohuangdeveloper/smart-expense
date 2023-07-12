@@ -73,7 +73,7 @@ export default function Sidebar() {
             className='w-[20px] h-auto'
           />
           <Link
-            href='/dashboard/receipts-income-categories'
+            href='/dashboard/receipts-expense-categories'
             className={
               pathname.includes(pathnameObj.receipts)
                 ? tabStyle.selected

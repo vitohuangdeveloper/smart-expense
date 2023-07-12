@@ -13,6 +13,12 @@ const categories = {
   manual: '手動新增',
 }
 
+const hexCodeObj = {
+  bank: 'bg-[#FA4778]',
+  eTicket: 'bg-[#2BDE73]',
+  manual: 'bg-[#FFE812]',
+}
+
 function Account() {
   const { allAccounts } = useGlobalContext()
 
@@ -20,9 +26,7 @@ function Account() {
     <div>
       <div className='flex justify-between'>
         <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
-          <p className='text-[24px] text-primary font-medium'>
-            {categories.bank}
-          </p>
+          <p className='text-[24px] font-medium'>{categories.bank}</p>
           <div className='flex flex-col gap-y-[20px]'>
             {allAccounts &&
               allAccounts
@@ -31,14 +35,16 @@ function Account() {
                     account.category === categories.bank
                 )
                 .map((account: DocumentData, index: number) => (
-                  <Wallet key={index} account={account} />
+                  <Wallet
+                    key={index}
+                    account={account}
+                    hexCode={hexCodeObj.bank}
+                  />
                 ))}
           </div>
         </div>
         <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
-          <p className='text-[24px] text-primary font-medium'>
-            {categories.eTicket}
-          </p>
+          <p className='text-[24px] font-medium'>{categories.eTicket}</p>
           <div className='flex flex-col gap-y-[20px]'>
             {allAccounts &&
               allAccounts
@@ -47,14 +53,16 @@ function Account() {
                     account.category === categories.eTicket
                 )
                 .map((account: DocumentData, index: number) => (
-                  <Wallet key={index} account={account} />
+                  <Wallet
+                    key={index}
+                    account={account}
+                    hexCode={hexCodeObj.eTicket}
+                  />
                 ))}
           </div>
         </div>
         <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
-          <p className='text-[24px] text-primary font-medium'>
-            {categories.manual}
-          </p>
+          <p className='text-[24px] font-medium'>{categories.manual}</p>
           <div className='flex flex-col gap-y-[20px]'>
             {allAccounts &&
               allAccounts
@@ -63,7 +71,11 @@ function Account() {
                     account.category === categories.manual
                 )
                 .map((account: DocumentData, index: number) => (
-                  <Wallet key={index} account={account} />
+                  <Wallet
+                    key={index}
+                    account={account}
+                    hexCode={hexCodeObj.manual}
+                  />
                 ))}
           </div>
         </div>

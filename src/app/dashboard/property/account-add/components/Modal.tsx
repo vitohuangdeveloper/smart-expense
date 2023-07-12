@@ -76,19 +76,22 @@ export default function Modal(props: ModalProps) {
 
   return (
     <form className='max-w-[600px] m-auto pl-[150px] mt-[180px]'>
-      <div className='bg-[#fff] shadow-md rounded-[20px] px-[40px] py-[80px] mb-[40px] relative'>
+      <div className='bg-[#fff] shadow-md rounded-[20px] px-[40px] pt-[30px] pb-[80px] mb-[40px] relative'>
         <Link href='/dashboard/property'>
           <RxCross2 className='absolute top-[40px] right-[40px] text-[20px] font-medium cursor-pointer' />
         </Link>
+        <h2 className='text-center text-[24px] mb-[40px] font-medium'>
+          新增帳戶
+        </h2>
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
           <label
             htmlFor='accountName'
-            className='text-primary font-medium text-[24px]'
+            className='text-primary font-medium text-[20px]'
           >
             帳戶名稱
           </label>
           <input
-            className='outline-0 border-b border-gray text-[20px] placeholder:text-gray'
+            className='outline-0 border-b border-gray text-[18px] placeholder:text-gray'
             placeholder='輸入自訂的帳戶名稱'
             id='accountName'
             name='accountName'
@@ -99,13 +102,13 @@ export default function Modal(props: ModalProps) {
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
           <label
             htmlFor='accountCategory'
-            className='text-primary font-medium text-[24px]'
+            className='text-primary font-medium text-[20px]'
           >
             帳戶種類
           </label>
           <select
             required
-            className='outline-0 border-b border-gray invalid:text-gray text-[20px]'
+            className='outline-0 border-b border-gray invalid:text-gray text-[18px]'
             id='accountCategory'
             name='accountCategory'
             value={props.addAccount.accountCategory}
@@ -122,12 +125,12 @@ export default function Modal(props: ModalProps) {
         <div className='flex justify-between border-b border-gray'>
           <label
             htmlFor='balance'
-            className='text-[24px] text-primary font-medium'
+            className='text-[20px] text-primary font-medium'
           >
             總額
           </label>
           <input
-            className='outline-0 text-right text-[20px] placeholder:text-gray'
+            className='outline-0 text-right text-[18px] placeholder:text-gray'
             placeholder='0'
             id='balance'
             name='balance'

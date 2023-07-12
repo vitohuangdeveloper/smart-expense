@@ -29,7 +29,7 @@ export default function Home() {
         <Header title={HOMEPAGE_TITLE} />
         <Sidebar />
       </div>
-      <div className='pt-[145px] pl-[230px] pr-[60px]'>
+      <div className='mt-[155px] pl-[230px] pr-[60px]'>
         <div className='flex justify-between mb-[100px]'>
           <div>
             <h2 className='text-[52px] text-dark'>
