@@ -7,9 +7,9 @@ type NumberObject = {
   [key: string]: number
 }
 
-const getTransactionReceipts = (allReceipts: DocumentData[]) => {
-  const transactionReceipts = allReceipts.filter(item => item.type === '轉帳')
-  return transactionReceipts
+const getExpenseReceipts = (allReceipts: DocumentData[]) => {
+  const expenseReceipts = allReceipts.filter(item => item.type === '支出')
+  return expenseReceipts
 }
 
 const getTotalAmountsForEachCategory = (data: DocumentData[]) => {
@@ -26,7 +26,6 @@ const getTotalAmountsForEachCategory = (data: DocumentData[]) => {
       categoryCounts[category] = 1
     }
   }
-
   return [categoryTotals, categoryCounts]
 }
 
@@ -56,30 +55,28 @@ const getResults = (
 export default function Result() {
   const { allAccountsReceipts } = useGlobalContext()
   const flattenedAllAccountsReceipts = allAccountsReceipts.flat(2)
-  const transactionReceipts = getTransactionReceipts(
-    flattenedAllAccountsReceipts
-  )
+  const expenseReceipts = getExpenseReceipts(flattenedAllAccountsReceipts)
   const [categoryTotals, categoryCounts] =
-    getTotalAmountsForEachCategory(transactionReceipts)
+    getTotalAmountsForEachCategory(expenseReceipts)
   const results = getResults(categoryTotals, categoryCounts)
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px]'>
       <div className='flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]'>
         <Link
-          href='/dashboard/receipts-transfer-category'
+          href='/dashboard/receipts-expense-categories'
           className='w-full bg-[#A8A8A8] rounded-tl-[20px] rounded-r-[20px] py-[5px] text-center'
         >
           <button>分類</button>
         </Link>
         <Link
-          href='/dashboard/receipts-transfer-details'
+          href='/dashboard/receipts-expense-details'
           className='w-full bg-[#F4F4F4] rounded-tr-[20px] py-[5px] text-center'
         >
           <button>明細</button>
         </Link>
       </div>
       <div className='self-start pl-[20px] mb-[20px]'>
-        <h2>轉帳分類</h2>
+        <h2>支出分類</h2>
       </div>
       {results.length
         ? results.map((result, index) => (

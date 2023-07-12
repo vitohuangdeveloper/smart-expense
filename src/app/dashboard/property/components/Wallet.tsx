@@ -10,16 +10,15 @@ interface WalletProps {
 export default function Wallet(props: WalletProps) {
   const { account } = props
   return (
-    <div className='flex items-center gap-x-[30px] mb-[10px] last:mb-0'>
+    <div className='flex items-center gap-x-[15px]'>
       <div>
         <Image src={accountIcon} alt='account icon' priority />
       </div>
-      <div className='pb-[15px] border-b border-gray w-[160px] flex justify-between'>
+      <div className='border-b border-dark w-[160px] flex justify-between items-center'>
         <div>
-          <p className='text-gray mb-1'>{account.category}</p>
-          <p>{account.name}</p>
+          <p className='text-[18px] whitespace-nowrap'>{account.name}</p>
         </div>
-        <p>$ {account.balance}</p>
+        <p className='text-[18px] whitespace-nowrap'>$ {account.balance}</p>
       </div>
     </div>
   )

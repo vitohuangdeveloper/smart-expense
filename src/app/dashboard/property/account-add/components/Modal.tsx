@@ -3,6 +3,7 @@ import { setDoc, collection, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
 import Link from 'next/link'
+import { RxCross2 } from 'react-icons/rx'
 import Button from './Button'
 
 interface ModalProps {
@@ -74,12 +75,20 @@ export default function Modal(props: ModalProps) {
   }
 
   return (
-    <form className='max-w-[600px] m-auto mt-[250px]'>
-      <div className='border-2 border-gray rounded-[20px] px-[40px] py-[80px] mb-[35px]'>
+    <form className='max-w-[600px] m-auto pl-[150px] mt-[180px]'>
+      <div className='bg-[#fff] shadow-md rounded-[20px] px-[40px] py-[80px] mb-[40px] relative'>
+        <Link href='/dashboard/property'>
+          <RxCross2 className='absolute top-[40px] right-[40px] text-[20px] font-medium cursor-pointer' />
+        </Link>
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
-          <label htmlFor='accountName'>帳戶名稱</label>
+          <label
+            htmlFor='accountName'
+            className='text-primary font-medium text-[24px]'
+          >
+            帳戶名稱
+          </label>
           <input
-            className='outline-0 border-b border-gray'
+            className='outline-0 border-b border-gray text-[20px] placeholder:text-gray'
             placeholder='輸入自訂的帳戶名稱'
             id='accountName'
             name='accountName'
@@ -88,10 +97,15 @@ export default function Modal(props: ModalProps) {
           />
         </div>
         <div className='flex flex-col mb-[80px] gap-y-[10px]'>
-          <label htmlFor='accountCategory'>帳戶種類</label>
+          <label
+            htmlFor='accountCategory'
+            className='text-primary font-medium text-[24px]'
+          >
+            帳戶種類
+          </label>
           <select
             required
-            className='outline-0 border-b border-gray invalid:text-gray'
+            className='outline-0 border-b border-gray invalid:text-gray text-[20px]'
             id='accountCategory'
             name='accountCategory'
             value={props.addAccount.accountCategory}
@@ -106,9 +120,14 @@ export default function Modal(props: ModalProps) {
           </select>
         </div>
         <div className='flex justify-between border-b border-gray'>
-          <label>總額</label>
+          <label
+            htmlFor='balance'
+            className='text-[24px] text-primary font-medium'
+          >
+            總額
+          </label>
           <input
-            className='outline-0 text-right'
+            className='outline-0 text-right text-[20px] placeholder:text-gray'
             placeholder='0'
             id='balance'
             name='balance'
@@ -117,7 +136,7 @@ export default function Modal(props: ModalProps) {
           />
         </div>
       </div>
-      <div className='px-[40px] flex justify-between'>
+      <div className='text-center'>
         <Button
           name={'新增'}
           onClick={event => {
@@ -126,9 +145,6 @@ export default function Modal(props: ModalProps) {
             resetAccountField()
           }}
         />
-        <Link href='/dashboard/property'>
-          <Button name={'取消'} />
-        </Link>
       </div>
     </form>
   )

@@ -19,37 +19,53 @@ function Account() {
   return (
     <div>
       <div className='flex justify-between'>
-        <div>
-          {allAccounts &&
-            allAccounts
-              .filter(
-                (account: DocumentData) => account.category === categories.bank
-              )
-              .map((account: DocumentData, index: number) => (
-                <Wallet key={index} account={account} />
-              ))}
+        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+          <p className='text-[24px] text-primary font-medium'>
+            {categories.bank}
+          </p>
+          <div className='flex flex-col gap-y-[20px]'>
+            {allAccounts &&
+              allAccounts
+                .filter(
+                  (account: DocumentData) =>
+                    account.category === categories.bank
+                )
+                .map((account: DocumentData, index: number) => (
+                  <Wallet key={index} account={account} />
+                ))}
+          </div>
         </div>
-        <div>
-          {allAccounts &&
-            allAccounts
-              .filter(
-                (account: DocumentData) =>
-                  account.category === categories.eTicket
-              )
-              .map((account: DocumentData, index: number) => (
-                <Wallet key={index} account={account} />
-              ))}
+        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+          <p className='text-[24px] text-primary font-medium'>
+            {categories.eTicket}
+          </p>
+          <div className='flex flex-col gap-y-[20px]'>
+            {allAccounts &&
+              allAccounts
+                .filter(
+                  (account: DocumentData) =>
+                    account.category === categories.eTicket
+                )
+                .map((account: DocumentData, index: number) => (
+                  <Wallet key={index} account={account} />
+                ))}
+          </div>
         </div>
-        <div>
-          {allAccounts &&
-            allAccounts
-              .filter(
-                (account: DocumentData) =>
-                  account.category === categories.manual
-              )
-              .map((account: DocumentData, index: number) => (
-                <Wallet key={index} account={account} />
-              ))}
+        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+          <p className='text-[24px] text-primary font-medium'>
+            {categories.manual}
+          </p>
+          <div className='flex flex-col gap-y-[20px]'>
+            {allAccounts &&
+              allAccounts
+                .filter(
+                  (account: DocumentData) =>
+                    account.category === categories.manual
+                )
+                .map((account: DocumentData, index: number) => (
+                  <Wallet key={index} account={account} />
+                ))}
+          </div>
         </div>
         <div className='w-[30px]'>
           {allAccounts.length ? (

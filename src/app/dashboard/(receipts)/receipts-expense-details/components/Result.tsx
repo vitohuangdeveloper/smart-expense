@@ -26,7 +26,7 @@ export default function Result() {
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px]'>
       <div className='flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]'>
         <Link
-          href='/dashboard/receipts-expense-category'
+          href='/dashboard/receipts-expense-categories'
           className='w-full bg-[#F4F4F4] rounded-tl-[20px] py-[5px] text-center'
         >
           <button>分類</button>

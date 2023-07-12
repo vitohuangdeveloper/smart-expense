@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} bg-[#F4F4FC]`}>
+      <body
+        className={`${inter.className} bg-[#F4F4FC] scrollbar-hide text-dark`}
+      >
         <GlobalContextProvider>{children}</GlobalContextProvider>
       </body>
     </html>
