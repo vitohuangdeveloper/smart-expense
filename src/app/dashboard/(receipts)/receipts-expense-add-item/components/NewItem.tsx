@@ -211,7 +211,7 @@ export default function NewItem() {
   return (
     <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
       <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-        <Link href='/dashboard/receipts-expense-category'>
+        <Link href='/dashboard/receipts-expense-categories'>
           <Image src={cancelIcon} alt='cancel' className='object-cover' />
         </Link>
         <button

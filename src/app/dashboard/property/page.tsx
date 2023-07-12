@@ -123,10 +123,41 @@ export default function Page() {
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          padding: 1,
+          color: '#282F4B',
+          font: {
+            weight: '500',
+            size: 24, // Adjust the font size here
+          },
+        },
       },
       title: {
         display: true,
-        text: '資產折線圖',
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          lineWidth: 2,
+        },
+        ticks: {
+          color: '#282F4B',
+          font: {
+            size: 20, // Adjust the font size here
+          },
+        },
+      },
+      y: {
+        grid: {
+          lineWidth: 2,
+        },
+        ticks: {
+          color: '#282F4B',
+          font: {
+            size: 20, // Adjust the font size here
+          },
+        },
       },
     },
     maintainAspectRatio: true,
@@ -140,8 +171,8 @@ export default function Page() {
       {
         label: '資產',
         data: updatedAmountsArray?.map(item => item.amounts),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(36, 48, 208)',
+        backgroundColor: 'rgb(36, 48, 208, 0.5)',
       },
     ],
   }
@@ -149,8 +180,14 @@ export default function Page() {
   return (
     <div>
       <Header title={PROPERTY_TITLE} />
-      <div className='max-w-[960px] m-[auto] mt-[150px]'>
-        <Line options={lineChartOptions} data={data} className='mb-[60px]' />
+      <div className='max-w-[1200px] m-[auto] mt-[180px] pl-[150px]'>
+        <div className='bg-[#fff] shadow-md mb-[100px] rounded-[20px]'>
+          <Line
+            options={lineChartOptions}
+            data={data}
+            className='m-[20px] mt-0'
+          />
+        </div>
         <Account />
       </div>
     </div>
