@@ -1,8 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useGlobalContext } from '@/app/context/store'
-import Image from 'next/image'
-import profile from '/public/profile.png'
 
 interface HeaderProps {
   title: string
@@ -37,7 +35,7 @@ export default function Header(props: HeaderProps) {
   }, [user])
 
   return (
-    <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[30px] '>
+    <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[60px] border-b border-[#F4F4FC] shadow '>
       <h1 className='mr-auto text-primary'>{props.title}</h1>
       {loading ? null : !user ? (
         <div>
