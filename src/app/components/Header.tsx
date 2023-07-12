@@ -37,32 +37,17 @@ export default function Header(props: HeaderProps) {
   }, [user])
 
   return (
-    <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[30px] border-b border-[#D9D9D9]'>
-      <h1 className='mr-auto'>{props.title}</h1>
+    <div className='flex items-center absolute top-0 right-0 z-10 w-[calc(100vw_-_90px)] h-[80px] px-[30px] '>
+      <h1 className='mr-auto text-primary'>{props.title}</h1>
       {loading ? null : !user ? (
-        <div className='cursor-pointer' onClick={handleSignIn}>
-          <Image
-            className='rounded-full'
-            src={profile}
-            alt='profile'
-            priority={false}
-            width={50}
-            height={50}
-          />
+        <div>
+          <p className='text-primary cursor-pointer' onClick={handleSignIn}>
+            Login
+          </p>
         </div>
       ) : (
         <div className='flex items-center gap-x-[10px]'>
-          <div className='cursor-pointer'>
-            <Image
-              className='rounded-full'
-              src={user.photoURL}
-              alt='profile'
-              priority={false}
-              width={50}
-              height={50}
-            />
-          </div>
-          <p className='cursor-pointer' onClick={handleSignOut}>
+          <p className='cursor-pointer text-primary' onClick={handleSignOut}>
             Sign out
           </p>
         </div>
