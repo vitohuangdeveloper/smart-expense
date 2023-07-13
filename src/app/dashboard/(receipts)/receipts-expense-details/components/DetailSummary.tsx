@@ -1,7 +1,4 @@
-import Image from 'next/image'
 import { DocumentData } from 'firebase/firestore'
-import accountIcon from '/public/account-icon.png'
-import { create } from 'domain'
 
 interface DetailSummaryProps {
   item: DocumentData
@@ -11,8 +8,8 @@ export default function ReceiptSummary(props: DetailSummaryProps) {
   const { createdTime, category, amounts, description, account } = props.item
   return (
     <div className='px-[20px] w-full'>
-      <div className='bg-secondary flex justify-between rounded-[20px] px-[20px] py-[10px]'>
-        <div className='flex items-center gap-x-[8px]'>
+      <div className='bg-secondary flex rounded-[20px] px-[20px] py-[10px]'>
+        <div className='flex items-center gap-x-[8px] mr-[130px]'>
           <div className='w-[30px] h-[30px] bg-red rounded-full'></div>
           <div>
             <p className='whitespace-nowrap'>
@@ -21,7 +18,7 @@ export default function ReceiptSummary(props: DetailSummaryProps) {
             </p>
           </div>
         </div>
-        <div className='flex flex-col gap-y-[10px]'>
+        <div className='flex flex-col gap-y-[10px] items-start mr-auto'>
           <div>
             <p>
               <span className='font-medium text-primary'>類別</span>：{category}
