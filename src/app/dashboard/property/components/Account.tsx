@@ -80,17 +80,13 @@ function Account() {
           </div>
         </div>
         <div className='w-[30px]'>
-          {allAccounts.length ? (
-            <Link href='/dashboard/property/account-add'>
-              <Image
-                src={addIcon}
-                alt='add icon'
-                className='w-full cursor-pointer'
-              />
-            </Link>
-          ) : (
-            ''
-          )}
+          <Link href='/dashboard/property/account-add'>
+            <Image
+              src={addIcon}
+              alt='add icon'
+              className='w-full cursor-pointer'
+            />
+          </Link>
         </div>
       </div>
     </div>
