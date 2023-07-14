@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { DocumentData } from 'firebase/firestore'
-import DetailSummary from './DetailSummary'
+import { GrAddCircle } from 'react-icons/gr'
 import { useGlobalContext } from '@/app/context/store'
-import addIcon from '/public/add-icon.png'
+import DetailSummary from './DetailSummary'
 
 const getExpenseReceipts = (allReceipts: DocumentData[]) => {
   const expenseReceipts = allReceipts.filter(item => item.type === '支出')
@@ -26,12 +25,12 @@ export default function Result() {
 
   return (
     <div className='pl-[150px]'>
-      <div className='flex flex-col items-center w-[900px] min-h-[500px] m-auto bg-white shadow-sm rounded-[20px] pb-[30px] relative'>
+      <div className='flex flex-col items-center w-[900px] min-h-[500px] m-auto bg-white shadow-md rounded-[20px] pb-[30px] relative'>
         <Link
           href='/dashboard/receipts-expense-add-item'
-          className=' absolute top-[75px] right-[20px] w-[30px] h-[30px]'
+          className=' absolute top-[75px] right-[20px]'
         >
-          <Image src={addIcon} alt='add' className='cursor-pointer' />
+          <GrAddCircle className='w-[30px] h-auto' />
         </Link>
         <div className='flex bg-secondGray rounded-t-[20px] w-full mb-[25px]'>
           <Link
@@ -50,7 +49,7 @@ export default function Result() {
         <div className='mb-[25px]'>
           <h2 className='text-[18px] font-medium'>支出明細</h2>
         </div>
-        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary '>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
           {sortedExpenseReceipts.length
             ? sortedExpenseReceipts.map((item, index) => (
                 <DetailSummary key={index} item={item} />

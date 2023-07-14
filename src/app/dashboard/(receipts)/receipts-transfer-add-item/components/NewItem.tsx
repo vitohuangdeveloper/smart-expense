@@ -1,16 +1,14 @@
 'use client'
 import { ChangeEvent, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
+import { RxCross2 } from 'react-icons/rx'
+import { VscCircleLargeFilled } from 'react-icons/vsc'
+import { BiDollarCircle, BiPencil } from 'react-icons/bi'
+import { FaCalendarDays } from 'react-icons/fa6'
+import { MdAccountBalance } from 'react-icons/md'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
-import cancelIcon from '/public/cancel.png'
-import categoryIcon from '/public/category-icon.png'
-import dollarSign from '/public/dollar-sign.png'
-import descriptionIcon from '/public/description-icon.png'
-import calendar from '/public/calendar.png'
-import necessityIcon from '/public/necessity-icon.png'
 
 const categories = {
   bank: '銀行',
@@ -177,12 +175,177 @@ export default function NewItem() {
   }
 
   return (
-    <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] pb-[30px] mt-[209px] pt-[30px]'>
-      <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-        <Link href='/dashboard/receipts-transfer-categories'>
-          <Image src={cancelIcon} alt='cancel' className='object-cover' />
-        </Link>
+    <div className='pl-[150px]'>
+      <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] py-[40px] mt-[180px] relative'>
+        <div className='px-[20px] flex justify-between w-full mb-[30px]'>
+          <Link href='/dashboard/receipts-transfer-categories'>
+            <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
+          </Link>
+        </div>
+        <div className='mb-[30px]'>
+          <h1 className='text-[24px] font-medium'>新增轉帳</h1>
+        </div>
+        <div className='w-[500px]'>
+          <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
+            <div>
+              <VscCircleLargeFilled className='w-[45px] h-auto text-dark' />
+            </div>
+            <div className='border-b w-full flex flex-col '>
+              <label
+                htmlFor='category'
+                className='text-[20px] text-primary font-medium'
+              >
+                類別
+              </label>
+              <select
+                required
+                id='category'
+                name='category'
+                className='outline-0 bg-[transparent] invalid:text-gray text-[18px] appearance-none cursor-pointer'
+                value={transferReceipt.category}
+                onChange={handleChange}
+              >
+                <option disabled value=''>
+                  選擇類別
+                </option>
+                {transferCategories &&
+                  transferCategories.map((transferCategory: DocumentData) => (
+                    <option
+                      key={transferCategory.name}
+                      value={transferCategory.name}
+                    >
+                      {transferCategory.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+          <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
+            <div>
+              <BiDollarCircle className='text-dark w-[45px] h-auto' />
+            </div>
+            <div className='border-b w-full flex flex-col'>
+              <label
+                htmlFor='amounts'
+                className='text-[20px] text-primary font-medium'
+              >
+                金額
+              </label>
+              <input
+                className='outline-0 bg-[transparent] text-[18px] placeholder:text-gray'
+                id='amounts'
+                name='amounts'
+                value={transferReceipt.amounts}
+                onChange={handleChange}
+                placeholder='0'
+              />
+            </div>
+          </div>
+          <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
+            <div>
+              <BiPencil className='w-[45px] h-auto text-dark' />
+            </div>
+            <div className='flex flex-col w-full'>
+              <label
+                htmlFor='description'
+                className='text-[20px] text-primary font-medium'
+              >
+                明細描述
+              </label>
+              <input
+                className='border-b outline-0 bg-[transparent] text-[18px] placeholder:text-gray'
+                id='description'
+                name='description'
+                value={transferReceipt.description}
+                onChange={handleChange}
+                placeholder='請輸入明細描述'
+              />
+            </div>
+          </div>
+          <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
+            <div>
+              <FaCalendarDays className='w-[45px] h-auto text-dark' />
+            </div>
+            <div className='flex flex-col w-full'>
+              <label
+                htmlFor='createdTime'
+                className='text-[20px] text-primary font-medium'
+              >
+                日期
+              </label>
+              <input
+                type='date'
+                className='border-b outline-0 bg-[transparent] text-[18px]'
+                id='createdTime'
+                name='createdTime'
+                value={transferReceipt.createdTime}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
+            <div>
+              <MdAccountBalance className='w-[45px] h-auto text-dark' />
+            </div>
+            <div className='flex flex-col w-full border-b'>
+              <label
+                htmlFor='account'
+                className='text-[20px] text-primary font-medium'
+              >
+                帳戶
+              </label>
+              <select
+                required
+                className='outline-0 bg-[transparent] invalid:text-gray text-[18px] appearance-none cursor-pointer'
+                id='account'
+                name='account'
+                value={transferReceipt.account}
+                onChange={handleChange}
+              >
+                <option disabled value=''>
+                  選擇帳戶
+                </option>
+                <optgroup label={categories.bank}>
+                  {allAccounts &&
+                    allAccounts
+                      .filter(
+                        (account: DocumentData) =>
+                          account.category === categories.bank
+                      )
+                      .map((account: DocumentData) => (
+                        <option key={account.name}>{account.name}</option>
+                      ))}
+                </optgroup>
+                <optgroup label={categories.eTicket}>
+                  {allAccounts &&
+                    allAccounts
+                      .filter(
+                        (account: DocumentData) =>
+                          account.category === categories.eTicket
+                      )
+                      .map((account: DocumentData) => (
+                        <option key={account.name}>{account.name}</option>
+                      ))}
+                </optgroup>
+                <optgroup label={categories.manual}>
+                  {allAccounts &&
+                    allAccounts
+                      .filter(
+                        (account: DocumentData) =>
+                          account.category === categories.manual
+                      )
+                      .map((account: DocumentData) => (
+                        <option key={account.name}>{account.name}</option>
+                      ))}
+                </optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='text-center'>
         <button
+          className='bg-primary text-[#fff] text-[20px] rounded-full w-[150px] py-[10px]'
           onClick={() => {
             addNewReceipt(accountID)
             updateAccountBalance(allAccounts)
@@ -191,161 +354,8 @@ export default function NewItem() {
             resetReceiptField()
           }}
         >
-          完成
+          新增
         </button>
-      </div>
-      <div className='self-start pl-[80px] mb-[30px]'>
-        <h1>新增轉帳</h1>
-      </div>
-      <div className='w-[500px]'>
-        <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={categoryIcon}
-              alt='category icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='border-b w-full flex flex-col gap-y-[5px]'>
-            <label htmlFor='category'>類別</label>
-            <select
-              required
-              id='category'
-              name='category'
-              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
-              value={transferReceipt.category}
-              onChange={handleChange}
-            >
-              <option disabled value=''>
-                選擇類別
-              </option>
-              {transferCategories &&
-                transferCategories.map((transferCategory: DocumentData) => (
-                  <option
-                    key={transferCategory.name}
-                    value={transferCategory.name}
-                  >
-                    {transferCategory.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-        </div>
-        <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={dollarSign}
-              alt='dollar sign'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='border-b w-full flex flex-col'>
-            <label htmlFor='amounts'>金額</label>
-            <input
-              className='outline-0 bg-[transparent]'
-              id='amounts'
-              name='amounts'
-              value={transferReceipt.amounts}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={descriptionIcon}
-              alt='description icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='description'>明細描述</label>
-            <input
-              className='border-b outline-0 bg-[transparent]'
-              id='description'
-              name='description'
-              value={transferReceipt.description}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={calendar}
-              alt='calendar icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full'>
-            <label htmlFor='createdTime'>日期</label>
-            <input
-              type='date'
-              className='border-b outline-0 bg-[transparent]'
-              id='createdTime'
-              name='createdTime'
-              value={transferReceipt.createdTime}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
-          <div>
-            <Image
-              src={necessityIcon}
-              alt='necessity icon'
-              className='w-[45px] h-auto'
-            />
-          </div>
-          <div className='flex flex-col w-full gap-y-[5px] border-b'>
-            <label htmlFor='account'>帳戶</label>
-            <select
-              required
-              className='outline-0 bg-[transparent] invalid:text-[#a4a4a4]'
-              id='account'
-              name='account'
-              value={transferReceipt.account}
-              onChange={handleChange}
-            >
-              <option disabled value=''>
-                選擇帳戶
-              </option>
-              <optgroup label={categories.bank}>
-                {allAccounts &&
-                  allAccounts
-                    .filter(
-                      (account: DocumentData) =>
-                        account.category === categories.bank
-                    )
-                    .map((account: DocumentData) => (
-                      <option key={account.name}>{account.name}</option>
-                    ))}
-              </optgroup>
-              <optgroup label={categories.eTicket}>
-                {allAccounts &&
-                  allAccounts
-                    .filter(
-                      (account: DocumentData) =>
-                        account.category === categories.eTicket
-                    )
-                    .map((account: DocumentData) => (
-                      <option key={account.name}>{account.name}</option>
-                    ))}
-              </optgroup>
-              <optgroup label={categories.manual}>
-                {allAccounts &&
-                  allAccounts
-                    .filter(
-                      (account: DocumentData) =>
-                        account.category === categories.manual
-                    )
-                    .map((account: DocumentData) => (
-                      <option key={account.name}>{account.name}</option>
-                    ))}
-              </optgroup>
-            </select>
-          </div>
-        </div>
       </div>
     </div>
   )

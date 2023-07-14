@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import addIcon from '/public/add-icon.png'
 
 export default function Buttons() {
   const buttonStyle = {

@@ -1,11 +1,10 @@
 'use client'
-import Image from 'next/image'
+
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
 import Wallet from './Wallet'
 import { useGlobalContext } from '@/app/context/store'
-
-import addIcon from '/public/add-icon.png'
+import { GrAddCircle } from 'react-icons/gr'
 
 const categories = {
   bank: '銀行',
@@ -79,13 +78,9 @@ function Account() {
                 ))}
           </div>
         </div>
-        <div className='w-[30px]'>
+        <div className='w-[30px] self-start'>
           <Link href='/dashboard/property/account-add'>
-            <Image
-              src={addIcon}
-              alt='add icon'
-              className='w-full cursor-pointer'
-            />
+            <GrAddCircle className='w-[30px] h-auto' />
           </Link>
         </div>
       </div>
