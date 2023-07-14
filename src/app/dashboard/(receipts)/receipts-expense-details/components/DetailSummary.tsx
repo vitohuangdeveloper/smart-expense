@@ -8,7 +8,7 @@ export default function ReceiptSummary(props: DetailSummaryProps) {
   const { createdTime, category, amounts, description, account } = props.item
   return (
     <div className='px-[20px] w-full'>
-      <div className='bg-secondary flex rounded-[20px] px-[20px] py-[10px]'>
+      <div className='bg-secondary flex rounded-[20px] px-[20px] py-[10px] shadow-md'>
         <div className='flex items-center gap-x-[8px] mr-[130px]'>
           <div className='w-[30px] h-[30px] bg-red rounded-full'></div>
           <div>

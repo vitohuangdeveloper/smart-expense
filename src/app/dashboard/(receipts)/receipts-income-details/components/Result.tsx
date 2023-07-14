@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
-import DetailSummary from './DetailSummary'
+import { GrAddCircle } from 'react-icons/gr'
 import { useGlobalContext } from '@/app/context/store'
+import DetailSummary from './DetailSummary'
 
 const getIncomeReceipts = (allReceipts: DocumentData[]) => {
   const incomeReceipts = allReceipts.filter(item => item.type === '收入')
@@ -24,30 +25,38 @@ export default function Result() {
   const sortedIncomeReceipts = sortIncomeReceipts(incomeReceipts)
 
   return (
-    <div className='flex flex-col items-center w-[935px] min-h-[500px] m-auto bg-gray rounded-[20px] '>
-      <div className='flex bg-[#F4F4F4] rounded-t-[20px] w-full mb-[20px]'>
+    <div className='pl-[150px]'>
+      <div className='flex flex-col items-center w-[900px] min-h-[500px] m-auto bg-white shadow-md rounded-[20px] pb-[30px] relative'>
         <Link
-          href='/dashboard/receipts-income-categories'
-          className='w-full bg-[#F4F4F4] rounded-tl-[20px] py-[5px] text-center'
+          href='/dashboard/receipts-income-add-item'
+          className=' absolute top-[75px] right-[20px]'
         >
-          <button>分類</button>
+          <GrAddCircle className='w-[30px] h-auto' />
         </Link>
-        <Link
-          href='/dashboard/receipts-income-details'
-          className='w-full bg-[#A8A8A8] rounded-l-[20px] rounded-tr-[20px] py-[5px] text-center'
-        >
-          <button>明細</button>
-        </Link>
-      </div>
-      <div className='self-start pl-[20px] mb-[20px]'>
-        <h2>收入明細</h2>
-      </div>
-      <div className='w-full max-h-[500px] overflow-auto pb-[30px]'>
-        {sortedIncomeReceipts.length
-          ? sortedIncomeReceipts.map((item, index) => (
-              <DetailSummary key={index} item={item} />
-            ))
-          : ''}
+        <div className='flex bg-secondGray rounded-t-[20px] w-full mb-[25px]'>
+          <Link
+            href='/dashboard/receipts-income-categories'
+            className='w-full bg-secondGray text-[20px] rounded-tl-[20px] rounded-r-[20px] py-[10px] text-center'
+          >
+            <button>分類</button>
+          </Link>
+          <Link
+            href='/dashboard/receipts-income-details'
+            className='w-full bg-primary text-white text-[20px] rounded-l-[20px] rounded-tr-[20px] py-[10px] text-center'
+          >
+            <button>明細</button>
+          </Link>
+        </div>
+        <div className='mb-[25px]'>
+          <h2 className='text-[18px] font-medium'>收入明細</h2>
+        </div>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
+          {sortedIncomeReceipts.length
+            ? sortedIncomeReceipts.map((item, index) => (
+                <DetailSummary key={index} item={item} />
+              ))
+            : ''}
+        </div>
       </div>
     </div>
   )

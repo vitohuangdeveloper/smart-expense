@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 interface ReceiptSummaryProps {
   result: {
     category: string
@@ -13,7 +11,7 @@ export default function ReceiptSummary(props: ReceiptSummaryProps) {
   const { category, percentage, count, amounts } = props.result
   return (
     <div className='px-[20px] w-full'>
-      <div className='bg-secondary flex gap-x-[20px] rounded-[20px] px-[20px] py-[10px]'>
+      <div className='bg-secondary flex gap-x-[20px] rounded-[20px] px-[20px] py-[10px] shadow-md'>
         <div className='flex items-center gap-x-[10px]'>
           <div className='w-[30px] h-[30px] bg-red rounded-full'></div>
           <div>

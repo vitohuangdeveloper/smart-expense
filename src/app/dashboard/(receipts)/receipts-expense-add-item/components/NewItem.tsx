@@ -1,17 +1,14 @@
 'use client'
 import { ChangeEvent, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { RxCross2 } from 'react-icons/rx'
+import { VscCircleLargeFilled } from 'react-icons/vsc'
+import { BiDollarCircle, BiPencil } from 'react-icons/bi'
+import { FaCalendarDays } from 'react-icons/fa6'
+import { MdAccountBalance } from 'react-icons/md'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
-import cancelIcon from '/public/cancel.png'
-import categoryIcon from '/public/category-icon.png'
-import dollarSign from '/public/dollar-sign.png'
-import descriptionIcon from '/public/description-icon.png'
-import calendar from '/public/calendar.png'
-import necessityIcon from '/public/necessity-icon.png'
 
 const categories = {
   bank: '銀行',
@@ -213,7 +210,7 @@ export default function NewItem() {
     <div className='pl-[150px]'>
       <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] py-[40px] mt-[180px] relative'>
         <Link href='/dashboard/receipts-expense-categories'>
-          <RxCross2 className='absolute top-[40px] right-[40px] text-[20px] font-medium cursor-pointer' />
+          <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
         </Link>
         <div className='mb-[30px]'>
           <h1 className='text-[24px] font-medium'>新增支出</h1>
@@ -221,13 +218,9 @@ export default function NewItem() {
         <div className='w-[500px]'>
           <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
             <div>
-              <Image
-                src={categoryIcon}
-                alt='category icon'
-                className='w-[45px] h-auto'
-              />
+              <VscCircleLargeFilled className='w-[45px] h-auto text-dark' />
             </div>
-            <div className='border-b w-full flex flex-col gap-y-[5px]'>
+            <div className='border-b w-full flex flex-col'>
               <label
                 htmlFor='category'
                 className='text-[20px] text-primary font-medium'
@@ -259,11 +252,7 @@ export default function NewItem() {
           </div>
           <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>
             <div>
-              <Image
-                src={dollarSign}
-                alt='dollar sign'
-                className='w-[45px] h-auto'
-              />
+              <BiDollarCircle className='text-dark w-[45px] h-auto' />
             </div>
             <div className='border-b w-full flex flex-col'>
               <label
@@ -284,11 +273,7 @@ export default function NewItem() {
           </div>
           <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
             <div>
-              <Image
-                src={descriptionIcon}
-                alt='description icon'
-                className='w-[45px] h-auto'
-              />
+              <BiPencil className='w-[45px] h-auto text-dark' />
             </div>
             <div className='flex flex-col w-full'>
               <label
@@ -309,11 +294,7 @@ export default function NewItem() {
           </div>
           <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
             <div>
-              <Image
-                src={calendar}
-                alt='calendar icon'
-                className='w-[45px] h-auto'
-              />
+              <FaCalendarDays className='w-[45px] h-auto text-dark' />
             </div>
             <div className='flex flex-col w-full'>
               <label
@@ -324,7 +305,7 @@ export default function NewItem() {
               </label>
               <input
                 type='date'
-                className='border-b outline-0 bg-[transparent] text-[18px] text-gray'
+                className='border-b outline-0 bg-[transparent] text-[18px]'
                 id='createdTime'
                 name='createdTime'
                 value={expenseReceipt.createdTime}
@@ -334,13 +315,9 @@ export default function NewItem() {
           </div>
           <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
             <div>
-              <Image
-                src={necessityIcon}
-                alt='necessity icon'
-                className='w-[45px] h-auto'
-              />
+              <MdAccountBalance className='w-[45px] h-auto text-dark' />
             </div>
-            <div className='flex flex-col w-full gap-y-[5px] border-b'>
+            <div className='flex flex-col w-full border-b'>
               <label
                 htmlFor='account'
                 className='text-[20px] text-primary font-medium'

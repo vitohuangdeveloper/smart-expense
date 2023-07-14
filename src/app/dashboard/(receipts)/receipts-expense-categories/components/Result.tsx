@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { DocumentData } from 'firebase/firestore'
-import CategorySummary from './CategorySummary'
+import { GrAddCircle } from 'react-icons/gr'
 import { useGlobalContext } from '@/app/context/store'
-import addIcon from '/public/add-icon.png'
+import CategorySummary from './CategorySummary'
 
 type NumberObject = {
   [key: string]: number
@@ -66,9 +65,9 @@ export default function Result() {
       <div className='flex flex-col items-center max-w-[900px] min-h-[500px] m-auto bg-white shadow-md rounded-[20px] pb-[30px] relative'>
         <Link
           href='/dashboard/receipts-expense-add-item'
-          className=' absolute top-[75px] right-[20px] w-[30px] h-[30px]'
+          className=' absolute top-[75px] right-[20px]'
         >
-          <Image src={addIcon} alt='add' className='cursor-pointer' />
+          <GrAddCircle className='w-[30px] h-auto' />
         </Link>
         <div className='flex bg-secondGray rounded-t-[20px] w-full mb-[25px]'>
           <Link
@@ -87,7 +86,7 @@ export default function Result() {
         <div className='mb-[25px]'>
           <h2 className='text-[18px] font-medium'>支出分類</h2>
         </div>
-        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary'>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thumb-primary scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
           {results.length
             ? results.map((result, index) => (
                 <CategorySummary key={index} result={result} />
