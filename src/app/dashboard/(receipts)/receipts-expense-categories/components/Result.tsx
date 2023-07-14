@@ -72,7 +72,7 @@ export default function Result() {
         <div className='flex bg-secondGray rounded-t-[20px] w-full mb-[25px]'>
           <Link
             href='/dashboard/receipts-expense-categories'
-            className='w-full bg-primary text-[#fff] text-[20px] rounded-tl-[20px] rounded-r-[20px] py-[10px] text-center'
+            className='w-full bg-primary text-white text-[20px] rounded-tl-[20px] rounded-r-[20px] py-[10px] text-center'
           >
             <button>分類</button>
           </Link>
@@ -86,7 +86,7 @@ export default function Result() {
         <div className='mb-[25px]'>
           <h2 className='text-[18px] font-medium'>支出分類</h2>
         </div>
-        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thumb-primary scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
           {results.length
             ? results.map((result, index) => (
                 <CategorySummary key={index} result={result} />

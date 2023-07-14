@@ -50,7 +50,7 @@ export default function Result() {
         <div className='mb-[25px]'>
           <h2 className='text-[18px] font-medium'>收入明細</h2>
         </div>
-        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
+        <div className='flex flex-col gap-y-[25px] w-full max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
           {sortedIncomeReceipts.length
             ? sortedIncomeReceipts.map((item, index) => (
                 <DetailSummary key={index} item={item} />

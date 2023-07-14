@@ -42,7 +42,9 @@ export default function Header(props: HeaderProps) {
         <SiWebmoney className='text-primary text-[24px]' />
         <p className='text-primary font-bold text-[28px]'>Smart Expense</p>
       </div>
-      {loading ? null : !user ? (
+      {loading ? (
+        <div></div>
+      ) : !user ? (
         <div>
           <p className='text-primary cursor-pointer' onClick={handleSignIn}>
             Login
