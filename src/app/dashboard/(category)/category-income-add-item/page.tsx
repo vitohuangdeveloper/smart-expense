@@ -117,7 +117,7 @@ export default function Page() {
               resetCategoryField()
             }}
           >
-            完成
+            新增
           </button>
         </div>
       </form>
