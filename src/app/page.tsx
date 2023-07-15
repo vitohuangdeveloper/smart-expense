@@ -3,8 +3,7 @@ import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import { useGlobalContext } from './context/store'
-import Header from '@/app/components/Header'
-import Sidebar from '@/app/components/Sidebar'
+import Header from './components/Header'
 import checkIcon from '/public/check.png'
 import personalFiance from '/public/personal-finance.svg'
 import financialManagement from 'public/financial-management.svg'
@@ -21,15 +20,10 @@ export default function Home() {
     }
   }, [user])
 
-  const HOMEPAGE_TITLE = '首頁'
-
   return (
     <div>
-      <div>
-        <Header title={HOMEPAGE_TITLE} />
-        <Sidebar />
-      </div>
-      <div className='mt-[155px] pl-[230px] pr-[60px]'>
+      <Header />
+      <div className='pt-[155px] px-[100px] pb-[40px]'>
         <div className='flex justify-between mb-[100px]'>
           <div>
             <h2 className='text-[52px] text-dark'>
@@ -42,7 +36,7 @@ export default function Home() {
             <p className='text-primary font-bold text-[30px] mb-[40px]'>
               培養良好的記帳習慣，成為智慧金錢好管家。
             </p>
-            <ul className='flex flex-col gap-y-[30px] text-[20px]'>
+            <ul className='flex flex-col gap-y-[25px] text-[20px]'>
               <li className='flex items-center gap-x-[30px]'>
                 <Image src={checkIcon} alt='check icon' />
                 <p className='text-dark text-[24px] '>聰明記帳不會遺漏。</p>

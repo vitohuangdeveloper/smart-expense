@@ -176,7 +176,7 @@ export default function NewItem() {
 
   return (
     <div className='pl-[150px]'>
-      <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] py-[40px] mt-[180px] relative'>
+      <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] pt-[40px] pb-[70px] mt-[180px] relative'>
         <div className='px-[20px] flex justify-between w-full mb-[30px]'>
           <Link href='/dashboard/receipts-transfer-categories'>
             <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
@@ -283,7 +283,7 @@ export default function NewItem() {
               />
             </div>
           </div>
-          <div className='flex items-center gap-x-[50px] pb-[15px] mb-[30px]'>
+          <div className='flex items-center gap-x-[50px] pb-[15px]'>
             <div>
               <MdAccountBalance className='w-[45px] h-auto text-dark' />
             </div>
@@ -345,7 +345,7 @@ export default function NewItem() {
       </div>
       <div className='text-center'>
         <button
-          className='bg-primary text-[#fff] text-[20px] rounded-full w-[150px] py-[10px]'
+          className='bg-primary text-white text-[20px] rounded-full w-[150px] py-[10px]'
           onClick={() => {
             addNewReceipt(accountID)
             updateAccountBalance(allAccounts)

@@ -75,8 +75,8 @@ export default function Modal(props: ModalProps) {
   }
 
   return (
-    <form className='max-w-[600px] m-auto pl-[150px] mt-[180px]'>
-      <div className='bg-[#fff] shadow-md rounded-[20px] px-[40px] pt-[30px] pb-[80px] mb-[40px] relative'>
+    <form className='pl-[150px] mt-[180px]'>
+      <div className='bg-white max-w-[600px] min-h-[500px] m-auto shadow-md rounded-[20px] px-[40px] pt-[40px] pb-[85px] mb-[40px] relative'>
         <Link href='/dashboard/property'>
           <RxCross2 className='absolute top-[15px] right-[15px] text-[20px] font-medium cursor-pointer w-[20px] h-auto' />
         </Link>

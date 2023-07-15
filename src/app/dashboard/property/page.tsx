@@ -2,7 +2,6 @@
 
 import { DocumentData } from 'firebase/firestore'
 import { useGlobalContext } from '@/app/context/store'
-import Header from '@/app/components/Header'
 import Account from './components/Account'
 
 import {
@@ -31,8 +30,6 @@ interface RefinedReceiptsType {
   createdTime: string
   amounts: number
 }
-
-const PROPERTY_TITLE = '資產'
 
 export default function Page() {
   const { allAccountsReceipts, allAccounts } = useGlobalContext()
@@ -178,8 +175,7 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <Header title={PROPERTY_TITLE} />
+    <div className='pb-[40px]'>
       <div className='max-w-[1200px] m-[auto] mt-[180px] pl-[150px]'>
         <div className='bg-[#fff] shadow-md mb-[100px] rounded-[20px]'>
           <Line

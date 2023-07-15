@@ -1,12 +1,10 @@
 'use client'
 import { ChangeEvent, SyntheticEvent, useState } from 'react'
 import { setDoc, doc, collection, DocumentData } from 'firebase/firestore'
+import Link from 'next/link'
+import { RxCross2 } from 'react-icons/rx'
 import { useGlobalContext } from '@/app/context/store'
 import { db } from '@/app/lib/firebase'
-import Header from '@/app/components/Header'
-import Link from 'next/link'
-
-const CATEGORY_TITLE = '分類'
 
 export default function Page() {
   const { uid, setReceiptCategories } = useGlobalContext()
@@ -63,11 +61,23 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <Header title={CATEGORY_TITLE} />
-      <form className='flex flex-col w-[500px] min-h-[500px] m-auto bg-gray rounded-[20px] justify-center px-[20px] mt-[209px]'>
-        <div className='flex flex-col gap-y-[5px] mb-[20px] justify-center '>
-          <label htmlFor='name' className='whitespace-nowrap'>
+    <div className='pl-[150px] pt-[180px]'>
+      <form className='flex flex-col max-w-[600px] min-h-[500px] m-auto bg-white rounded-[20px] px-[40px] shadow-md pt-[40px] pb-[85px] relative'>
+        <div className='px-[20px] flex justify-between w-full mb-[30px]'>
+          <Link href='/dashboard/category-income'>
+            <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
+          </Link>
+        </div>
+        <div>
+          <h2 className='text-center text-[24px] font-medium mb-[30px]'>
+            新增收入分類
+          </h2>
+        </div>
+        <div className='flex flex-col justify-center border-b mb-[60px] '>
+          <label
+            htmlFor='name'
+            className='text-[20px] text-primary font-medium'
+          >
             分類名稱
           </label>
           <input
@@ -75,31 +85,31 @@ export default function Page() {
             name='name'
             value={category.name}
             onChange={handleChange}
-            className='bg-[transparent] border-b outline-none'
+            className='outline-0 bg-[transparent] text-[18px] placeholder:text-gray'
             placeholder='請輸入分類名稱'
           />
         </div>
-        <div className='flex flex-col gap-y-[5px] mb-[40px] justify-center border-b'>
-          <label htmlFor='type'>帳戶類別</label>
+        <div className='flex flex-col justify-center border-b mb-[100px]'>
+          <label
+            htmlFor='type'
+            className='text-[20px] text-primary font-medium'
+          >
+            帳戶類別
+          </label>
           <select
             required
             id='type'
             name='type'
             value={category.type}
             onChange={handleChange}
-            className='invalid:text-[#aaa] outline-none bg-[transparent]'
+            className='outline-none bg-[transparent] text-[18px] appearance-none cursor-pointer'
           >
             <option>{category.type}</option>
           </select>
         </div>
-        <div className='flex justify-center gap-x-[20px]'>
-          <Link href='/dashboard/category-income'>
-            <button className='bg-[#aaa] rounded-[15px] px-[5px] py-[10px] w-[100px]'>
-              取消
-            </button>
-          </Link>
+        <div className='text-center'>
           <button
-            className='bg-[#aaa] rounded-[15px] px-[5px] py-[10px] w-[100px]'
+            className='bg-primary text-white text-[20px] rounded-full w-[150px] py-[10px]'
             onClick={event => {
               handleClick(event)
               addCategory()
