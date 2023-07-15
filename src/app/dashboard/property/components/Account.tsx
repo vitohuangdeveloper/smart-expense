@@ -9,7 +9,7 @@ import { GrAddCircle } from 'react-icons/gr'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
-  manual: '手動新增',
+  manual: '自訂',
 }
 
 const hexCodeObj = {
@@ -26,7 +26,7 @@ function Account() {
       <div className='flex justify-between'>
         <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
           <p className='text-[24px] font-medium'>{categories.bank}</p>
-          <div className='flex flex-col gap-y-[20px]'>
+          <div className='flex flex-col gap-y-[20px] max-h-[300px] overflow-auto'>
             {allAccounts &&
               allAccounts
                 .filter(

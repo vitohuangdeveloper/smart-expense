@@ -1,17 +1,16 @@
-import Image, { StaticImageData } from 'next/image'
-
 interface CategoryProps {
-  src: StaticImageData
   categoryName: string | undefined
+  bgColor: string | undefined
 }
 
 export default function Category(props: CategoryProps) {
+  const { categoryName, bgColor } = props
   return (
     <div className='flex flex-col items-center'>
-      <div>
-        <Image src={props.src} alt='category icon' className='cursor-pointer' />
-      </div>
-      <p>{props.categoryName}</p>
+      <div
+        className={`w-[55px] h-[55px] ${bgColor} rounded-full shadow-md`}
+      ></div>
+      <p>{categoryName}</p>
     </div>
   )
 }

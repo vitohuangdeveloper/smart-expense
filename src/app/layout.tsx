@@ -15,8 +15,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en'>
-      <body className={`${inter.className} bg-secondary text-dark`}>
+    <html lang='en' className='min-w-screen min-h-screen'>
+      <body
+        className={`${inter.className} bg-gradient-to-t from-secondary via-third to-fifth text-dark scrollbar-hide`}
+      >
         <GlobalContextProvider>{children}</GlobalContextProvider>
       </body>
     </html>

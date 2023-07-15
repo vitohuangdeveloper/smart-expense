@@ -1,22 +1,17 @@
 'use client'
-import { useEffect } from 'react'
-import { redirect } from 'next/navigation'
-import { useGlobalContext } from '../context/store'
 import Sidebar from '@/app/components/Sidebar'
+import Header from '../components/Header'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { user } = useGlobalContext()
-  useEffect(() => {
-    if (!user) {
-      redirect('/')
-    }
-  }, [user])
+  const positionStyle = 'pl-[150px]'
+
   return (
     <div>
+      <Header positionStyle={positionStyle} />
       <Sidebar />
       {children}
     </div>
