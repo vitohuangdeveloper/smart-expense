@@ -9,7 +9,7 @@ function Page() {
     balance: number | string
   }>({
     accountName: '',
-    accountCategory: '',
+    accountCategory: '自訂',
     balance: '',
   })
   return (

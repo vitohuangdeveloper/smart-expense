@@ -24,8 +24,6 @@ interface ModalProps {
 export default function Modal(props: ModalProps) {
   const { uid, setAllAccounts } = useGlobalContext()
 
-  const categories = ['銀行', '電子票證', '手動新增']
-
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -81,9 +79,9 @@ export default function Modal(props: ModalProps) {
           <RxCross2 className='absolute top-[15px] right-[15px] text-[20px] font-medium cursor-pointer w-[20px] h-auto' />
         </Link>
         <h2 className='text-center text-[24px] mb-[40px] font-medium'>
-          新增帳戶
+          新增電子票證
         </h2>
-        <div className='flex flex-col mb-[80px] gap-y-[10px]'>
+        <div className='flex flex-col mb-[80px]'>
           <label
             htmlFor='accountName'
             className='text-primary font-medium text-[20px]'
@@ -99,7 +97,7 @@ export default function Modal(props: ModalProps) {
             onChange={handleChange}
           />
         </div>
-        <div className='flex flex-col mb-[80px] gap-y-[10px]'>
+        <div className='flex flex-col mb-[80px]'>
           <label
             htmlFor='accountCategory'
             className='text-primary font-medium text-[20px]'
@@ -108,7 +106,7 @@ export default function Modal(props: ModalProps) {
           </label>
           <select
             required
-            className='outline-0 border-b border-gray invalid:text-gray text-[18px]'
+            className='outline-0 border-b border-gray invalid:text-gray text-[18px] appearance-none'
             id='accountCategory'
             name='accountCategory'
             value={props.addAccount.accountCategory}
@@ -117,9 +115,9 @@ export default function Modal(props: ModalProps) {
             <option disabled value=''>
               選擇帳戶
             </option>
-            {categories.map((category, index) => (
-              <option key={index}>{category}</option>
-            ))}
+            <option value={props.addAccount.accountCategory}>
+              {props.addAccount.accountCategory}
+            </option>
           </select>
         </div>
         <div className='flex justify-between border-b border-gray'>
