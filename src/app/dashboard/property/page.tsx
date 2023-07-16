@@ -185,17 +185,6 @@ export default function Page() {
     <div className='pb-[40px]'>
       <div className='max-w-[1200px] m-[auto] mt-[180px] pl-[150px]'>
         <div className='bg-white shadow-md mb-[100px] rounded-[20px] h-[505px] relative'>
-          {/* {allAccountsReceipts.length ? (
-            <Line
-              options={lineChartOptions}
-              data={data}
-              className='m-[20px] mt-0'
-            />
-          ) : (
-            <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-              <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
-            </div>
-          )} */}
           {loading ? (
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
               <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
