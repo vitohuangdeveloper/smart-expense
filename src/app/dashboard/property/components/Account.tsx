@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
 import Wallet from './Wallet'
@@ -20,7 +21,12 @@ const hexCodeObj = {
 }
 
 function Account() {
+  const [loading, setLoading] = useState<boolean>(true)
   const { allAccounts } = useGlobalContext()
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   return (
     <div>
@@ -35,7 +41,11 @@ function Account() {
           </Link>
           <p className='text-[24px] font-medium'>{categories.bank}</p>
           <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
-            {allAccounts.length ? (
+            {loading ? (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            ) : allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -49,9 +59,7 @@ function Account() {
                   />
                 ))
             ) : (
-              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
-              </div>
+              ''
             )}
           </div>
         </div>
@@ -64,7 +72,11 @@ function Account() {
           </Link>
           <p className='text-[24px] font-medium'>{categories.eTicket}</p>
           <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
-            {allAccounts.length ? (
+            {loading ? (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            ) : allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -78,9 +90,7 @@ function Account() {
                   />
                 ))
             ) : (
-              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
-              </div>
+              ''
             )}
           </div>
         </div>
@@ -93,7 +103,11 @@ function Account() {
           </Link>
           <p className='text-[24px] font-medium'>{categories.manual}</p>
           <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
-            {allAccounts.length ? (
+            {loading ? (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            ) : allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -107,9 +121,7 @@ function Account() {
                   />
                 ))
             ) : (
-              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
-              </div>
+              ''
             )}
           </div>
         </div>
