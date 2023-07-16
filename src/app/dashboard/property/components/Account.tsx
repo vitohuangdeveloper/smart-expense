@@ -5,6 +5,7 @@ import { DocumentData } from 'firebase/firestore'
 import Wallet from './Wallet'
 import { useGlobalContext } from '@/app/context/store'
 import { GrAddCircle } from 'react-icons/gr'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 const categories = {
   bank: '銀行',
@@ -23,11 +24,18 @@ function Account() {
 
   return (
     <div>
-      <div className='flex justify-between'>
-        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+      <h2 className='text-[30px] font-medium mb-[10px] text-center'>帳戶</h2>
+      <div className='flex justify-between p-[20px] border-dashed border border-white rounded-[20px] shadow-sm'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+          <Link
+            href='/dashboard/property/bank-account-add'
+            className=' absolute top-[35px] right-[22px]'
+          >
+            <GrAddCircle className='w-[25px] h-auto' />
+          </Link>
           <p className='text-[24px] font-medium'>{categories.bank}</p>
-          <div className='flex flex-col gap-y-[20px] max-h-[300px] overflow-auto'>
-            {allAccounts &&
+          <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
+            {allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -39,13 +47,24 @@ function Account() {
                     account={account}
                     hexCode={hexCodeObj.bank}
                   />
-                ))}
+                ))
+            ) : (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            )}
           </div>
         </div>
-        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+          <Link
+            href='/dashboard/property/eTicket-account-add'
+            className=' absolute top-[35px] right-[22px]'
+          >
+            <GrAddCircle className='w-[25px] h-auto' />
+          </Link>
           <p className='text-[24px] font-medium'>{categories.eTicket}</p>
-          <div className='flex flex-col gap-y-[20px]'>
-            {allAccounts &&
+          <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
+            {allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -57,13 +76,24 @@ function Account() {
                     account={account}
                     hexCode={hexCodeObj.eTicket}
                   />
-                ))}
+                ))
+            ) : (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            )}
           </div>
         </div>
-        <div className='flex flex-col gap-y-[30px] bg-[#fff] shadow-md p-[20px] rounded-[20px]'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+          <Link
+            href='/dashboard/property/manual-account-add'
+            className=' absolute top-[35px] right-[22px]'
+          >
+            <GrAddCircle className='w-[25px] h-auto' />
+          </Link>
           <p className='text-[24px] font-medium'>{categories.manual}</p>
-          <div className='flex flex-col gap-y-[20px]'>
-            {allAccounts &&
+          <div className='flex flex-col gap-y-[25px] h-[195px] overflow-auto pr-[15px] scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg'>
+            {allAccounts.length ? (
               allAccounts
                 .filter(
                   (account: DocumentData) =>
@@ -75,13 +105,13 @@ function Account() {
                     account={account}
                     hexCode={hexCodeObj.manual}
                   />
-                ))}
+                ))
+            ) : (
+              <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+              </div>
+            )}
           </div>
-        </div>
-        <div className='w-[30px] self-start'>
-          <Link href='/dashboard/property/account-add'>
-            <GrAddCircle className='w-[30px] h-auto' />
-          </Link>
         </div>
       </div>
     </div>
