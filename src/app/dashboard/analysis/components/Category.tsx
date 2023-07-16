@@ -1,8 +1,10 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { DocumentData } from 'firebase/firestore'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -39,6 +41,7 @@ const getBorderColorArray = (data: string[]) => {
 }
 
 export default function Category(props: CategoryProps) {
+  const [loading, setLoading] = useState<boolean>(true)
   const [isIncome, setIsIncome] = useState<boolean>(true)
   const { incomeData, expenseData } = props
   const incomelabels = getLabels(incomeData)
@@ -75,13 +78,18 @@ export default function Category(props: CategoryProps) {
   }
 
   const buttonStyle = {
-    clicked: 'w-full bg-[#8F8F8F] py-[5px] rounded-[10px]',
-    unclicked: 'w-full bg-[#F4F4F4] py-[5px] rounded-[10px]',
+    clicked: 'w-full bg-primary text-white py-[5px] rounded-[10px]',
+    unclicked: 'w-full bg-secondGray py-[5px] rounded-[10px]',
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
   return (
-    <div className='min-w-[280px] bg-gray rounded-[20px] py-[20px] px-[25px]'>
-      <h2 className='mb-[20px]'>本月分類</h2>
-      <div className='flex bg-[#F4F4F4] rounded-[10px] mb-[20px]'>
+    <div className=' bg-white shadow-md rounded-[20px] p-[30px]'>
+      <h2 className='mb-[30px] text-[24px] font-medium'>本月分類</h2>
+      <div className='flex bg-secondGray rounded-[10px] mb-[20px]'>
         <button
           className={isIncome ? buttonStyle.clicked : buttonStyle.unclicked}
           onClick={incomeHandleClick}
@@ -95,8 +103,14 @@ export default function Category(props: CategoryProps) {
           支出
         </button>
       </div>
-      <div>
-        <Doughnut data={data} />
+      <div className='relative h-[246px]'>
+        {loading ? (
+          <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+            <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+          </div>
+        ) : (
+          <Doughnut data={data} />
+        )}
       </div>
     </div>
   )

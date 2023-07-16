@@ -90,8 +90,8 @@ export default function Page() {
   const incomeData = getIncomeData(combinedTransactionData)
 
   return (
-    <div>
-      <div className='max-w-[1200px] m-auto mt-[200px] grid grid-cols-3 gap-x-[100px]'>
+    <div className='pl-[150px] pt-[180px]'>
+      <div className='max-w-[1040px] m-auto grid grid-cols-3 gap-x-[60px]'>
         <Balance balanceData={balanceData} />
         <Category incomeData={incomeData} expenseData={expenseData} />
         <Trend allIncomeExpenseReceipts={allIncomeExpenseReceipts} />

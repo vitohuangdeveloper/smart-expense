@@ -1,6 +1,8 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { DocumentData } from 'firebase/firestore'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -103,6 +105,7 @@ const refineAllReceipts = (allIncomeExpenseReceipts: DocumentData[]) => {
 }
 
 export default function Trend(props: TrendProps) {
+  const [loading, setLoading] = useState<boolean>(true)
   const [isIncomeBar, setIsIncomeBar] = useState<boolean>(true)
   const [isBalanceLine, setIsBalanceLine] = useState<boolean>(true)
   const { allIncomeExpenseReceipts } = props
@@ -150,13 +153,15 @@ export default function Trend(props: TrendProps) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
       },
-      title: {
-        display: true,
-        text: titleText,
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
       },
     },
   }
@@ -165,7 +170,7 @@ export default function Trend(props: TrendProps) {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: titleText,
         data: isBalanceLine
           ? refinedAllReceipts?.map(item => item.amounts)
           : isIncomeBar
@@ -178,8 +183,8 @@ export default function Trend(props: TrendProps) {
   }
 
   const buttonStyle = {
-    unclicked: 'w-full py-[5px] rounded-l-[10px] cursor-pointer',
-    clicked: 'w-full py-[5px] rounded-[10px] bg-[#8F8F8F] cursor-pointer',
+    unclicked: 'w-full bg-secondGray py-[5px] rounded-[10px]',
+    clicked: 'w-full bg-primary text-white py-[5px] rounded-[10px]',
   }
 
   const incomeHandleClick = () => {
@@ -196,10 +201,14 @@ export default function Trend(props: TrendProps) {
     setIsBalanceLine(true)
   }
 
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
   return (
-    <div className='min-w-[280px] bg-gray rounded-[20px] pt-[20px] px-[25px]'>
-      <h2 className='mb-[20px]'>近半年趨勢</h2>
-      <div className='flex bg-[#F4F4F4] rounded-[10px] mb-[20px]'>
+    <div className=' bg-white shadow-md rounded-[20px] p-[30px]'>
+      <h2 className='mb-[30px] font-medium text-[24px]'>近半年趨勢</h2>
+      <div className='flex bg-secondGray rounded-[10px] mb-[20px]'>
         <button
           className={
             isBalanceLine
@@ -233,8 +242,12 @@ export default function Trend(props: TrendProps) {
           結餘
         </button>
       </div>
-      <div>
-        {isBalanceLine ? (
+      <div className='relative h-[246px] w-auto'>
+        {loading ? (
+          <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+            <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+          </div>
+        ) : isBalanceLine ? (
           <Line data={data} options={options} />
         ) : (
           <Bar data={data} options={options} />
