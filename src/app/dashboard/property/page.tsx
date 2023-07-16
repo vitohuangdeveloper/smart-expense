@@ -149,6 +149,7 @@ export default function Page() {
         },
       },
       y: {
+        beginAtZero: true,
         grid: {
           lineWidth: 2,
         },

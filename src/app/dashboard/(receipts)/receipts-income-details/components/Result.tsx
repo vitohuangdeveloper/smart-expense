@@ -38,7 +38,7 @@ export default function Result() {
       <div className='flex flex-col items-center w-[900px] min-h-[500px] m-auto bg-white shadow-md rounded-[20px] pb-[30px] relative'>
         <Link
           href='/dashboard/receipts-income-add-item'
-          className=' absolute top-[75px] right-[20px]'
+          className=' absolute top-[80px] right-[20px]'
         >
           <GrAddCircle className='w-[25px] h-auto' />
         </Link>
