@@ -1,6 +1,10 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { DocumentData } from 'firebase/firestore'
 import { useGlobalContext } from '@/app/context/store'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { GrAddCircle } from 'react-icons/gr'
 import Category from './Category'
 
@@ -15,10 +19,15 @@ const getBgColor = (index: number) => {
 }
 
 export default function Result() {
+  const [loading, setLoading] = useState<boolean>(true)
   const { receiptCategories } = useGlobalContext()
   const transferCategories = receiptCategories.filter(
     (receiptCategory: DocumentData) => receiptCategory.type === '轉帳'
   )
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   return (
     <div className='pl-[150px] pt-[180px]'>
@@ -44,7 +53,11 @@ export default function Result() {
           </Link>
         </div>
         <div className='grid w-full grid-cols-3 gap-y-[90px] max-h-[450px] items-center overflow-auto scrollbar-thin scrollbar-thumb-secondGray scrollbar-track-secondary scrollbar-thumb-rounded-lg scrollbar-track-rounded-lg pb-[5px]'>
-          {transferCategories &&
+          {loading ? (
+            <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+              <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
+            </div>
+          ) : transferCategories.length ? (
             transferCategories.map(
               (transferCategory: DocumentData, index: number) => (
                 <Category
@@ -53,13 +66,20 @@ export default function Result() {
                   bgColor={getBgColor(index)}
                 />
               )
-            )}
-          <div className='flex flex-col items-center'>
-            <Link href='/dashboard/category-transfer-add-item'>
-              <GrAddCircle className='w-[55px] h-auto object-cover text-dark' />
-            </Link>
-            <p>新增</p>
-          </div>
+            )
+          ) : (
+            ''
+          )}
+          {loading ? (
+            ''
+          ) : (
+            <div className='flex flex-col items-center cursor-pointer'>
+              <Link href='/dashboard/category-expense-add-item'>
+                <GrAddCircle className='w-[55px] h-auto object-cover text-dark' />
+              </Link>
+              <p>新增</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
