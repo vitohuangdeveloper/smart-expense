@@ -13,7 +13,7 @@ import { useGlobalContext } from '@/app/context/store'
 const categories = {
   bank: '銀行',
   eTicket: '電子票證',
-  manual: '手動新增',
+  manual: '自訂',
 }
 
 interface ExpenseReceiptObject {
