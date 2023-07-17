@@ -135,21 +135,26 @@ export default function Trend(props: TrendProps) {
     : isIncomeBar
     ? '收入長條圖'
     : '支出長條圖'
+
   const backgroundColor = isBalanceLine
-    ? 'rgb(98,60,68, 0.5)'
+    ? 'rgb(8, 158, 145, 0.5)'
     : isIncomeBar
-    ? 'rgba(255, 99, 132, 0.5)'
-    : 'rgb(122,143,207, 0.5)'
+    ? 'rgba(233, 82, 83, 0.5)'
+    : 'rgb(233, 195, 43, 0.5)'
+
   const borderColor = isBalanceLine
-    ? 'rgb(98,60,68)'
+    ? 'rgb(8, 158, 145)'
     : isIncomeBar
-    ? 'rgba(255, 99, 132)'
-    : 'rgb(122,143,207)'
+    ? 'rgba(233, 82, 83)'
+    : 'rgb(233, 195, 43)'
+
   const labels = isBalanceLine
     ? refinedCreatedTimeArray
     : isIncomeBar
     ? incomeCreatedTimeArray
     : expenseCreatedTimeArray
+
+  const pointStyle = isBalanceLine ? 'line' : 'rectRounded'
 
   const options = {
     responsive: true,
@@ -157,6 +162,10 @@ export default function Trend(props: TrendProps) {
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          usePointStyle: true,
+          pointStyle,
+        },
       },
     },
     scales: {
@@ -178,6 +187,8 @@ export default function Trend(props: TrendProps) {
           : expenseReceiptsArray?.map(item => item.amounts),
         backgroundColor,
         borderColor,
+        borderRadius: 5,
+        borderWidth: 2,
       },
     ],
   }

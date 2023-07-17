@@ -61,14 +61,15 @@ export default function Page() {
 
   return (
     <div className='pl-[150px] pt-[180px]'>
-      <form className='flex flex-col max-w-[600px] min-h-[500px] m-auto bg-white rounded-[20px] px-[40px] shadow-md pt-[40px] pb-[85px] relative'>
-        <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-          <Link href='/dashboard/category-transfer'>
-            <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
-          </Link>
-        </div>
+      <form className='flex flex-col max-w-[500px] min-h-[500px] m-auto bg-white rounded-[20px] px-[40px] shadow-md pt-[40px] pb-[60px] relative'>
+        <Link
+          href='/dashboard/category-transfer'
+          className='absolute top-[20px] right-[20px] '
+        >
+          <RxCross2 className='text-[20px] font-medium cursor-pointer' />
+        </Link>
         <div>
-          <h2 className='text-center text-[24px] font-medium mb-[30px]'>
+          <h2 className='text-center text-[24px] font-medium mb-[50px]'>
             新增轉帳分類
           </h2>
         </div>
@@ -88,7 +89,7 @@ export default function Page() {
             placeholder='請輸入分類名稱'
           />
         </div>
-        <div className='flex flex-col justify-center border-b mb-[100px]'>
+        <div className='flex flex-col justify-center border-b mb-[80px]'>
           <label
             htmlFor='type'
             className='text-[20px] text-primary font-medium'

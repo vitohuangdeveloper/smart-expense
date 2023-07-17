@@ -176,14 +176,16 @@ export default function NewItem() {
 
   return (
     <div className='pl-[150px]'>
-      <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] pt-[40px] pb-[70px] mt-[180px] relative'>
-        <div className='px-[20px] flex justify-between w-full mb-[30px]'>
-          <Link href='/dashboard/receipts-transfer-categories'>
-            <RxCross2 className='absolute top-[20px] right-[20px] text-[20px] font-medium cursor-pointer' />
-          </Link>
-        </div>
+      <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] pt-[40px] pb-[60px] mt-[180px] relative'>
+        <Link
+          href='/dashboard/receipts-transfer-categories'
+          className='absolute top-[20px] right-[20px] '
+        >
+          <RxCross2 className='text-[20px] font-medium cursor-pointer' />
+        </Link>
+
         <div className='mb-[30px]'>
-          <h1 className='text-[24px] font-medium'>新增轉帳</h1>
+          <h2 className='text-[24px] font-medium'>新增轉帳</h2>
         </div>
         <div className='w-[500px]'>
           <div className='flex gap-x-[50px] items-center pb-[15px] mb-[30px]'>

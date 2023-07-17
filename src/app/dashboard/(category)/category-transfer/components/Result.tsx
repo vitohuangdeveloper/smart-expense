@@ -74,7 +74,7 @@ export default function Result() {
             ''
           ) : (
             <div className='flex flex-col items-center cursor-pointer'>
-              <Link href='/dashboard/category-expense-add-item'>
+              <Link href='/dashboard/category-transfer-add-item'>
                 <GrAddCircle className='w-[55px] h-auto object-cover text-dark' />
               </Link>
               <p>新增</p>

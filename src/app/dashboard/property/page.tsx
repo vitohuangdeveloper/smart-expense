@@ -8,24 +8,28 @@ import Account from './components/Account'
 
 import {
   Chart as ChartJS,
-  CategoryScale,
   LinearScale,
+  CategoryScale,
+  BarElement,
   PointElement,
   LineElement,
-  Title,
-  Tooltip,
   Legend,
+  Tooltip,
+  LineController,
+  BarController,
 } from 'chart.js'
-import { Line } from 'react-chartjs-2'
+import { Chart } from 'react-chartjs-2'
 
 ChartJS.register(
-  CategoryScale,
   LinearScale,
+  CategoryScale,
+  BarElement,
   PointElement,
   LineElement,
-  Title,
+  Legend,
   Tooltip,
-  Legend
+  LineController,
+  BarController
 )
 
 interface RefinedReceiptsType {
@@ -118,18 +122,19 @@ export default function Page() {
   const updatedAmountsArray =
     refinedAllReceipts && updateAmounts(refinedAllReceipts, currentProperty)
 
-  const lineChartOptions = {
+  const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
         position: 'top' as const,
         labels: {
-          padding: 1,
+          padding: 20,
           color: '#282F4B',
           font: {
             weight: '500',
             size: 24, // Adjust the font size here
           },
+          usePointStyle: true,
         },
       },
       title: {
@@ -170,10 +175,41 @@ export default function Page() {
     labels,
     datasets: [
       {
-        label: '資產',
+        type: 'line' as const,
+        label: '折線圖',
+
         data: updatedAmountsArray?.map(item => item.amounts),
-        borderColor: 'rgb(36, 48, 208)',
-        backgroundColor: 'rgb(36, 48, 208, 0.5)',
+        borderColor: 'rgb(40, 47, 75)',
+        backgroundColor: 'rgb(40, 47, 75, 0.5)',
+        borderWidth: 3,
+        pointStyle: 'circle',
+      },
+      {
+        type: 'bar' as const,
+        label: '長條圖',
+        data: updatedAmountsArray?.map(item => item.amounts),
+        borderColor: [
+          'rgb(36, 48, 208)',
+          'rgb(233, 82, 83)',
+          'rgb(54, 184, 99)',
+          'rgb(233, 196, 42)',
+          'rgb(234, 145, 59)',
+          'rgb(243, 149, 196)',
+          'rgb(59, 102, 234)',
+        ],
+        backgroundColor: [
+          'rgb(36, 48, 208, 0.5)',
+          'rgb(233, 82, 83, 0.5)',
+          'rgb(54, 184, 99, 0.5)',
+          'rgb(233, 196, 42, 0.5)',
+          'rgb(234, 145, 59, 0.5)',
+          'rgb(243, 149, 196, 0.5)',
+          'rgb(59, 102, 234, 0.5)',
+        ],
+        borderWidth: 2,
+        barThickness: 40,
+        borderRadius: 5,
+        pointStyle: 'rectRounded',
       },
     ],
   }
@@ -185,14 +221,15 @@ export default function Page() {
   return (
     <div className='pb-[40px]'>
       <div className='max-w-[1200px] m-[auto] mt-[180px] pl-[150px]'>
-        <div className='bg-white shadow-md mb-[100px] rounded-[20px] h-[505px] relative'>
+        <div className='bg-white shadow-md mb-[100px] rounded-[20px] h-[505px] relative p-[20px] pt-[5px]'>
           {loading ? (
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
               <AiOutlineLoading3Quarters className='animate-spin w-[30px] h-auto text-dark' />
             </div>
           ) : (
-            <Line
-              options={lineChartOptions}
+            <Chart
+              type='bar'
+              options={chartOptions}
               data={data}
               className='m-[20px] mt-0'
             />
