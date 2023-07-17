@@ -154,7 +154,7 @@ export default function Trend(props: TrendProps) {
     ? incomeCreatedTimeArray
     : expenseCreatedTimeArray
 
-  const pointStyle = isBalanceLine ? 'line' : 'rectRounded'
+  const pointStyle = isBalanceLine ? 'circle' : 'rectRounded'
 
   const options = {
     responsive: true,
