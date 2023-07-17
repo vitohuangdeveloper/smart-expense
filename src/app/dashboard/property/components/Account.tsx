@@ -29,7 +29,7 @@ function Account() {
         <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
           <Link
             href='/dashboard/property/bank-account-add'
-            className=' absolute top-[35px] right-[22px]'
+            className=' absolute top-[33px] right-[22px]'
           >
             <GrAddCircle className='w-[25px] h-auto' />
           </Link>
@@ -59,7 +59,7 @@ function Account() {
         <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
           <Link
             href='/dashboard/property/eTicket-account-add'
-            className=' absolute top-[35px] right-[22px]'
+            className=' absolute top-[33px] right-[22px]'
           >
             <GrAddCircle className='w-[25px] h-auto' />
           </Link>
@@ -89,7 +89,7 @@ function Account() {
         <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
           <Link
             href='/dashboard/property/manual-account-add'
-            className=' absolute top-[35px] right-[22px]'
+            className=' absolute top-[33px] right-[22px]'
           >
             <GrAddCircle className='w-[25px] h-auto' />
           </Link>

@@ -1,5 +1,6 @@
 import { ChangeEvent, SyntheticEvent } from 'react'
 import { setDoc, collection, doc, DocumentData } from 'firebase/firestore'
+import { toast } from 'react-toastify'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
 import Link from 'next/link'
@@ -54,6 +55,12 @@ export default function Modal(props: ModalProps) {
   }
 
   const syncAccountsDisplayed = () => {
+    if (
+      !props.addAccount.accountName ||
+      !props.addAccount.accountCategory ||
+      !props.addAccount.balance
+    )
+      return
     setAllAccounts((prev: DocumentData[]) => [
       ...prev,
       {
@@ -65,10 +72,36 @@ export default function Modal(props: ModalProps) {
   }
 
   const resetAccountField = () => {
+    if (
+      !props.addAccount.accountName ||
+      !props.addAccount.accountCategory ||
+      !props.addAccount.balance
+    )
+      return
     props.setAddAccount({
       accountName: '',
       accountCategory: '',
       balance: '',
+    })
+  }
+
+  const notify = () => {
+    if (
+      !props.addAccount.accountName ||
+      !props.addAccount.accountCategory ||
+      !props.addAccount.balance
+    )
+      return
+
+    toast.success('新增成功!', {
+      position: 'top-center',
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
     })
   }
 
@@ -147,6 +180,7 @@ export default function Modal(props: ModalProps) {
             addAccount(event)
             syncAccountsDisplayed()
             resetAccountField()
+            notify()
           }}
         />
       </div>

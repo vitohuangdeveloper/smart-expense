@@ -6,3 +6,16 @@
   margin-left: 5px;
   cursor: pointer;
 }
+
+.Toastify__toast-container {
+  width: initial !important ;
+}
+
+.Toastify__toast-container--top-center {
+  left: calc(50% + 75px) !important;
+}
+
+.Toastify__close-button {
+  padding-right: 10px !important;
+  padding-top: 5px !important;
+}

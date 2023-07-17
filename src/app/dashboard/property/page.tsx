@@ -113,6 +113,26 @@ export default function Page() {
     return updatedData
   }
 
+  const extractHighestAmounts = (data: RefinedReceiptsType[] | undefined) => {
+    const highestAmountsObj = data?.reduce((maxAmount, entry) => {
+      return entry.amounts > maxAmount.amounts ? entry : maxAmount
+    })
+    const highestAmounts = highestAmountsObj?.amounts
+    return highestAmounts
+  }
+
+  const getColourArray = (data: RefinedReceiptsType[] | undefined) => {
+    if (!data) return
+    const highestAmounts = extractHighestAmounts(data) as number
+    const colourArray = data.map(datum => {
+      const { amounts } = datum
+      const ratio = Number((amounts / highestAmounts).toFixed(2))
+      const rgbCode = `rgb(36, 48, 208, ${ratio})`
+      return rgbCode
+    })
+    return colourArray
+  }
+
   const refinedAllReceipts = refineAllReceipts(flattenedAllAccountsReceipts)
   const createdTimeArray = getNewCreatedTimeArray(flattenedAllAccountsReceipts)
   const currentProperty = allAccounts.reduce(
@@ -121,6 +141,8 @@ export default function Page() {
   )
   const updatedAmountsArray =
     refinedAllReceipts && updateAmounts(refinedAllReceipts, currentProperty)
+
+  const colourArray = getColourArray(updatedAmountsArray)
 
   const chartOptions = {
     responsive: true,
@@ -176,7 +198,7 @@ export default function Page() {
     datasets: [
       {
         type: 'line' as const,
-        label: '折線圖',
+        label: '資產折線圖',
 
         data: updatedAmountsArray?.map(item => item.amounts),
         borderColor: 'rgb(40, 47, 75)',
@@ -186,26 +208,10 @@ export default function Page() {
       },
       {
         type: 'bar' as const,
-        label: '長條圖',
+        label: '資產長條圖',
         data: updatedAmountsArray?.map(item => item.amounts),
-        borderColor: [
-          'rgb(36, 48, 208)',
-          'rgb(233, 82, 83)',
-          'rgb(54, 184, 99)',
-          'rgb(233, 196, 42)',
-          'rgb(234, 145, 59)',
-          'rgb(243, 149, 196)',
-          'rgb(59, 102, 234)',
-        ],
-        backgroundColor: [
-          'rgb(36, 48, 208, 0.5)',
-          'rgb(233, 82, 83, 0.5)',
-          'rgb(54, 184, 99, 0.5)',
-          'rgb(233, 196, 42, 0.5)',
-          'rgb(234, 145, 59, 0.5)',
-          'rgb(243, 149, 196, 0.5)',
-          'rgb(59, 102, 234, 0.5)',
-        ],
+        borderColor: colourArray,
+        backgroundColor: colourArray,
         borderWidth: 2,
         barThickness: 40,
         borderRadius: 5,
