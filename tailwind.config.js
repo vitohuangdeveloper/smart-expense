@@ -8,22 +8,17 @@ module.exports = {
   theme: {
     colors: {
       primary: '#2430D0',
-      secondary: '#F4F4FC',
-      third: '#EAE9F7',
+      secondary: '#F9F9FE',
+      third: '#E9EFF7',
       fourth: '#E3E2F9',
-      fifth: '#DEDCFF',
+      fifth: '#DCEAFF',
       gray: '#a4a4a4',
-      secondGray: '#D5D8E1',
+      secondGray: '#D5DBE1',
       dark: '#282F4B',
       white: '#fff',
-      red: '#FA4778',
-      green: '#2BDE73',
-      yellow: '#FFE812',
-    },
-    extend: {
-      backgroundImage: {
-        my_bg_image: "url('/leaf.png')",
-      },
+      red: '#E95253',
+      green: '#089E91',
+      yellow: '#E9C42A',
     },
   },
   plugins: [

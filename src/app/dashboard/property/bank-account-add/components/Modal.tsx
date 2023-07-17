@@ -74,9 +74,12 @@ export default function Modal(props: ModalProps) {
 
   return (
     <form className='pl-[150px] mt-[180px]'>
-      <div className='bg-white max-w-[600px] min-h-[500px] m-auto shadow-md rounded-[20px] px-[40px] pt-[40px] pb-[85px] mb-[40px] relative'>
-        <Link href='/dashboard/property'>
-          <RxCross2 className='absolute top-[15px] right-[15px] text-[20px] font-medium cursor-pointer w-[20px] h-auto' />
+      <div className='bg-white max-w-[500px] min-h-[500px] m-auto shadow-md rounded-[20px] px-[40px] pt-[40px] pb-[60px] mb-[40px] relative'>
+        <Link
+          href='/dashboard/property'
+          className='absolute top-[15px] right-[15px] '
+        >
+          <RxCross2 className='text-[20px] font-medium cursor-pointer w-[20px] h-auto' />
         </Link>
         <h2 className='text-center text-[24px] mb-[40px] font-medium'>
           新增銀行
