@@ -95,13 +95,13 @@ export default function Modal(props: ModalProps) {
 
     toast.success('新增成功!', {
       position: 'top-center',
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: 'light',
+      theme: 'colored',
     })
   }
 

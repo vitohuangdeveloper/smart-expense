@@ -25,14 +25,8 @@ export default function DashboardLayout({
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='light'
+        theme='colored'
         transition={Flip}
-        toastClassName={() =>
-          'flex bg-white shadow-md rounded-[20px] items-center justify-between w-full'
-        }
-        bodyClassName={() =>
-          'whitespace-nowrap text-dark flex items-center font-medium text-[18px] p-[10px]'
-        }
       />
       {children}
     </div>

@@ -7,6 +7,7 @@ import { BiDollarCircle, BiPencil } from 'react-icons/bi'
 import { FaCalendarDays } from 'react-icons/fa6'
 import { MdAccountBalance } from 'react-icons/md'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
+import { toast } from 'react-toastify'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
 
@@ -171,6 +172,28 @@ export default function NewItem() {
       description: '',
       createdTime: '',
       account: '',
+    })
+  }
+
+  const notify = () => {
+    if (
+      !transferReceipt.category ||
+      !transferReceipt.amounts ||
+      !transferReceipt.description ||
+      !transferReceipt.createdTime ||
+      !transferReceipt.account
+    )
+      return
+
+    toast.success('新增成功!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
     })
   }
 
@@ -354,6 +377,7 @@ export default function NewItem() {
             updateDBAccountBalance(accountID)
             syncTransferReceiptDisplayed()
             resetReceiptField()
+            notify()
           }}
         >
           新增

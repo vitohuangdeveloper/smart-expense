@@ -15,7 +15,14 @@
   left: calc(50% + 75px) !important;
 }
 
-.Toastify__close-button {
-  padding-right: 10px !important;
-  padding-top: 5px !important;
+.Toastify__toast {
+  border-radius: 20px !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background: #2430d0 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--warning {
+  background: #e9c42a !important;
 }
