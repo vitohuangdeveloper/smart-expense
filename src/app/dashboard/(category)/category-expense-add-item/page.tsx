@@ -57,7 +57,7 @@ export default function Page() {
     if (!category.name || !category.type) return
     setCategory({
       name: '',
-      type: '',
+      type: '支出',
     })
   }
 
