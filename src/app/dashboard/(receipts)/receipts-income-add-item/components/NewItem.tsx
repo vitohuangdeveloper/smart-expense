@@ -189,7 +189,7 @@ export default function NewItem() {
   }
 
   return (
-    <div className='pl-[150px]'>
+    <div className='pl-[150px] pb-[40px]'>
       <div className='flex flex-col items-center max-w-[600px] min-h-[500px] m-auto mb-[40px] bg-white shadow-md rounded-[20px] pt-[40px] pb-[60px] mt-[180px] relative'>
         <Link
           href='/dashboard/receipts-income-categories'

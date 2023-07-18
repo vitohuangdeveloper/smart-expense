@@ -3,7 +3,6 @@ import { useState, ChangeEvent, SyntheticEvent } from 'react'
 import { setDoc, doc, collection } from 'firebase/firestore'
 import { DocumentData } from 'firebase/firestore'
 import { db } from '@/app/lib/firebase'
-import Link from 'next/link'
 import { useGlobalContext } from '@/app/context/store'
 import { RxCross2 } from 'react-icons/rx'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
@@ -161,7 +160,7 @@ export default function Form() {
 
   return (
     <div className='pt-[180px] pl-[150px]'>
-      <form className='max-w-[600px] m-auto '>
+      <form className='max-w-[600px] m-auto pb-[40px]'>
         <div className='flex flex-col bg-white shadow-md rounded-[20px] w-full pt-[40px] pb-[60px] px-[50px] mb-[40px] relative'>
           {/* <Link
             href='/dashboard/property'
