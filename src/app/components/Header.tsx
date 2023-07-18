@@ -42,9 +42,11 @@ export default function Header(props: HeaderProps) {
   return (
     <div className='flex items-center justify-center absolute top-0 right-0 z-10 w-screen h-[80px] border-b border-[#F4F4FC] shadow '>
       <div className='absolute top-[40px] left-[4.1666666667%] translate-y-[-50%]'>
-        <Link href='/'>
-          <Image src={logo} alt='logo' />
-        </Link>
+        <h1>
+          <Link href='/'>
+            <Image src={logo} alt='logo' />
+          </Link>
+        </h1>
       </div>
       <div className={`flex items-center gap-x-[5px] ${positionStyle}`}>
         <SiWebmoney className='text-primary font-medium' />

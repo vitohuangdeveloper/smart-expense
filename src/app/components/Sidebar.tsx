@@ -41,7 +41,9 @@ export default function Sidebar() {
       <div className='flex flex-col gap-y-[120px] items-center mb-auto'>
         <div>
           <h1>
-            <Image src={logo} alt='logo' />
+            <Link href='/' className='cursor-pointer'>
+              <Image src={logo} alt='logo' />
+            </Link>
           </h1>
         </div>
         <div className='flex flex-col gap-y-[50px]'>

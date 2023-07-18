@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useGlobalContext } from './context/store'
 import Header from './components/Header'
