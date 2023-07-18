@@ -3,6 +3,7 @@ import { ChangeEvent, SyntheticEvent, useState } from 'react'
 import { setDoc, doc, collection, DocumentData } from 'firebase/firestore'
 import Link from 'next/link'
 import { RxCross2 } from 'react-icons/rx'
+import { toast } from 'react-toastify'
 import { useGlobalContext } from '@/app/context/store'
 import { db } from '@/app/lib/firebase'
 
@@ -51,11 +52,26 @@ export default function Page() {
       },
     ])
   }
+
   const resetCategoryField = () => {
     if (!category.name || !category.type) return
     setCategory({
       name: '',
       type: '',
+    })
+  }
+
+  const notify = () => {
+    if (!category.name || !category.type) return
+    toast.success('新增成功!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
     })
   }
 
@@ -115,6 +131,7 @@ export default function Page() {
               addCategory()
               syncCategoryDisplayed()
               resetCategoryField()
+              notify()
             }}
           >
             新增
