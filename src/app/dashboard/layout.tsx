@@ -16,15 +16,16 @@ export default function DashboardLayout({
   const [loading, setLoading] = useState<boolean>(true)
   const { user } = useGlobalContext()
 
-  useEffect(() => {
-    setLoading(false)
-  }, [])
+  // useEffect(() => {
+  //   setLoading(false)
+  // }, [])
 
   useEffect(() => {
     if (!user && !loading) {
       redirect('/')
     }
-  }, [user, loading])
+    setLoading(false)
+  }, [user])
 
   return (
     <div>
