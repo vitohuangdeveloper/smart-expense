@@ -18,6 +18,8 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   const [user, setUser] = useState<User | null>(null)
   const uid = user && user.uid
 
+  const [loading, setLoading] = useState<boolean>(true)
+
   const [allAccounts, setAllAccounts] = useState<DocumentData[]>([])
   const [allAccountsReceipts, setAllAccountsReceipts] = useState<
     DocumentData[][] | undefined
@@ -132,6 +134,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser)
     })
+    setLoading(false)
     return () => unsubscribe()
   }, [user])
 
@@ -140,6 +143,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
       value={{
         user,
         uid,
+        loading,
         googleSignIn,
         logOut,
         allAccounts,

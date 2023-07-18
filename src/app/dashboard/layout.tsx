@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Flip, ToastContainer } from 'react-toastify'
 import { redirect } from 'next/navigation'
 import { useGlobalContext } from '@/app/context/store'
@@ -13,18 +13,15 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const positionStyle = 'pl-[150px]'
-  const [loading, setLoading] = useState<boolean>(true)
-  const { user } = useGlobalContext()
+
+  const { user, loading } = useGlobalContext()
 
   useEffect(() => {
-    if (!user && !loading) {
+    if (loading) return
+    if (!user) {
       redirect('/')
     }
   }, [user, loading])
-
-  useEffect(() => {
-    setLoading(false)
-  }, [])
 
   return (
     <div>

@@ -12,14 +12,15 @@ import capital from 'public/capital.svg'
 import cash from 'public/cash.svg'
 
 export default function Home() {
-  const { user } = useGlobalContext()
+  const { user, loading } = useGlobalContext()
   const router = useRouter()
 
   useEffect(() => {
+    if (loading) return
     if (user) {
       router.push('/dashboard/property')
     }
-  }, [user, router])
+  }, [user, loading, router])
 
   return (
     <div>

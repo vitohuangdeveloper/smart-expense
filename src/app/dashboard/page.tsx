@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useGlobalContext } from '@/app/context/store'
 import { redirect } from 'next/navigation'
 
 export default function Page() {
-  const [loading, setLoading] = useState<boolean>(true)
-  const { user } = useGlobalContext()
+  const { user, loading } = useGlobalContext()
 
   useEffect(() => {
     if (loading) return
@@ -16,10 +15,6 @@ export default function Page() {
       redirect('/dashboard/property')
     }
   }, [user, loading])
-
-  useEffect(() => {
-    setLoading(false)
-  }, [])
 
   return <div></div>
 }
