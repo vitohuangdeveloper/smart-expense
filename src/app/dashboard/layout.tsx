@@ -20,7 +20,7 @@ export default function DashboardLayout({
     if (!user && !loading) {
       redirect('/')
     }
-  }, [user])
+  }, [user, loading])
 
   useEffect(() => {
     setLoading(false)
