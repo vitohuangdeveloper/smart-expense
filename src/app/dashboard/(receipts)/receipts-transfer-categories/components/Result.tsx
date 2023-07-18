@@ -74,7 +74,7 @@ export default function Result() {
   }, [])
 
   return (
-    <div className='pl-[150px]'>
+    <div className='pl-[150px] pb-[40px]'>
       <div className='flex flex-col items-center max-w-[900px] min-h-[500px] m-auto bg-white rounded-[20px] pb-[30px] relative shadow-md'>
         <Link
           href='/dashboard/receipts-transfer-add-item'
