@@ -80,7 +80,7 @@ export default function Modal(props: ModalProps) {
 
     props.setAddAccount({
       accountName: '',
-      accountCategory: '',
+      accountCategory: props.addAccount.accountCategory,
       balance: '',
     })
   }
