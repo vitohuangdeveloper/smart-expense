@@ -7,6 +7,7 @@ import { BiDollarCircle, BiPencil } from 'react-icons/bi'
 import { FaCalendarDays } from 'react-icons/fa6'
 import { MdAccountBalance } from 'react-icons/md'
 import { collection, setDoc, doc, DocumentData } from 'firebase/firestore'
+import { toast } from 'react-toastify'
 import { db } from '@/app/lib/firebase'
 import { useGlobalContext } from '@/app/context/store'
 
@@ -139,7 +140,16 @@ export default function NewItem() {
         Number(expenseReceipt.amounts) + amounts > budgetDetail.amounts / 2 &&
         Number(expenseReceipt.amounts) + amounts < budgetDetail.amounts
       ) {
-        alert('該筆支出已超過預算的一半')
+        toast.warn('該筆支出已超過預算的一半', {
+          position: 'top-center',
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        })
       } else if (
         expenseReceipt.account === budgetDetail.account &&
         expenseReceipt.category === budgetDetail.expenseCategory &&
@@ -147,7 +157,16 @@ export default function NewItem() {
         expenseReceipt.createdTime < budgetDetail.endTime &&
         Number(expenseReceipt.amounts) + amounts > budgetDetail.amounts
       ) {
-        alert('該筆支出已超過預算')
+        toast.warn('該筆支出已超過預算', {
+          position: 'top-center',
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        })
       }
     })
   }
@@ -203,6 +222,28 @@ export default function NewItem() {
       description: '',
       createdTime: '',
       account: '',
+    })
+  }
+
+  const notify = () => {
+    if (
+      !expenseReceipt.category ||
+      !expenseReceipt.amounts ||
+      !expenseReceipt.description ||
+      !expenseReceipt.createdTime ||
+      !expenseReceipt.account
+    )
+      return
+
+    toast.success('新增成功!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
     })
   }
 
@@ -388,6 +429,7 @@ export default function NewItem() {
             syncExpenseReceiptDisplayed()
             popUpNotification(budgetDetails)
             resetReceiptField()
+            notify()
           }}
         >
           新增

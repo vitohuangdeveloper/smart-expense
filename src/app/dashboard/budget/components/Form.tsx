@@ -137,7 +137,7 @@ export default function Form() {
             <p className='text-[20px] text-primary font-medium '>
               篩選統計範圍
             </p>
-            <div className='flex justify-between border-b py-[5px]'>
+            <div className='flex justify-between border-b border-b-gray py-[5px]'>
               <label htmlFor='account' className='font-medium text-[18px]'>
                 帳戶
               </label>
@@ -232,7 +232,7 @@ export default function Form() {
           </div>
           <div className='mb-[45px]'>
             <p className='text-primary font-medium text-[20px]'>日期區間</p>
-            <div className='flex justify-between border-b'>
+            <div className='flex justify-between border-b border-b-gray'>
               <label
                 htmlFor='startTime'
                 className='font-medium text-[18px] py-[5px]'
