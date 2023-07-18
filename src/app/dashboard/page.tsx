@@ -2,24 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import { useGlobalContext } from '@/app/context/store'
-import { useRouter, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(true)
   const { user } = useGlobalContext()
-  const router = useRouter()
 
   useEffect(() => {
-    setLoading(false)
-  }, [])
-
-  useEffect(() => {
-    if (!user && !loading) {
+    if (loading) return
+    if (!user) {
       redirect('/')
     } else if (user) {
       redirect('/dashboard/property')
     }
-  }, [user, loading, router])
+  }, [user, loading])
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   return <div></div>
 }
