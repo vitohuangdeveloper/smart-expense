@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useGlobalContext } from '@/app/context/store'
 import { RxCross2 } from 'react-icons/rx'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
+import { toast } from 'react-toastify'
 
 interface BudgetDetails {
   name: string
@@ -79,6 +80,15 @@ export default function Form() {
   }
 
   const syncBudgetDetails = () => {
+    if (
+      !budgetDetail.name ||
+      !budgetDetail.account ||
+      !budgetDetail.expenseCategory ||
+      !budgetDetail.amounts ||
+      !budgetDetail.startTime ||
+      !budgetDetail.endTime
+    )
+      return
     setBudgetDetails((prev: DocumentData[]) => [
       ...prev,
       {
@@ -93,6 +103,28 @@ export default function Form() {
     ])
   }
 
+  const notify = () => {
+    if (
+      !budgetDetail.name ||
+      !budgetDetail.account ||
+      !budgetDetail.expenseCategory ||
+      !budgetDetail.amounts ||
+      !budgetDetail.startTime ||
+      !budgetDetail.endTime
+    )
+      return
+    toast.success('新增成功!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    })
+  }
+
   const resetBudgetDetailField = () => {
     setBudgetDetail({
       name: '',
@@ -102,18 +134,45 @@ export default function Form() {
       startTime: '',
       endTime: '',
     })
+    setIsToggled(false)
+  }
+
+  const resetNotify = () => {
+    setBudgetDetail({
+      name: '',
+      account: '',
+      expenseCategory: '',
+      amounts: '',
+      startTime: '',
+      endTime: '',
+    })
+    setIsToggled(false)
+    toast.success('清除成功!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
   }
 
   return (
     <div className='pt-[180px] pl-[150px]'>
       <form className='max-w-[600px] m-auto '>
         <div className='flex flex-col bg-white shadow-md rounded-[20px] w-full pt-[40px] pb-[60px] px-[50px] mb-[40px] relative'>
-          <Link
+          {/* <Link
             href='/dashboard/property'
             className='absolute top-[20px] right-[20px] '
           >
             <RxCross2 className='text-[20px] font-medium cursor-pointer' />
-          </Link>
+          </Link> */}
+          <RxCross2
+            className='text-[20px] font-medium cursor-pointer absolute top-[20px] right-[20px]'
+            onClick={resetNotify}
+          />
           <div className='mb-[30px]'>
             <h2 className='text-[24px] font-medium text-center'>新增預算</h2>
           </div>
@@ -283,6 +342,7 @@ export default function Form() {
             onClick={event => {
               addNewBudget(event)
               syncBudgetDetails()
+              notify()
               resetBudgetDetailField()
             }}
           >
