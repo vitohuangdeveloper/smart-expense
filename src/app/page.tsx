@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useGlobalContext } from './context/store'
 import Header from './components/Header'
@@ -13,12 +13,13 @@ import cash from 'public/cash.svg'
 
 export default function Home() {
   const { user } = useGlobalContext()
+  const router = useRouter()
 
   useEffect(() => {
     if (user) {
-      redirect('/dashboard/property')
+      router.push('/dashboard/property')
     }
-  }, [user])
+  }, [user, router])
 
   return (
     <div>
