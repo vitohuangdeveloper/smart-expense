@@ -40,28 +40,28 @@ export default function Header(props: HeaderProps) {
   }, [user])
 
   return (
-    <div className='flex items-center justify-center absolute top-0 right-0 z-10 w-screen h-[80px] border-b border-[#F4F4FC] shadow '>
-      <div className='absolute top-[40px] left-[4.1666666667%] translate-y-[-50%]'>
+    <div className='flex items-center justify-center absolute top-0 right-0 z-10 w-screen h-[80px] border-b border-[#F4F4FC] shadow sm:h-[50px]'>
+      <div className='absolute top-[40px] left-[4.1666666667%] translate-y-[-50%] sm:top-[25px]'>
         <h1>
           <Link href='/'>
-            <Image src={logo} alt='logo' />
+            <Image src={logo} alt='logo' className='sm:w-[30px] h-auto'/>
           </Link>
         </h1>
       </div>
-      <div className={`flex items-center gap-x-[5px] ${positionStyle}`}>
+      <div className={`flex items-center gap-x-[5px] ${positionStyle} sm:hidden`}>
         <SiWebmoney className='text-primary font-medium' />
         <p className='text-primary text-[20px] font-medium'>Smart Expense</p>
       </div>
       {loading ? (
         <div></div>
       ) : !user ? (
-        <div className='absolute top-[40px] right-[4.1666666667%] translate-y-[-50%]'>
+        <div className='absolute top-[25px] right-[4.1666666667%] translate-y-[-50%] sm:text-sm'>
           <p className='text-primary cursor-pointer' onClick={handleSignIn}>
             Login
           </p>
         </div>
       ) : (
-        <div className='absolute top-[40px] right-[4.1666666667%] translate-y-[-50%]'>
+        <div className='absolute top-[25px] right-[4.1666666667%] translate-y-[-50%] sm:text-sm'>
           <p className='cursor-pointer text-primary' onClick={handleSignOut}>
             Sign out
           </p>
