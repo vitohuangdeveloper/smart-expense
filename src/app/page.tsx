@@ -62,9 +62,9 @@ export default function Home() {
               <Image src={financialManagement} alt='business' />
             </div>
           </div>
-          <div className='bg-[#576bac] flex justify-around items-center rounded-[20px] py-[50px] sm:flex-col sm:justify-normal sm:py-6 sm:px-2 sm:gap-y-2'>
+          <div className='bg-[#576bac] flex justify-around items-center rounded-[20px] py-[50px] sm:flex-col sm:justify-normal sm:py-6 sm:px-4 sm:gap-y-2'>
             <div className='sm:flex sm:flex-col'>
-              <p className='text-[40px] text-[#fff] mb-[10px] sm:text-lg sm:font-medium sm:mb-2'>
+              <p className='text-[40px] text-[#fff] mb-[10px] sm:text-lg sm:font-medium sm:mb-2 sm:whitespace-nowrap'>
                 Take your finances to the next level!
               </p>
               <p className='text-[#fff] mb-[30px] sm:text-sm sm:mb-5'>
