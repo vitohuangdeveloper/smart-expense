@@ -55,13 +55,13 @@ export default function Header(props: HeaderProps) {
       {loading ? (
         <div></div>
       ) : !user ? (
-        <div className='absolute top-[25px] right-[4.1666666667%] translate-y-[-50%] sm:text-sm'>
+        <div className='absolute top-[40px] right-[4.1666666667%] translate-y-[-50%] sm:top-[25px] sm:text-sm'>
           <p className='text-primary cursor-pointer' onClick={handleSignIn}>
             Login
           </p>
         </div>
       ) : (
-        <div className='absolute top-[25px] right-[4.1666666667%] translate-y-[-50%] sm:text-sm'>
+        <div className='absolute top-[40px] right-[4.1666666667%] translate-y-[-50%] sm:top-[25px] sm:text-sm'>
           <p className='cursor-pointer text-primary' onClick={handleSignOut}>
             Sign out
           </p>
