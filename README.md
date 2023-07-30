@@ -43,27 +43,27 @@
 
 ### Flow chart
 
-![flow chart](./src/public/demo/smart-expense-flowchart-drawio.svg)
+![flow chart](./public/demo/smart-expense-flowchart-drawio.svg)
 
 ### Demo
 
 - Analyze property trends as well as manage accounts.
-  ![property](./src/public/demo/property.gif)
+  ![property](./public/demo/property.gif)
 
 - Add and check the account balance.
-  ![account](./src/public/demo/account.gif)
+  ![account](./public/demo/account.gif)
 
 - Create and review custom transaction categories.
-  ![category](./src/public/demo/category.gif)
+  ![category](./public/demo/category.gif)
 
 - Set budgets for categories to manage spending.
-  ![budget](./src/public/demo/budget.gif)
+  ![budget](./public/demo/budget.gif)
 
 - Upload and check receipts for expense tracking.
-  ![receipt](./src/public/demo/receipt.gif)
+  ![receipt](./public/demo/receipt.gif)
 
 - Analyze financial data over the past half-year.
-  ![analysis](./src/public/demo/analysis.gif)
+  ![analysis](./public/demo/analysis.gif)
 
 ### Contact
 
