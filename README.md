@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://smart-expense.vercel.app/" style="margin-bottom:20px; display:block;">
-    <img src="./public/logo.svg" alt="Logo" width="200px">
+    <img src="./public/logo.svg" alt="Logo" width="100px">
   </a>
 
 ![npm peer dependency version (scoped)](https://img.shields.io/npm/dependency-version/eslint-config-prettier/peer/eslint) ![License](https://img.shields.io/badge/License-MIT-blue)
