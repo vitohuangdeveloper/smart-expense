@@ -14,6 +14,7 @@ import cash from 'public/cash.svg'
 export default function Home() {
   const { user, loading } = useGlobalContext()
   const router = useRouter()
+  const isMenubarStyle = 'hidden'
 
   useEffect(() => {
     if (loading) return
@@ -25,7 +26,7 @@ export default function Home() {
   return (
     !loading && (
       <div>
-        <Header />
+        <Header isMenubarStyle={isMenubarStyle}/>
         <div className='pt-[155px] px-[100px] pb-[40px] sm:px-[4.1666666667%] sm:pt-[70px] sm:pb-[20px]'>
           <div className='flex justify-between mb-[100px] sm:flex-col sm:justify-normal sm:gap-y-[20px] sm:mb-[50px]'>
             <div>

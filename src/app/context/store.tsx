@@ -26,6 +26,7 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
   >([])
   const [receiptCategories, setReceiptCategories] = useState<DocumentData[]>([])
   const [budgetDetails, setBudgetDetails] = useState<DocumentData[]>([])
+  const [isSidebar, setIsSidebar] = useState<boolean>(false)
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider()
@@ -154,6 +155,8 @@ export const GlobalContextProvider = ({ children }: DocumentData) => {
         setReceiptCategories,
         budgetDetails,
         setBudgetDetails,
+        isSidebar,
+        setIsSidebar,
       }}
     >
       {children}

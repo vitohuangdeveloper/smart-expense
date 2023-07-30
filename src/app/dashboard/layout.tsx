@@ -13,6 +13,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const positionStyle = 'pl-[150px]'
+  const isLogoStyle = 'hidden'
 
   const { user, loading } = useGlobalContext()
 
@@ -25,7 +26,7 @@ export default function DashboardLayout({
 
   return (
     <div>
-      <Header positionStyle={positionStyle} />
+      <Header positionStyle={positionStyle} isLogoStyle={isLogoStyle} />
       <Sidebar />
       <ToastContainer
         position='top-center'
