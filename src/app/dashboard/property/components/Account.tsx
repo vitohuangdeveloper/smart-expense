@@ -25,8 +25,8 @@ function Account() {
   return (
     <div>
       <h2 className='text-[24px] font-medium mb-[10px] text-center'>帳戶</h2>
-      <div className='flex justify-between p-[20px] border-dashed border border-white rounded-[20px] shadow-sm'>
-        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+      <div className='flex justify-between p-[20px] border-dashed border border-white rounded-[20px] shadow-sm sm:flex-col sm:justify-normal'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative sm:w-full'>
           <Link
             href='/dashboard/property/bank-account-add'
             className=' absolute top-[33px] right-[22px]'
@@ -56,7 +56,7 @@ function Account() {
             )}
           </div>
         </div>
-        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative sm:w-full'>
           <Link
             href='/dashboard/property/eTicket-account-add'
             className=' absolute top-[33px] right-[22px]'
@@ -86,7 +86,7 @@ function Account() {
             )}
           </div>
         </div>
-        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative'>
+        <div className='flex flex-col gap-y-[30px] bg-white shadow-md w-[293px] p-[30px] rounded-[20px] relative sm:w-full'>
           <Link
             href='/dashboard/property/manual-account-add'
             className=' absolute top-[33px] right-[22px]'

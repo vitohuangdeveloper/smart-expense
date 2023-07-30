@@ -4,15 +4,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useGlobalContext } from '@/app/context/store'
 import { SiWebmoney } from 'react-icons/si'
+import { AiOutlineMenu } from 'react-icons/ai'
 import logo from '/public/logo.svg'
 
 interface HeaderProps {
   positionStyle?: string
+  isMenubarStyle?: string
+  isLogoStyle?: string
 }
 
 export default function Header(props: HeaderProps) {
-  const { positionStyle } = props
-  const { user, googleSignIn, logOut } = useGlobalContext()
+  const { positionStyle, isMenubarStyle, isLogoStyle } = props
+  const { user, googleSignIn, logOut, setIsSidebar } = useGlobalContext()
   const [loading, setLoading] = useState(true)
 
   const handleSignIn = async () => {
@@ -31,6 +34,10 @@ export default function Header(props: HeaderProps) {
     }
   }
 
+  const handleClick = () => {
+    setIsSidebar(true)
+  }
+
   useEffect(() => {
     const checkAuthentication = async () => {
       await new Promise(resolve => setTimeout(resolve, 50))
@@ -44,8 +51,9 @@ export default function Header(props: HeaderProps) {
       <div className='absolute top-[40px] left-[4.1666666667%] translate-y-[-50%] sm:top-[25px]'>
         <h1>
           <Link href='/'>
-            <Image src={logo} alt='logo' className='sm:w-[30px] h-auto'/>
+            <Image src={logo} alt='logo' className={`sm:w-[30px] sm:h-auto ${isLogoStyle || ''}`}/>
           </Link>
+          <AiOutlineMenu className={`sm:w-[15px] sm:h-auto sm:cursor-auto ${isMenubarStyle || ''}`} onClick={handleClick}/>
         </h1>
       </div>
       <div className={`flex items-center gap-x-[5px] ${positionStyle} sm:hidden`}>

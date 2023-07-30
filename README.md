@@ -1,34 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <a href="https://smart-expense.vercel.app/" style="margin-bottom:20px; display:block;">
+    <img src="./public/logo.svg" alt="Logo" width="200px">
+  </a>
 
-## Getting Started
+![npm peer dependency version (scoped)](https://img.shields.io/npm/dependency-version/eslint-config-prettier/peer/eslint) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-First, run the development server:
+  <p align="center">
+    <a href="https://github.com/VitoProgramming/smart-expense#About">About</a>
+    |
+    <a href="https://github.com/VitoProgramming/smart-expense#Demo">Demo</a>
+    |
+    <a href="https://github.com/VitoProgramming/smart-expense#Contact">Contact</a>
+  </p>
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+# Smart Expense
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[Smart Expense](https://smart-expense.vercel.app/) is an expense tracker that helps users managing finances smoothly.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Smart Expense
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Interactive Data Visualisation - Administered Chart.js, offered stunning charts to help users better understand the spending patterns, and gained priceless insights into financial habits as well as make data-driven decisions.
+- Customisable Account / Category Management - Carried out Firebase to make user able to customise accounts and categories according to preferences.
+- Seamless Receipt Checking - Improved seamless page transitions with Next.js Link component, enabling client-side navigation without full page reloads.
+- Real-time Expense Tracking - Implemented real-time tracking utilising useState and useContext.
+- Concise Balance Analysis - Displayed tidy and informative UI, improving comprehension of expensing trend.
+- Efficient Budget Planning - Provided timely alerts and helped users stay within boundary limits by taking advantage of React-Toastify.
 
-## Learn More
+## Built with
 
-To learn more about Next.js, take a look at the following resources:
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Chart.js](https://img.shields.io/badge/chart.js-F5788D.svg?style=for-the-badge&logo=chart.js&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Base**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Next.js
+- TypeScript
+- Chart.js
+- Tailwind CSS
+- Firestore
+- ESLint
+- Prettier
 
-## Deploy on Vercel
+### Flow chart
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![flow chart](./src/public/demo/smart-expense-flowchart-drawio.svg)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Demo
+
+- Analyze property trends as well as manage accounts.
+  ![property](./src/public/demo/property.gif)
+
+- Add and check the account balance.
+  ![account](./src/public/demo/account.gif)
+
+- Create and review custom transaction categories.
+  ![category](./src/public/demo/category.gif)
+
+- Set budgets for categories to manage spending.
+  ![budget](./src/public/demo/budget.gif)
+
+- Upload and check receipts for expense tracking.
+  ![receipt](./src/public/demo/receipt.gif)
+
+- Analyze financial data over the past half-year.
+  ![analysis](./src/public/demo/analysis.gif)
+
+### Contact
+
+  <a href="https://www.linkedin.com/in/vito-huang-275828243/" text-decoration="none">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:vito.formosa@outlook.com">
+    <img src="https://img.shields.io/badge/Microsoft_Outlook-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
+  </a>
