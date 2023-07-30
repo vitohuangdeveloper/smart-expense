@@ -2,26 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+::-webkit-calendar-picker-indicator {
+  margin-left: 5px;
+  cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.Toastify__toast-container {
+  width: initial !important ;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.Toastify__toast-container--top-center {
+  left: calc(50% + 75px) !important;
+}
+
+.Toastify__toast {
+  border-radius: 20px !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background: #2430d0 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--warning {
+  background: #e9c42a !important;
 }
